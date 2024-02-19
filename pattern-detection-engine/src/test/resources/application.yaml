@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;Mode=Oracle;NON_KEYWORDS=VALUE;BUILTIN_ALIAS_OVERRIDE=1
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
