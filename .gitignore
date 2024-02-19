@@ -7,6 +7,8 @@
 /database/database.iml
 
 /parent/target/
+/parent/trading-bot-parent.iml
+
 
 pattern-detection-engine/target/
 pattern-detection-engine/pattern-detection-engine.iml
