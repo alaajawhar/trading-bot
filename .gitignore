@@ -1,0 +1,12 @@
+# Default ignored files
+/.idea/
+/broker-engine/target/
+/broker-engine/broker-engine.iml
+
+/database/target/
+/database/database.iml
+
+/parent/target/
+
+pattern-detection-engine/target/
+pattern-detection-engine/pattern-detection-engine.iml
