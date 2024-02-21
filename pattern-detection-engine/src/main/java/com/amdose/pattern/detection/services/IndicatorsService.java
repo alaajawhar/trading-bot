@@ -56,6 +56,7 @@ public class IndicatorsService {
                     bot.getSymbol().getName()
                     , timeFrame
             );
+
             List<CandleItemDTO> candleItemDTOS = CandleMapper.INSTANCE.candleEntitiesToCandleItemDTOs(candleEntityList);
             log.debug("[{}] candles has been found", candleEntityList.size());
 
@@ -63,6 +64,11 @@ public class IndicatorsService {
             TechnicalAnalysisBaseService ta = new Taj4JImpl(candleItemDTOS);
             candleItemDTOS = ta.applyAll();
             log.debug("Ta4j has been applied");
+            log.debug("RSI on [{}] is: [{}]. timeFrame: [{}]"
+                    , candleItemDTOS.get(candleItemDTOS.size() - 1).getDate()
+                    , candleItemDTOS.get(candleItemDTOS.size() - 1).getRsiValue()
+                    , timeFrame
+            );
 
             Optional<IIndicatorService> signalOptional = indicatorServiceList.stream()
                     .filter(signal -> signal.getName().equalsIgnoreCase(bot.getIndicator().getName()))

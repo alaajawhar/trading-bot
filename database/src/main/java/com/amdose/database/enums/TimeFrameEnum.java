@@ -33,4 +33,15 @@ public enum TimeFrameEnum {
             case ONE_DAY -> DateUtils.addDays(date, 1);
         };
     }
+
+    public Date subtractTime(Date date) {
+        return switch (this) {
+            case ONE_MINUTE -> DateUtils.addMinutes(date, -1);
+            case THREE_MINUTES -> DateUtils.addMinutes(date, -3);
+            case FIFTEEN_MINUTES -> DateUtils.addMinutes(date, -15);
+            case ONE_HOUR -> DateUtils.addHours(date, -1);
+            case FOUR_HOURS -> DateUtils.addHours(date, -4);
+            case ONE_DAY -> DateUtils.addDays(date, -1);
+        };
+    }
 }

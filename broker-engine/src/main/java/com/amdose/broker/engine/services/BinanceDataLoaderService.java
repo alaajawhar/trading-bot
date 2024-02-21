@@ -25,6 +25,14 @@ public class BinanceDataLoaderService {
     private final BinanceService binanceService;
     private final ISymbolRepository symbolRepository;
 
+    public void updateAllSymbols(TimeFrameEnum interval) {
+        List<SymbolEntity> symbolList = symbolRepository.findAll();
+        for (SymbolEntity symbolEntity : symbolList) {
+            log.debug("update data of symbol: [{}] and [{}] interval", symbolEntity.getName(), interval);
+            this.updateData(symbolEntity.getName(), interval);
+        }
+    }
+
     public void updateData(String symbol, TimeFrameEnum interval) {
         Optional<CandleEntity> lastCandle = candleRepository.findTopBySymbolAndTimeFrameOrderByDateDesc(symbol, interval);
 
@@ -36,16 +44,9 @@ public class BinanceDataLoaderService {
         }
 
         List<CandleEntity> candles = binanceService.getCandles(symbol, interval, startDate);
+        candles.remove(candles.size() - 1); // remove last candle because it is not accurate
         log.debug("before inserting");
         candleRepository.saveAll(candles);
         log.debug("after inserting");
-    }
-
-    public void updateAllSymbols(TimeFrameEnum interval) {
-        List<SymbolEntity> symbolList = symbolRepository.findAll();
-        for (SymbolEntity symbolEntity : symbolList) {
-            log.debug("update data of symbol: [{}] and [{}] interval", symbolEntity.getName(), interval);
-            this.updateData(symbolEntity.getName(), interval);
-        }
     }
 }

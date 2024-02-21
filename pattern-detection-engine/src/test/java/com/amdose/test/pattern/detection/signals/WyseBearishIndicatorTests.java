@@ -2,6 +2,7 @@ package com.amdose.test.pattern.detection.signals;
 
 import com.amdose.database.entities.CandleEntity;
 import com.amdose.database.entities.SignalEntity;
+import com.amdose.database.enums.SignalActionEnum;
 import com.amdose.database.repositories.ICandleRepository;
 import com.amdose.pattern.detection.PatternDetectionModule;
 import com.amdose.pattern.detection.dtos.CandleItemDTO;
@@ -22,7 +23,9 @@ import org.springframework.test.context.jdbc.Sql;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 
@@ -50,7 +53,22 @@ public class WyseBearishIndicatorTests {
 
         WyseBearishIndicatorService wyseBearishIndicatorService = new WyseBearishIndicatorService();
         List<SignalEntity> resultSignals = wyseBearishIndicatorService.apply(candleItemDTOS);
-        log.debug("Result: [" + JsonUtils.convertToString(resultSignals) + "]");
+        log.debug("Result: [" + JsonUtils.convertToString(resultSignals.get(0).getMetaData()) + "]");
+
+        SignalEntity sellSignal = resultSignals.get(0);
+        SignalEntity buySignal = resultSignals.get(1);
+
+        Map<String, String> sellSignalMetaData = JsonUtils.convertToObject(sellSignal.getMetaData(), Map.class);
+        Map<String, String> buySignalMetaData = JsonUtils.convertToObject(buySignal.getMetaData(), Map.class);
+
+        assertEquals(2, resultSignals.size());
+        assertEquals(SignalActionEnum.SELL, resultSignals.get(0).getAction());
+        assertEquals(SignalActionEnum.BUY, resultSignals.get(1).getAction());
+        assertEquals("19-02-2024 09:35:00", sellSignalMetaData.get("signalScheduledAt"));
+        assertEquals(1, sellSignalMetaData.get("index"));
+        assertEquals("19-02-2024 09:33:00", sellSignalMetaData.get("detectionDate"));
+        assertEquals(66.84246302006297, sellSignalMetaData.get("rsiValueOnDetection"));
+        assertEquals(70.68221478392115, sellSignalMetaData.get("lastRsiHigherHighValue"));
     }
 
     @Test
@@ -66,8 +84,24 @@ public class WyseBearishIndicatorTests {
         List<CandleItemDTO> candleItemDTOS = findAllCandlesBeforeNow();
 
         WyseBearishIndicatorService wyseBearishIndicatorService = new WyseBearishIndicatorService();
-        List<SignalEntity> apply = wyseBearishIndicatorService.apply(candleItemDTOS);
-        log.debug("Result: [" + JsonUtils.convertToString(apply) + "]");
+        List<SignalEntity> resultSignals = wyseBearishIndicatorService.apply(candleItemDTOS);
+        log.debug("Result: [" + JsonUtils.convertToString(resultSignals.get(0).getMetaData()) + "]");
+
+        SignalEntity sellSignal = resultSignals.get(0);
+        SignalEntity buySignal = resultSignals.get(1);
+
+        Map<String, String> sellSignalMetaData = JsonUtils.convertToObject(sellSignal.getMetaData(), Map.class);
+        Map<String, String> buySignalMetaData = JsonUtils.convertToObject(buySignal.getMetaData(), Map.class);
+
+        assertEquals(2, resultSignals.size());
+        assertEquals(SignalActionEnum.SELL, resultSignals.get(0).getAction());
+        assertEquals(SignalActionEnum.BUY, resultSignals.get(1).getAction());
+        assertEquals("17-02-2024 12:36:00", sellSignalMetaData.get("signalScheduledAt"));
+        assertEquals(2, sellSignalMetaData.get("index"));
+        assertEquals("17-02-2024 12:33:00", sellSignalMetaData.get("detectionDate"));
+        assertEquals(63.14629201232742, sellSignalMetaData.get("rsiValueOnDetection"));
+        assertEquals(61.47273835324635, sellSignalMetaData.get("lastRsiHigherHighValue"));
+
     }
 
     @Test
@@ -90,8 +124,23 @@ public class WyseBearishIndicatorTests {
         List<CandleItemDTO> candleItemDTOS = findAllCandlesBeforeNow();
 
         WyseBearishIndicatorService wyseBearishIndicatorService = new WyseBearishIndicatorService();
-        List<SignalEntity> apply = wyseBearishIndicatorService.apply(candleItemDTOS);
-        log.debug("Result: [" + JsonUtils.convertToString(apply) + "]");
+        List<SignalEntity> resultSignals = wyseBearishIndicatorService.apply(candleItemDTOS);
+        log.debug("Result: [" + JsonUtils.convertToString(resultSignals.get(0).getMetaData()) + "]");
+
+        SignalEntity sellSignal = resultSignals.get(0);
+        SignalEntity buySignal = resultSignals.get(1);
+
+        Map<String, String> sellSignalMetaData = JsonUtils.convertToObject(sellSignal.getMetaData(), Map.class);
+        Map<String, String> buySignalMetaData = JsonUtils.convertToObject(buySignal.getMetaData(), Map.class);
+
+        assertEquals(2, resultSignals.size());
+        assertEquals(SignalActionEnum.SELL, resultSignals.get(0).getAction());
+        assertEquals(SignalActionEnum.BUY, resultSignals.get(1).getAction());
+        assertEquals(4, sellSignalMetaData.get("index"));
+        assertEquals(67.54515158334439, sellSignalMetaData.get("rsiValueOnDetection"));
+        assertEquals("19-02-2024 12:43:00", sellSignalMetaData.get("detectionDate"));
+        assertEquals("19-02-2024 12:48:00", sellSignalMetaData.get("signalScheduledAt"));
+        assertEquals(73.6264398873005, sellSignalMetaData.get("lastRsiHigherHighValue"));
     }
 
     private List<CandleItemDTO> findAllCandlesBeforeNow() {
