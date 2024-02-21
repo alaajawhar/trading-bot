@@ -1,0 +1,8 @@
+spring:
+  quartz:
+    job-store-type: memory
+    properties:
+      org:
+        quartz:
+          scheduler:
+            instanceId: AUTO

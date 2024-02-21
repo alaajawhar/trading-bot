@@ -20,13 +20,13 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-quartz</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>com.amdose.trading.bot</groupId>
             <artifactId>database</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.amdose.trading.bot</groupId>
+            <artifactId>scheduler-lib</artifactId>
             <version>${project.version}</version>
         </dependency>
 

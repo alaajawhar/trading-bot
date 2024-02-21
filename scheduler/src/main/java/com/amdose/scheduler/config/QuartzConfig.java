@@ -1,5 +1,7 @@
-package com.amdose.pattern.detection.jobs;
+package com.amdose.scheduler.config;
 
+import com.amdose.scheduler.jobs.*;
+import lombok.RequiredArgsConstructor;
 import org.quartz.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,11 +10,12 @@ import org.springframework.context.annotation.Configuration;
  * @author Alaa Jawhar
  */
 @Configuration
+@RequiredArgsConstructor
 public class QuartzConfig {
 
     @Bean
     public JobDetail oneMinuteJobDetails() {
-        return JobBuilder.newJob(OneMinuteJob.class)
+        return JobBuilder.newJob(OneMinuteActualJob.class)
                 .withIdentity("oneMinuteJob")
                 .storeDurably()
                 .build();
@@ -29,7 +32,7 @@ public class QuartzConfig {
 
     @Bean
     public JobDetail threeMinutesJobDetails() {
-        return JobBuilder.newJob(ThreeMinutesJob.class)
+        return JobBuilder.newJob(ThreeMinutesActualJob.class)
                 .withIdentity("threeMinutesJob")
                 .storeDurably()
                 .build();
@@ -46,7 +49,7 @@ public class QuartzConfig {
 
     @Bean
     public JobDetail fifteenMinutesJobDetails() {
-        return JobBuilder.newJob(FifteenMinutesJob.class)
+        return JobBuilder.newJob(FifteenMinutesActualJob.class)
                 .withIdentity("fifteenMinutesJob")
                 .storeDurably()
                 .build();
@@ -63,7 +66,7 @@ public class QuartzConfig {
 
     @Bean
     public JobDetail oneHourJobDetails() {
-        return JobBuilder.newJob(OneHourJob.class)
+        return JobBuilder.newJob(OneHourActualJob.class)
                 .withIdentity("oneHourJob")
                 .storeDurably()
                 .build();
@@ -80,7 +83,7 @@ public class QuartzConfig {
 
     @Bean
     public JobDetail fourHoursJobDetails() {
-        return JobBuilder.newJob(FourHoursJob.class)
+        return JobBuilder.newJob(FourHoursActualJob.class)
                 .withIdentity("fourHoursJob")
                 .storeDurably()
                 .build();
@@ -97,7 +100,7 @@ public class QuartzConfig {
 
     @Bean
     public JobDetail oneDayJobDetails() {
-        return JobBuilder.newJob(OneDayJob.class)
+        return JobBuilder.newJob(OneDayActualJob.class)
                 .withIdentity("oneDayJob")
                 .storeDurably()
                 .build();

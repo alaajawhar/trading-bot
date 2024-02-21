@@ -2,9 +2,9 @@ package com.amdose.pattern.detection.jobs;
 
 import com.amdose.database.enums.TimeFrameEnum;
 import com.amdose.pattern.detection.services.IndicatorsService;
+import com.amdose.scheduler.exposed.IFourHoursJob;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.quartz.JobExecutionContext;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,18 +13,13 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class FourHoursJob extends BaseJob {
+public class FourHoursJob implements IFourHoursJob {
 
     private final IndicatorsService indicatorsService;
 
     @Override
-    TimeFrameEnum getInterval() {
-        return TimeFrameEnum.FOUR_HOURS;
-    }
-
-    @Override
-    public void execute(JobExecutionContext context) {
-        log.debug("Run indicators on [{}] data...", this.getInterval());
-        indicatorsService.runAllIndicators(this.getInterval());
+    public void execute() {
+        log.debug("Run indicators on [{}] data...", TimeFrameEnum.FOUR_HOURS);
+        indicatorsService.runAllIndicators(TimeFrameEnum.FOUR_HOURS);
     }
 }

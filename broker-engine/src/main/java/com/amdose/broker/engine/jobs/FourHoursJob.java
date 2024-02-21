@@ -2,9 +2,9 @@ package com.amdose.broker.engine.jobs;
 
 import com.amdose.broker.engine.services.BinanceDataLoaderService;
 import com.amdose.database.enums.TimeFrameEnum;
+import com.amdose.scheduler.exposed.IFourHoursJob;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.quartz.JobExecutionContext;
 import org.springframework.stereotype.Component;
 
 /**
@@ -13,18 +13,13 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class FourHoursJob extends BaseJob {
+public class FourHoursJob implements IFourHoursJob {
 
     private final BinanceDataLoaderService binanceDataLoaderService;
 
     @Override
-    TimeFrameEnum getInterval() {
-        return TimeFrameEnum.FOUR_HOURS;
-    }
-
-    @Override
-    public void execute(JobExecutionContext context) {
-        log.debug("Load [{}] data from binance...", this.getInterval());
-        binanceDataLoaderService.updateAllSymbols(this.getInterval());
+    public void execute() {
+        log.debug("Load [{}] data from binance...", TimeFrameEnum.FOUR_HOURS);
+        binanceDataLoaderService.updateAllSymbols(TimeFrameEnum.FIFTEEN_MINUTES);
     }
 }
