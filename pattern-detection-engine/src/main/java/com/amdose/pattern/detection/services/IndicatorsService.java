@@ -13,7 +13,7 @@ import com.amdose.pattern.detection.mappers.CandleMapper;
 import com.amdose.pattern.detection.services.signals.IIndicatorService;
 import com.amdose.pattern.detection.services.ta.Taj4JImpl;
 import com.amdose.pattern.detection.services.ta.TechnicalAnalysisBaseService;
-import com.amdose.pattern.detection.utils.JsonUtils;
+import com.amdose.utils.JsonUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

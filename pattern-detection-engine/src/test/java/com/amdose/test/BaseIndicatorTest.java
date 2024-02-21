@@ -1,6 +1,6 @@
 package com.amdose.test;
 
-import com.amdose.pattern.detection.utils.DateUtils;
+import com.amdose.utils.DateUtils;
 import org.mockito.Mockito;
 
 import java.util.Date;

@@ -1,4 +1,4 @@
-package com.amdose.pattern.detection.utils;
+package com.amdose.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

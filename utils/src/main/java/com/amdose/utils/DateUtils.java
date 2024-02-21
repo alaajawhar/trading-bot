@@ -1,5 +1,7 @@
-package com.amdose.broker.engine.utils;
+package com.amdose.utils;
 
+import com.amdose.utils.constants.UtilConstants;
+import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
 
 import java.text.SimpleDateFormat;
@@ -11,15 +13,40 @@ import java.util.Date;
  */
 @UtilityClass
 public class DateUtils {
-    private final String dateFormatStr = "dd-MM-yyyy HH:mm:ss";
-    private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormatStr);
+    private final SimpleDateFormat dateFormatter = new SimpleDateFormat(UtilConstants.DATE_FORMAT);
 
     public static Date convertLongToDate(long timeStamp) {
         return new Date(timeStamp);
     }
 
+    @SneakyThrows
+    public static Date convertToDate(String dateStr) {
+        return dateFormatter.parse(dateStr);
+    }
+
     public static String convertToString(Date date) {
-        return simpleDateFormat.format(date);
+        return dateFormatter.format(date);
+    }
+
+    public static Date getNow() {
+        return new Date();
+    }
+
+    public static Date roundSeconds(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.SECOND, 0);
+        return calendar.getTime();
+    }
+
+    public static Boolean roundNowAndCheckIfFuture(Date date) {
+        Date now = roundSeconds(getNow());
+        return !date.before(now);
+    }
+
+    public static Boolean isFuture(Date date) {
+        Date now = getNow();
+        return !date.before(now);
     }
 
     public static Date addDays(Date date, int numberOfDays) {
@@ -41,6 +68,11 @@ public class DateUtils {
         calendar.setTime(date);
         calendar.add(Calendar.HOUR_OF_DAY, numberOfHours);
         return calendar.getTime();
+    }
+
+    @SneakyThrows
+    public static Date dateOf(String dateAsStr) {
+        return dateFormatter.parse(dateAsStr);
     }
 
 }

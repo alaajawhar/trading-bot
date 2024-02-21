@@ -1,9 +1,9 @@
 package com.amdose.broker.engine.services;
 
-import com.amdose.broker.engine.utils.DateUtils;
-import com.amdose.broker.engine.utils.JsonUtils;
 import com.amdose.database.entities.CandleEntity;
 import com.amdose.database.enums.TimeFrameEnum;
+import com.amdose.utils.DateUtils;
+import com.amdose.utils.JsonUtils;
 import com.binance.connector.client.impl.SpotClientImpl;
 import org.springframework.stereotype.Service;
 

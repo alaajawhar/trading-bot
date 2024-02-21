@@ -1,6 +1,6 @@
-package com.amdose.test.utils;
+package com.amdose.utils.tests;
 
-import com.amdose.pattern.detection.utils.DateUtils;
+import com.amdose.utils.DateUtils;
 import lombok.experimental.UtilityClass;
 import org.mockito.Mockito;
 

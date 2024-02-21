@@ -15,3 +15,6 @@ pattern-detection-engine/pattern-detection-engine.iml
 
 scheduler/target/
 scheduler/scheduler-lib.iml
+
+utils/target/
+utils/utils.iml

@@ -1,8 +1,8 @@
 package com.amdose.broker.engine.test;
 
-import com.amdose.broker.engine.utils.DateUtils;
 import com.amdose.database.entities.CandleEntity;
-import com.amdose.broker.engine.utils.JsonUtils;
+import com.amdose.utils.DateUtils;
+import com.amdose.utils.JsonUtils;
 
 import java.util.ArrayList;
 import java.util.List;

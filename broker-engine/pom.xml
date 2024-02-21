@@ -21,16 +21,16 @@
             <artifactId>binance-connector-java</artifactId>
             <version>3.2.0</version>
         </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.16.1</version>
-        </dependency>
 
 
         <dependency>
             <groupId>com.amdose.trading.bot</groupId>
             <artifactId>database</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.amdose.trading.bot</groupId>
+            <artifactId>utils</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
