@@ -21,4 +21,7 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <finalName>trading-bot-scheduler</finalName>
+    </build>
 </project>

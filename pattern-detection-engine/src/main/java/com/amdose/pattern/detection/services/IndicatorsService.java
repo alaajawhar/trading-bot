@@ -75,6 +75,7 @@ public class IndicatorsService {
                     .findFirst();
 
             if (signalOptional.isEmpty()) {
+                log.info("No signals found for indicator: [{}]", bot.getIndicator().getName());
                 continue;
             }
 

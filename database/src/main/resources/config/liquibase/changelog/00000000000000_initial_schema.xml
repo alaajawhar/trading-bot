@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="00000000000001" author="broker_engine">
+
+        <createTable tableName="symbol">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_symbol"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="added_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="added_date" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="bigint"/>
+            <column name="modified_date" type="datetime(6)"/>
+        </createTable>
+
+        <createTable tableName="indicator">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_indicator"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="added_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="added_date" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="bigint"/>
+            <column name="modified_date" type="datetime(6)"/>
+        </createTable>
+
+        <createTable tableName="candle">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_candle"/>
+            </column>
+            <column name="open" type="double">
+                <constraints nullable="false"/>
+            </column>
+            <column name="close" type="double">
+                <constraints nullable="false"/>
+            </column>
+            <column name="low" type="double">
+                <constraints nullable="false"/>
+            </column>
+            <column name="high" type="double">
+                <constraints nullable="false"/>
+            </column>
+            <column name="symbol" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="time_frame"
+                    type="enum('FIFTEEN_MINUTES', 'FOUR_HOURS', 'ONE_DAY', 'ONE_HOUR', 'ONE_MINUTE', 'THREE_MINUTES')">
+                <constraints nullable="false"/>
+            </column>
+            <column name="volume" type="double">
+                <constraints nullable="false"/>
+            </column>
+            <column name="candle_date" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="bot">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_bot"/>
+            </column>
+            <column name="description" type="varchar(255)"/>
+            <column name="bot_mode" type="enum('ALERT', 'INACTIVE', 'TRADE')"/>
+            <column name="time_frame"
+                    type="enum('FIFTEEN_MINUTES', 'FOUR_HOURS', 'ONE_DAY', 'ONE_HOUR', 'ONE_MINUTE', 'THREE_MINUTES')"/>
+            <column name="indicator_id" type="bigint">
+                <constraints nullable="false" referencedTableName="indicator" referencedColumnNames="id"
+                             foreignKeyName="fk_bot_indicator"/>
+            </column>
+            <column name="symbol_id" type="bigint">
+                <constraints nullable="false" referencedTableName="symbol" referencedColumnNames="id"
+                             foreignKeyName="fk_bot_symbol"/>
+            </column>
+            <column name="added_by" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="added_date" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="modified_by" type="bigint"/>
+            <column name="modified_date" type="datetime(6)"/>
+        </createTable>
+
+        <loadData file="config/liquibase/data/symbol.csv" tableName="symbol">
+            <column name="id" header="id"/>
+            <column name="name" header="name"/>
+            <column name="description" header="description"/>
+            <column name="added_by" header="added_by"/>
+            <column name="added_date" header="added_date"/>
+            <column name="modified_by" header="modified_by"/>
+            <column name="modified_date" header="modified_date"/>
+        </loadData>
+
+        <loadData file="config/liquibase/data/indicator.csv" tableName="indicator">
+            <column name="id" header="id"/>
+            <column name="name" header="name"/>
+            <column name="description" header="description"/>
+            <column name="added_by" header="added_by"/>
+            <column name="added_date" header="added_date"/>
+            <column name="modified_by" header="modified_by"/>
+            <column name="modified_date" header="modified_date"/>
+        </loadData>
+
+        <loadData file="config/liquibase/data/bot.csv" tableName="bot">
+            <column name="id" header="id"/>
+            <column name="description" header="description"/>
+            <column name="bot_mode" header="bot_mode"/>
+            <column name="time_frame" header="time_frame"/>
+            <column name="indicator_id" header="indicator_id"/>
+            <column name="symbol_id" header="symbol_id"/>
+            <column name="added_by" header="added_by"/>
+            <column name="added_date" header="added_date"/>
+            <column name="modified_by" header="modified_by"/>
+            <column name="modified_date" header="modified_date"/>
+        </loadData>
+
+    </changeSet>
+</databaseChangeLog>

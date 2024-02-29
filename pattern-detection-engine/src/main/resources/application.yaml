@@ -1,15 +1,17 @@
 spring:
   datasource:
-    driver-class-name: oracle.jdbc.OracleDriver
-    url: jdbc:oracle:thin:@localhost:1521/xe
-    username: TRADING_BOT
-    password: TRADING_BOT
-    hikari.connection-timeout: 20000
-    hikari.minimum-idle: 10
-    hikari.maximum-pool-size: 10
-    hikari.idle-timeout: 10000
-    hikari.max-lifetime: 1000
-    hikari.auto-commit: true
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://localhost:3306/trading-bot?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&createDatabaseIfNotExist=true
+    username: root
+    password:
+    hikari:
+      poolName: Hikari
+      auto-commit: false
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
   jpa:
     show-sql: true
 

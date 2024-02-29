@@ -22,7 +22,7 @@
             <version>3.2.0</version>
         </dependency>
 
-
+        <!-- AMDOSE -->
         <dependency>
             <groupId>com.amdose.trading.bot</groupId>
             <artifactId>database</artifactId>
@@ -39,5 +39,9 @@
             <version>${project.version}</version>
         </dependency>
     </dependencies>
+
+    <build>
+        <finalName>trading-bot-broker-engine</finalName>
+    </build>
 
 </project>
