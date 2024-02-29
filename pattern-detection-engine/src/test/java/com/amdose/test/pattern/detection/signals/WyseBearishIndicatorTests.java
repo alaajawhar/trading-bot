@@ -7,7 +7,7 @@ import com.amdose.database.repositories.ICandleRepository;
 import com.amdose.pattern.detection.PatternDetectionModule;
 import com.amdose.pattern.detection.dtos.CandleItemDTO;
 import com.amdose.pattern.detection.mappers.CandleMapper;
-import com.amdose.pattern.detection.services.signals.WyseBearishIndicatorService;
+import com.amdose.pattern.detection.services.indicators.WyseBearishIndicatorService;
 import com.amdose.pattern.detection.services.ta.Taj4JImpl;
 import com.amdose.pattern.detection.services.ta.TechnicalAnalysisBaseService;
 import com.amdose.test.constants.TestConstants;

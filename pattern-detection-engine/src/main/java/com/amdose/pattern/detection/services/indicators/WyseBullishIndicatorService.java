@@ -1,4 +1,4 @@
-package com.amdose.pattern.detection.services.signals;
+package com.amdose.pattern.detection.services.indicators;
 
 import com.amdose.database.entities.CandleEntity;
 import com.amdose.database.entities.IndicatorEntity;

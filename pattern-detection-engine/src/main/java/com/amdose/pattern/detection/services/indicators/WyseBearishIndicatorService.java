@@ -1,4 +1,4 @@
-package com.amdose.pattern.detection.services.signals;
+package com.amdose.pattern.detection.services.indicators;
 
 import com.amdose.database.entities.CandleEntity;
 import com.amdose.database.entities.SignalEntity;
@@ -12,6 +12,7 @@ import com.amdose.utils.DateUtils;
 import com.amdose.utils.JsonUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -34,6 +35,11 @@ public class WyseBearishIndicatorService implements IIndicatorService {
     @Override
     public List<SignalEntity> apply(List<CandleItemDTO> candleItemDTOS) {
         List<SignalEntity> result = new ArrayList<>();
+
+        if (CollectionUtils.isEmpty(candleItemDTOS)) {
+            return result;
+        }
+
         TimeFrameEnum interval = candleItemDTOS.get(0).getTimeFrame();
 
         List<Double> rsiValues = candleItemDTOS.stream().map(CandleItemDTO::getRsiValue).toList();
