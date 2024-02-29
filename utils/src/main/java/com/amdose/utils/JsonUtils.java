@@ -1,5 +1,6 @@
 package com.amdose.utils;
 
+import com.amdose.utils.constants.UtilConstants;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -19,8 +20,7 @@ public class JsonUtils {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     static {
-        // TODO: unify it
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat(UtilConstants.DATE_FORMAT);
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         objectMapper.setDateFormat(dateFormat);
     }
