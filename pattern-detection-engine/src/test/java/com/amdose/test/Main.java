@@ -3,16 +3,16 @@ package com.amdose.test;
 import com.amdose.utils.DateUtils;
 
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Alaa Jawhar
  */
 public class Main {
-    public static void main(String[] args) {
-        Date now = DateUtils.convertToDate("19-02-2024 09:29:00");
-        Date date = DateUtils.convertToDate("19-02-2024 09:30:00");
+    public static void main(String[] args) throws InterruptedException {
+        Date now = new Date();
+        TimeUnit.MILLISECONDS.sleep(30);
 
-        Date d = DateUtils.roundSeconds(now);
-        System.out.println(!date.before(now));
+        DateUtils.isPresentOrFutureInHourMinuteSecond(now);
     }
 }

@@ -3,6 +3,7 @@ package com.amdose.utils;
 import com.amdose.utils.constants.UtilConstants;
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
+import lombok.extern.slf4j.Slf4j;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -11,6 +12,7 @@ import java.util.Date;
 /**
  * @author Alaa Jawhar
  */
+@Slf4j
 @UtilityClass
 public class DateUtils {
     private final SimpleDateFormat dateFormatter = new SimpleDateFormat(UtilConstants.DATE_FORMAT);
@@ -36,17 +38,40 @@ public class DateUtils {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
         return calendar.getTime();
     }
 
-    public static Boolean roundNowAndCheckIfFuture(Date date) {
+    public static Boolean isPresentOrFutureInHourMinuteSecond(Date date) {
+        log.debug("Date: [{}], isFuture: [{}], isPresent: [{}]", convertToString(date), isFutureInHourMinuteSecond(date), isPresentInHourMinuteSecond(date));
+        log.debug("DateMs: [{}], nowMs: [{}], isFuture: [{}], isPresent: [{}]", date.getTime(), new Date().getTime(), isFutureInHourMinuteSecond(date), isPresentInHourMinuteSecond(date));
+        return isFutureInHourMinuteSecond(date) || isPresentInHourMinuteSecond(date);
+    }
+
+    public static Boolean isFutureInHourMinuteSecond(Date date) {
         Date now = roundSeconds(getNow());
         return !date.before(now);
     }
 
-    public static Boolean isFuture(Date date) {
-        Date now = getNow();
-        return !date.before(now);
+    public static boolean isPresentInHourMinuteSecond(Date date) {
+        Date truncatedDate1 = org.apache.commons.lang3.time.DateUtils.truncate(date, Calendar.SECOND);
+        truncatedDate1 = org.apache.commons.lang3.time.DateUtils.truncate(truncatedDate1, Calendar.MILLISECOND);
+
+        Date truncatedDate2 = org.apache.commons.lang3.time.DateUtils.truncate(getNow(), Calendar.SECOND);
+        truncatedDate2 = org.apache.commons.lang3.time.DateUtils.truncate(truncatedDate2, Calendar.MILLISECOND);
+
+
+        return truncatedDate1.equals(truncatedDate2);
+    }
+
+    public static boolean areDatesEqualInHourMinuteSecond(Date date1, Date date2) {
+        Date truncatedDate1 = org.apache.commons.lang3.time.DateUtils.truncate(date1, Calendar.SECOND);
+        truncatedDate1 = org.apache.commons.lang3.time.DateUtils.truncate(truncatedDate1, Calendar.MILLISECOND);
+
+        Date truncatedDate2 = org.apache.commons.lang3.time.DateUtils.truncate(date2, Calendar.SECOND);
+        truncatedDate2 = org.apache.commons.lang3.time.DateUtils.truncate(truncatedDate2, Calendar.MILLISECOND);
+
+        return truncatedDate1.equals(truncatedDate2);
     }
 
     public static Date addDays(Date date, int numberOfDays) {

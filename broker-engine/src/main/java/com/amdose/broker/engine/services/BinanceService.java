@@ -1,5 +1,6 @@
 package com.amdose.broker.engine.services;
 
+import com.amdose.broker.engine.IBrokerService;
 import com.amdose.database.entities.CandleEntity;
 import com.amdose.database.enums.TimeFrameEnum;
 import com.amdose.utils.DateUtils;

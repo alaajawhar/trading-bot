@@ -13,7 +13,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
-@Table(name = "SIGNAL")
+@Table(name = "TRADING_SIGNAL")
 public class SignalEntity {
 
     @Id
@@ -22,10 +22,6 @@ public class SignalEntity {
 
     @Column(name = "DETECTION_ID")
     private String detectionId;
-
-    @ManyToOne
-    @JoinColumn(name = "INDICATOR_ID")
-    private IndicatorEntity indicator;
 
     @ManyToOne
     @JoinColumn(name = "BOT_ID")
@@ -43,9 +39,6 @@ public class SignalEntity {
 
     @Column(name = "RISK")
     private Double risk;
-
-    @Column(name = "ADDED_BY")
-    private String addedBy;
 
     @Column(name = "ADDED_DATE")
     private Date addedDate;

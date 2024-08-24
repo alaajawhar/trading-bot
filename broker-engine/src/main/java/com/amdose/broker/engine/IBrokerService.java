@@ -1,4 +1,4 @@
-package com.amdose.broker.engine.services;
+package com.amdose.broker.engine;
 
 import com.amdose.database.entities.CandleEntity;
 import com.amdose.database.enums.TimeFrameEnum;

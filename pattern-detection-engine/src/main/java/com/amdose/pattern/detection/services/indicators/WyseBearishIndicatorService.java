@@ -4,15 +4,16 @@ import com.amdose.database.entities.CandleEntity;
 import com.amdose.database.entities.SignalEntity;
 import com.amdose.database.enums.SignalActionEnum;
 import com.amdose.database.enums.TimeFrameEnum;
+import com.amdose.database.repositories.IStrategyRepository;
 import com.amdose.pattern.detection.dtos.CandleItemDTO;
 import com.amdose.pattern.detection.helpers.HighDetectionHelper;
 import com.amdose.pattern.detection.helpers.LowDetectionHelper;
 import com.amdose.pattern.detection.helpers.TrendHelper;
 import com.amdose.utils.DateUtils;
 import com.amdose.utils.JsonUtils;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -22,10 +23,12 @@ import java.util.*;
  */
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class WyseBearishIndicatorService implements IIndicatorService {
     private static final String INDICATOR_NAME = "WyseBearishSignal";
     private static final int LOOK_BACK_PERIOD = 20;
+
+    @Autowired
+    private IStrategyRepository strategyRepository;
 
     @Override
     public String getName() {
@@ -76,18 +79,18 @@ public class WyseBearishIndicatorService implements IIndicatorService {
             }
 
             metaData.put("lastPriceHigherHighDate", DateUtils.convertToString(candleItemDTOS.get(lastHigherHighIndex.get()).getDate()));
-            metaData.put("lastRsiHigherHighValue", rsiValues.get(lastHigherHighIndex.get()));
+            metaData.put("lastRsiLowerHighValue", rsiValues.get(lastHigherHighIndex.get()));
 
             TrendHelper trendEquation = new TrendHelper(openValues, lastHigherHighIndex.get(), i);
 
             if (i + 1 < candleItemDTOS.size() && candleItemDTOS.get(i + 1).getClose() < trendEquation.getValueAt(i + 1)) {
-                Date signalScheduledAt = this.addUniteToDate(candleItemDTOS.get(i + 1).getDate(), interval, 1);
+                Date signalScheduledAt = this.addUniteToDate(candleItemDTOS.get(i + 1).getDate(), interval, 2);
                 metaData.put("trendConfirmationDate", DateUtils.convertToString(candleItemDTOS.get(i + 1).getDate()));
                 metaData.put("isConfirmed", Boolean.TRUE);
                 metaData.put("signalScheduledAt", DateUtils.convertToString(signalScheduledAt));
                 metaData.put("index", 1);
                 log.debug("The bearish trend has been confirmed: [{}]", JsonUtils.convertToString(metaData));
-                if (DateUtils.roundNowAndCheckIfFuture(signalScheduledAt) == Boolean.TRUE) {
+                if (DateUtils.isPresentOrFutureInHourMinuteSecond(signalScheduledAt) == Boolean.TRUE) {
                     log.debug("Return signals");
                     return this.takeAction(signalScheduledAt, interval, metaData);
                 }
@@ -98,13 +101,13 @@ public class WyseBearishIndicatorService implements IIndicatorService {
                     && candleItemDTOS.get(i + 1).getClose() > trendEquation.getValueAt(i + 1) // not confirmed before
                     && candleItemDTOS.get(i + 2).getClose() < trendEquation.getValueAt(i + 2) // confirmed
             ) {
-                Date signalScheduledAt = this.addUniteToDate(candleItemDTOS.get(i + 2).getDate(), interval, 1);
+                Date signalScheduledAt = this.addUniteToDate(candleItemDTOS.get(i + 2).getDate(), interval, 2);
                 metaData.put("isConfirmed", Boolean.TRUE);
                 metaData.put("trendConfirmationDate", DateUtils.convertToString(candleItemDTOS.get(i + 2).getDate()));
                 metaData.put("signalScheduledAt", DateUtils.convertToString(signalScheduledAt));
                 metaData.put("index", 2);
                 log.debug("The bearish trend has been confirmed: [{}]", JsonUtils.convertToString(metaData));
-                if (DateUtils.roundNowAndCheckIfFuture(signalScheduledAt) == Boolean.TRUE) {
+                if (DateUtils.isPresentOrFutureInHourMinuteSecond(signalScheduledAt) == Boolean.TRUE) {
                     log.debug("Return signals");
                     return this.takeAction(signalScheduledAt, interval, metaData);
                 }
@@ -116,13 +119,13 @@ public class WyseBearishIndicatorService implements IIndicatorService {
                     && candleItemDTOS.get(i + 2).getClose() > trendEquation.getValueAt(i + 2) // not confirmed before
                     && candleItemDTOS.get(i + 3).getClose() < trendEquation.getValueAt(i + 3) // confirmed
             ) {
-                Date signalScheduledAt = this.addUniteToDate(candleItemDTOS.get(i + 3).getDate(), interval, 1);
+                Date signalScheduledAt = this.addUniteToDate(candleItemDTOS.get(i + 3).getDate(), interval, 2);
                 metaData.put("isConfirmed", Boolean.TRUE);
                 metaData.put("trendConfirmationDate", DateUtils.convertToString(candleItemDTOS.get(i + 3).getDate()));
                 metaData.put("signalScheduledAt", DateUtils.convertToString(signalScheduledAt));
                 metaData.put("index", 3);
                 log.debug("The bearish trend has been confirmed: [{}]", JsonUtils.convertToString(metaData));
-                if (DateUtils.roundNowAndCheckIfFuture(signalScheduledAt) == Boolean.TRUE) {
+                if (DateUtils.isPresentOrFutureInHourMinuteSecond(signalScheduledAt) == Boolean.TRUE) {
                     log.debug("Return signals");
                     return this.takeAction(signalScheduledAt, interval, metaData);
                 }
@@ -135,13 +138,13 @@ public class WyseBearishIndicatorService implements IIndicatorService {
                     && candleItemDTOS.get(i + 3).getClose() > trendEquation.getValueAt(i + 3) // not confirmed before
                     && candleItemDTOS.get(i + 4).getClose() < trendEquation.getValueAt(i + 4) // confirmed
             ) {
-                Date signalScheduledAt = this.addUniteToDate(candleItemDTOS.get(i + 4).getDate(), interval, 1);
+                Date signalScheduledAt = this.addUniteToDate(candleItemDTOS.get(i + 4).getDate(), interval, 2);
                 metaData.put("isConfirmed", Boolean.TRUE);
                 metaData.put("trendConfirmationDate", DateUtils.convertToString(candleItemDTOS.get(i + 4).getDate()));
                 metaData.put("signalScheduledAt", DateUtils.convertToString(signalScheduledAt));
                 metaData.put("index", 4);
                 log.debug("The bearish trend has been confirmed: [{}]", JsonUtils.convertToString(metaData));
-                if (DateUtils.roundNowAndCheckIfFuture(signalScheduledAt) == Boolean.TRUE) {
+                if (DateUtils.isPresentOrFutureInHourMinuteSecond(signalScheduledAt) == Boolean.TRUE) {
                     return this.takeAction(signalScheduledAt, interval, metaData);
                 }
                 log.debug("Bearish trend occurred in the past. Keep looking...");
@@ -161,7 +164,6 @@ public class WyseBearishIndicatorService implements IIndicatorService {
         sellSignal.setMetaData(JsonUtils.convertToString(metaData));
         sellSignal.setAction(SignalActionEnum.SELL);
         sellSignal.setRisk(0d);
-        sellSignal.setAddedBy(this.getClass().getName());
         sellSignal.setAddedDate(DateUtils.getNow());
 
         SignalEntity buySignal = new SignalEntity();
@@ -170,8 +172,8 @@ public class WyseBearishIndicatorService implements IIndicatorService {
         buySignal.setScheduledAt(this.addUniteToDate(firstSignalActionDate, interval, 2));
         buySignal.setAction(SignalActionEnum.BUY);
         buySignal.setRisk(0d);
-        buySignal.setAddedBy(this.getClass().getName());
         buySignal.setAddedDate(DateUtils.getNow());
+
         return List.of(sellSignal, buySignal);
     }
 
@@ -179,7 +181,10 @@ public class WyseBearishIndicatorService implements IIndicatorService {
     private Date addUniteToDate(Date inDate, TimeFrameEnum candleInterval, int unit) {
         return switch (candleInterval) {
             case ONE_MINUTE -> DateUtils.addMinutes(inDate, unit);
+            case THREE_MINUTES -> DateUtils.addMinutes(inDate, 3 * unit);
+            case FIFTEEN_MINUTES -> DateUtils.addMinutes(inDate, 15 * unit);
             case ONE_HOUR -> DateUtils.addHours(inDate, unit);
+            case FOUR_HOURS -> DateUtils.addHours(inDate, 4 * unit);
             case ONE_DAY -> DateUtils.addDays(inDate, unit);
             default -> throw new RuntimeException("Undefined Candle Interval");
         };

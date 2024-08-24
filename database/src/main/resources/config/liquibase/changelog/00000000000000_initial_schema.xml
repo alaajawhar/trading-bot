@@ -25,7 +25,7 @@
             <column name="modified_by" type="bigint"/>
             <column name="modified_date" type="datetime(6)"/>
         </createTable>
-        <createTable tableName="indicator">
+        <createTable tableName="strategy">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" primaryKeyName="pk_indicator"/>
             </column>
@@ -48,16 +48,16 @@
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" primaryKeyName="pk_candle"/>
             </column>
-            <column name="open" type="double">
+            <column name="open" type="decimal(18, 2)">
                 <constraints nullable="false"/>
             </column>
-            <column name="close" type="double">
+            <column name="close" type="decimal(18, 2)">
                 <constraints nullable="false"/>
             </column>
-            <column name="low" type="double">
+            <column name="low" type="decimal(18, 2)">
                 <constraints nullable="false"/>
             </column>
-            <column name="high" type="double">
+            <column name="high" type="decimal(18, 2)">
                 <constraints nullable="false"/>
             </column>
             <column name="symbol" type="varchar(255)">
@@ -67,7 +67,7 @@
                     type="enum('FIFTEEN_MINUTES', 'FOUR_HOURS', 'ONE_DAY', 'ONE_HOUR', 'ONE_MINUTE', 'THREE_MINUTES')">
                 <constraints nullable="false"/>
             </column>
-            <column name="volume" type="double">
+            <column name="volume" type="decimal(18, 2)">
                 <constraints nullable="false"/>
             </column>
             <column name="candle_date" type="datetime(6)">
@@ -82,9 +82,9 @@
             <column name="bot_mode" type="enum('ALERT', 'INACTIVE', 'TRADE')"/>
             <column name="time_frame"
                     type="enum('FIFTEEN_MINUTES', 'FOUR_HOURS', 'ONE_DAY', 'ONE_HOUR', 'ONE_MINUTE', 'THREE_MINUTES')"/>
-            <column name="indicator_id" type="bigint">
-                <constraints nullable="false" referencedTableName="indicator" referencedColumnNames="id"
-                             foreignKeyName="fk_bot_indicator"/>
+            <column name="strategy_id" type="bigint">
+                <constraints nullable="false" referencedTableName="strategy" referencedColumnNames="id"
+                             foreignKeyName="fk_bot_strategy"/>
             </column>
             <column name="symbol_id" type="bigint">
                 <constraints nullable="false" referencedTableName="symbol" referencedColumnNames="id"
@@ -99,22 +99,18 @@
             <column name="modified_by" type="bigint"/>
             <column name="modified_date" type="datetime(6)"/>
         </createTable>
-        <createTable tableName="signal">
+        <createTable tableName="trading_signal">
             <column name="id" type="bigint" autoIncrement="true">
-                <constraints primaryKey="true" primaryKeyName="pk_signal"/>
+                <constraints primaryKey="true" primaryKeyName="pk_trading_signal"/>
             </column>
             <column name="bot_id" type="bigint">
                 <constraints nullable="false" referencedTableName="bot" referencedColumnNames="id"
-                             foreignKeyName="fk_signal_bot"/>
+                             foreignKeyName="fk_trading_signal_bot"/>
             </column>
-            <column name="detection_id" type="varchar(255)">
+            <column name="detection_id" type="varchar(500)">
                 <constraints nullable="false"/>
             </column>
-            <column name="symbol_id" type="bigint">
-                <constraints nullable="false" referencedTableName="symbol" referencedColumnNames="id"
-                             foreignKeyName="fk_signal_symbol"/>
-            </column>
-            <column name="meta_data" type="varchar(255)">
+            <column name="meta_data" type="varchar(1000)">
                 <constraints nullable="false"/>
             </column>
             <column name="scheduled_at" type="datetime(6)">
@@ -123,10 +119,7 @@
             <column name="action" type="enum('BUY', 'SELL')">
                 <constraints nullable="false"/>
             </column>
-            <column name="risk" type="double">
-                <constraints nullable="false"/>
-            </column>
-            <column name="added_by" type="bigint">
+            <column name="risk" type="decimal(18, 2)">
                 <constraints nullable="false"/>
             </column>
             <column name="added_date" type="datetime(6)">
@@ -143,7 +136,7 @@
             <column name="modified_by" header="modified_by"/>
             <column name="modified_date" header="modified_date"/>
         </loadData>
-        <loadData file="config/liquibase/data/indicator.csv" tableName="indicator">
+        <loadData file="config/liquibase/data/strategy.csv" tableName="strategy">
             <column name="id" header="id"/>
             <column name="name" header="name"/>
             <column name="description" header="description"/>
@@ -157,7 +150,7 @@
             <column name="description" header="description"/>
             <column name="bot_mode" header="bot_mode"/>
             <column name="time_frame" header="time_frame"/>
-            <column name="indicator_id" header="indicator_id"/>
+            <column name="strategy_id" header="strategy_id"/>
             <column name="symbol_id" header="symbol_id"/>
             <column name="added_by" header="added_by"/>
             <column name="added_date" header="added_date"/>

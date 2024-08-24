@@ -12,8 +12,8 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
-@Table(name = "INDICATOR")
-public class IndicatorEntity {
+@Table(name = "STRATEGY")
+public class StrategyEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

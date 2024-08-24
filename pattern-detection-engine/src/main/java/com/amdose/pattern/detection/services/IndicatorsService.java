@@ -41,12 +41,12 @@ public class IndicatorsService {
         log.info("fetching all bots of timeFrame: [{}]", timeFrame);
         List<BotEntity> allEnabledBots = botRepository.findByModeNotAndTimeFrame(BotModeEnum.INACTIVE, timeFrame);
 
-        log.info("[{}] bots have been found of timeFrame: [{}]", allEnabledBots.size(), timeFrame);
+        log.info("[{}] bots have been found for timeFrame: [{}]", allEnabledBots.size(), timeFrame);
         log.debug("Available bots for timeFrame: [{}] are: [{}]", timeFrame, JsonUtils.convertToString(allEnabledBots));
 
         for (BotEntity bot : allEnabledBots) {
             log.info("Running indicator: [{}] on Symbol: [{}] for timeFrame: [{}]"
-                    , bot.getIndicator().getName()
+                    , bot.getStrategy().getName()
                     , bot.getSymbol().getName()
                     , bot.getTimeFrame()
             );
@@ -66,24 +66,24 @@ public class IndicatorsService {
             log.debug("Ta4j has been applied");
 
             Optional<IIndicatorService> signalOptional = indicatorServiceList.stream()
-                    .filter(signal -> signal.getName().equalsIgnoreCase(bot.getIndicator().getName()))
+                    .filter(signal -> signal.getName().equalsIgnoreCase(bot.getStrategy().getName()))
                     .findFirst();
 
             if (signalOptional.isEmpty()) {
-                log.info("No signals found for indicator: [{}]", bot.getIndicator().getName());
+                log.info("No signals found for indicator: [{}]", bot.getStrategy().getName());
                 continue;
             }
 
             List<SignalEntity> indicatorDetectedSignals = signalOptional.get().apply(candleItemDTOS);
 
             for (SignalEntity signalEntity : indicatorDetectedSignals) {
-                signalEntity.setIndicator(bot.getIndicator());
+                signalEntity.setBot(bot);
             }
 
             allDetectedSignals.addAll(indicatorDetectedSignals);
 
             log.info("Indicator: [{}] on Symbol: [{}] for timeFrame: [{}] has detected: [{}] signals"
-                    , bot.getIndicator().getName()
+                    , bot.getStrategy().getName()
                     , bot.getSymbol().getName()
                     , bot.getTimeFrame()
                     , indicatorDetectedSignals.size()

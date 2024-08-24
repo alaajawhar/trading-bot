@@ -6,12 +6,40 @@ import org.quartz.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  * @author Alaa Jawhar
  */
 @Configuration
 @RequiredArgsConstructor
 public class QuartzConfig {
+
+    @Bean
+    public JobDetail thirtySecondsJobDetails() {
+        return JobBuilder.newJob(ThirtySecondsActualJob.class)
+                .withIdentity("thirtySecondsJob")
+                .storeDurably()
+                .build();
+    }
+
+    @Bean
+    public Trigger thirtySecondsJobTrigger(JobDetail thirtySecondsJobDetails) {
+        java.util.Calendar calendar = java.util.Calendar.getInstance();
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        calendar.add(Calendar.MINUTE, 1);
+
+        Date startTime = calendar.getTime();
+
+        return TriggerBuilder.newTrigger()
+                .forJob(thirtySecondsJobDetails)
+                .withIdentity("thirtySecondsJob")
+                .startAt(startTime)
+                .withSchedule(SimpleScheduleBuilder.repeatSecondlyForever(30))
+                .build();
+    }
 
     @Bean
     public JobDetail oneMinuteJobDetails() {
@@ -23,9 +51,17 @@ public class QuartzConfig {
 
     @Bean
     public Trigger oneMinuteJobTrigger(JobDetail oneMinuteJobDetails) {
+        java.util.Calendar calendar = java.util.Calendar.getInstance();
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        calendar.add(Calendar.MINUTE, 1); // Move to the next minute
+
+        Date startTime = calendar.getTime();
+
         return TriggerBuilder.newTrigger()
                 .forJob(oneMinuteJobDetails)
                 .withIdentity("oneMinuteTrigger")
+                .startAt(startTime)
                 .withSchedule(SimpleScheduleBuilder.repeatMinutelyForever(1))
                 .build();
     }
@@ -40,8 +76,16 @@ public class QuartzConfig {
 
     @Bean
     public Trigger threeMinutesJobTrigger(JobDetail threeMinutesJobDetails) {
+        java.util.Calendar calendar = java.util.Calendar.getInstance();
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        calendar.add(Calendar.MINUTE, 1); // Move to the next minute
+
+        Date startTime = calendar.getTime();
+
         return TriggerBuilder.newTrigger()
                 .forJob(threeMinutesJobDetails)
+                .startAt(startTime)
                 .withIdentity("threeMinutesTrigger")
                 .withSchedule(SimpleScheduleBuilder.repeatMinutelyForever(3))
                 .build();
@@ -57,8 +101,16 @@ public class QuartzConfig {
 
     @Bean
     public Trigger fifteenMinutesJobTrigger(JobDetail fifteenMinutesJobDetails) {
+        java.util.Calendar calendar = java.util.Calendar.getInstance();
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        calendar.add(Calendar.MINUTE, 1); // Move to the next minute
+
+        Date startTime = calendar.getTime();
+
         return TriggerBuilder.newTrigger()
                 .forJob(fifteenMinutesJobDetails)
+                .startAt(startTime)
                 .withIdentity("fifteenMinutesTrigger")
                 .withSchedule(SimpleScheduleBuilder.repeatMinutelyForever(15))
                 .build();
@@ -74,8 +126,18 @@ public class QuartzConfig {
 
     @Bean
     public Trigger oneHourJobTrigger(JobDetail oneHourJobDetails) {
+
+        java.util.Calendar calendar = java.util.Calendar.getInstance();
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        calendar.add(Calendar.HOUR, 1); // Move to the next minute
+
+        Date startTime = calendar.getTime();
+
         return TriggerBuilder.newTrigger()
                 .forJob(oneHourJobDetails)
+                .startAt(startTime)
                 .withIdentity("oneHourTrigger")
                 .withSchedule(SimpleScheduleBuilder.repeatHourlyForever(1))
                 .build();
@@ -91,8 +153,17 @@ public class QuartzConfig {
 
     @Bean
     public Trigger fourHoursJobTrigger(JobDetail fourHoursJobDetails) {
+        java.util.Calendar calendar = java.util.Calendar.getInstance();
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        calendar.add(Calendar.HOUR, 1); // Move to the next minute
+
+        Date startTime = calendar.getTime();
+
         return TriggerBuilder.newTrigger()
                 .forJob(fourHoursJobDetails)
+                .startAt(startTime)
                 .withIdentity("fourHoursTrigger")
                 .withSchedule(SimpleScheduleBuilder.repeatHourlyForever(4))
                 .build();
@@ -108,9 +179,20 @@ public class QuartzConfig {
 
     @Bean
     public Trigger oneDayJobTrigger(JobDetail oneDayJobDetails) {
+        java.util.Calendar calendar = java.util.Calendar.getInstance();
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+
+        calendar.add(Calendar.HOUR, 24); // Move to the next minute
+
+        Date startTime = calendar.getTime();
+
         return TriggerBuilder.newTrigger()
                 .forJob(oneDayJobDetails)
                 .withIdentity("oneDayTrigger")
+                .startAt(startTime)
                 .withSchedule(SimpleScheduleBuilder.repeatHourlyForever(24))
                 .build();
     }

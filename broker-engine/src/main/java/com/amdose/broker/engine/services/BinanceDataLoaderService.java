@@ -5,6 +5,8 @@ import com.amdose.database.entities.SymbolEntity;
 import com.amdose.database.enums.TimeFrameEnum;
 import com.amdose.database.repositories.ICandleRepository;
 import com.amdose.database.repositories.ISymbolRepository;
+import com.amdose.utils.DateUtils;
+import com.amdose.utils.JsonUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -44,7 +46,16 @@ public class BinanceDataLoaderService {
         }
 
         List<CandleEntity> candles = binanceService.getCandles(symbol, interval, startDate);
-        candles.remove(candles.size() - 1); // remove last candle because it is not accurate
+
+        if (candles.size() != 0 && candles.get(candles.size() - 1).getDate().equals(interval.addTime(startDate))) {
+            log.debug("Removing last candle: [{}] for startDate: [{}]", JsonUtils.convertToString(candles), DateUtils.convertToString(startDate));
+            candles.remove(candles.size() - 1);
+        }
+
+        if (candles.size() == 0) {
+            log.error("There is something wrong with candles");
+        }
+
         log.debug("before inserting");
         candleRepository.saveAll(candles);
         log.debug("after inserting");

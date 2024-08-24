@@ -19,7 +19,7 @@ public abstract class TechnicalAnalysisBaseService {
 
     public List<CandleItemDTO> applyAll() {
 
-        List<Double> rsiValues = this.applyRsi(14);
+        List<Double> rsiValues = this.applyRsi(7);
         for (int i = 0; i < candles.size(); i++) {
             this.candles.get(i).setRsiValue(rsiValues.get(i));
         }

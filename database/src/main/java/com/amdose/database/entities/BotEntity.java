@@ -26,8 +26,8 @@ public class BotEntity {
     private SymbolEntity symbol;
 
     @ManyToOne
-    @JoinColumn(name = "INDICATOR_ID")
-    private IndicatorEntity indicator;
+    @JoinColumn(name = "STRATEGY_ID")
+    private StrategyEntity strategy;
 
     @Column(name = "DESCRIPTION")
     private String description;
