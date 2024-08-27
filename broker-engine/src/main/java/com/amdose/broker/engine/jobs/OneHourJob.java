@@ -1,6 +1,6 @@
 package com.amdose.broker.engine.jobs;
 
-import com.amdose.broker.engine.services.BinanceDataLoaderService;
+import com.amdose.broker.engine.services.DataLoaderService;
 import com.amdose.database.enums.TimeFrameEnum;
 import com.amdose.scheduler.exposed.IOneHourJob;
 import lombok.RequiredArgsConstructor;
@@ -15,11 +15,11 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class OneHourJob implements IOneHourJob {
 
-    private final BinanceDataLoaderService binanceDataLoaderService;
+    private final DataLoaderService dataLoaderService;
 
     @Override
     public void execute() {
-        log.debug("Load [{}] data from binance...", TimeFrameEnum.ONE_HOUR);
-        binanceDataLoaderService.updateAllSymbols(TimeFrameEnum.ONE_HOUR);
+        log.debug("Fetching [{}] data online...", TimeFrameEnum.ONE_HOUR);
+        dataLoaderService.updateAllSymbols(TimeFrameEnum.ONE_HOUR);
     }
 }

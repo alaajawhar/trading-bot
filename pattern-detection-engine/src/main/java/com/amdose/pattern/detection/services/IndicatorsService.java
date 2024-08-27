@@ -15,12 +15,14 @@ import com.amdose.pattern.detection.services.ta.Taj4JImpl;
 import com.amdose.pattern.detection.services.ta.TechnicalAnalysisBaseService;
 import com.amdose.utils.JsonUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Alaa Jawhar
@@ -35,6 +37,7 @@ public class IndicatorsService {
     private final ISignalRepository signalRepository;
     private final IBotRepository botRepository;
 
+    @SneakyThrows
     public void runAllIndicators(TimeFrameEnum timeFrame) {
         List<SignalEntity> allDetectedSignals = new ArrayList<>();
 
@@ -51,9 +54,11 @@ public class IndicatorsService {
                     , bot.getTimeFrame()
             );
 
-            log.debug("Fetching candles...");
+            log.debug("Waiting for 1sec then fetch candles...");
+            TimeUnit.SECONDS.sleep(1); // TODO: find a better solution
+
             List<CandleEntity> candleEntityList = candleRepository.findLastBySymbolAndTimeFrameOrderByDateAsc(
-                    bot.getSymbol().getName()
+                    bot.getSymbol()
                     , timeFrame
             );
 
@@ -99,4 +104,5 @@ public class IndicatorsService {
         log.debug("All detected signals: [{}]", JsonUtils.convertToString(allDetectedSignals));
         signalRepository.saveAll(allDetectedSignals);
     }
+
 }

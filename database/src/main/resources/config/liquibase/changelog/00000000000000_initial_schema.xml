@@ -60,11 +60,12 @@
             <column name="high" type="decimal(18, 2)">
                 <constraints nullable="false"/>
             </column>
-            <column name="symbol" type="varchar(255)">
-                <constraints nullable="false"/>
+            <column name="symbol_id" type="bigint">
+                <constraints nullable="false" referencedTableName="symbol" referencedColumnNames="id"
+                             foreignKeyName="fk_candle_symbol"/>
             </column>
             <column name="time_frame"
-                    type="enum('FIFTEEN_MINUTES', 'FOUR_HOURS', 'ONE_DAY', 'ONE_HOUR', 'ONE_MINUTE', 'THREE_MINUTES')">
+                    type="enum('FIFTEEN_MINUTES', 'FOUR_HOURS', 'ONE_DAY', 'ONE_HOUR', 'ONE_MINUTE', 'THREE_MINUTES', 'ONE_SECOND')">
                 <constraints nullable="false"/>
             </column>
             <column name="volume" type="decimal(18, 2)">

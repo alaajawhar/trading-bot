@@ -1,7 +1,7 @@
-package com.amdose.broker.engine.services;
+package com.amdose.broker.engine.brokers;
 
-import com.amdose.broker.engine.IBrokerService;
 import com.amdose.database.entities.CandleEntity;
+import com.amdose.database.entities.SymbolEntity;
 import com.amdose.database.enums.TimeFrameEnum;
 import com.amdose.utils.DateUtils;
 import com.amdose.utils.JsonUtils;
@@ -17,18 +17,18 @@ import java.util.List;
  * @author Alaa Jawhar
  */
 @Service
-public class BinanceService implements IBrokerService {
+public class BinanceBroker implements IBrokerService {
     private static final String API_KEY = "sscChDXaRdTD4vo81F82awXDxRCr86AzP9mbKpdYN4PY681zdhliCou6ctDBQ8Kx";
     private static final String SECRET_KEY = "UAFUb1VBUCnTabCXNNbJSYbgykFEw741rVZNjDSbpuneglFBgcnoVQulzUNKqVOP";
 
     @Override
-    public List<CandleEntity> getCandles(String symbol, TimeFrameEnum interval, Date startDate) {
+    public List<CandleEntity> getCandles(SymbolEntity symbol, TimeFrameEnum interval, Date startDate) {
         SpotClientImpl client = new SpotClientImpl(API_KEY, SECRET_KEY);
 
         // Set parameters for the request
         LinkedHashMap<String, Object> parameters = new LinkedHashMap<>();
-        parameters.put("symbol", symbol);
-        parameters.put("interval", this.getBinanceInterval(interval));
+        parameters.put("symbol", symbol.getName());
+        parameters.put("interval", interval.getBinanceInterval());
         parameters.put("limit", 1000);
 
         if (startDate != null) {
@@ -54,16 +54,5 @@ public class BinanceService implements IBrokerService {
         }
 
         return response;
-    }
-
-    private String getBinanceInterval(TimeFrameEnum interval) {
-        return switch (interval) {
-            case ONE_MINUTE -> "1m";
-            case THREE_MINUTES -> "3m";
-            case FIFTEEN_MINUTES -> "15m";
-            case ONE_HOUR -> "1h";
-            case FOUR_HOURS -> "4h";
-            case ONE_DAY -> "1d";
-        };
     }
 }

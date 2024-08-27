@@ -1,5 +1,6 @@
 package com.amdose.broker.engine.services;
 
+import com.amdose.broker.engine.brokers.BinanceBroker;
 import com.amdose.database.entities.CandleEntity;
 import com.amdose.database.entities.SymbolEntity;
 import com.amdose.database.enums.TimeFrameEnum;
@@ -21,21 +22,21 @@ import java.util.Optional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class BinanceDataLoaderService {
+public class DataLoaderService {
 
     private final ICandleRepository candleRepository;
-    private final BinanceService binanceService;
+    private final BinanceBroker binanceBroker;
     private final ISymbolRepository symbolRepository;
 
     public void updateAllSymbols(TimeFrameEnum interval) {
         List<SymbolEntity> symbolList = symbolRepository.findAll();
         for (SymbolEntity symbolEntity : symbolList) {
             log.debug("update data of symbol: [{}] and [{}] interval", symbolEntity.getName(), interval);
-            this.updateData(symbolEntity.getName(), interval);
+            this.updateData(symbolEntity, interval);
         }
     }
 
-    public void updateData(String symbol, TimeFrameEnum interval) {
+    public void updateData(SymbolEntity symbol, TimeFrameEnum interval) {
         Optional<CandleEntity> lastCandle = candleRepository.findTopBySymbolAndTimeFrameOrderByDateDesc(symbol, interval);
 
         Date startDate = null;
@@ -45,9 +46,11 @@ public class BinanceDataLoaderService {
             startDate = interval.addTime(startDate); // to only retrieve 1 record instead of 2 which was already added
         }
 
-        List<CandleEntity> candles = binanceService.getCandles(symbol, interval, startDate);
+        List<CandleEntity> candles = binanceBroker.getCandles(symbol, interval, startDate);
 
-        if (candles.size() != 0 && candles.get(candles.size() - 1).getDate().equals(interval.addTime(startDate))) {
+        if (startDate != null
+                && candles.size() != 0
+                && candles.get(candles.size() - 1).getDate().equals(interval.addTime(startDate))) {
             log.debug("Removing last candle: [{}] for startDate: [{}]", JsonUtils.convertToString(candles), DateUtils.convertToString(startDate));
             candles.remove(candles.size() - 1);
         }

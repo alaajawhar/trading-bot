@@ -1,6 +1,7 @@
-package com.amdose.broker.engine;
+package com.amdose.broker.engine.brokers;
 
 import com.amdose.database.entities.CandleEntity;
+import com.amdose.database.entities.SymbolEntity;
 import com.amdose.database.enums.TimeFrameEnum;
 
 import java.util.Date;
@@ -11,6 +12,6 @@ import java.util.List;
  */
 public interface IBrokerService {
 
-    List<CandleEntity> getCandles(String symbol, TimeFrameEnum interval, Date startDate);
+    List<CandleEntity> getCandles(SymbolEntity symbol, TimeFrameEnum interval, Date startDate);
 
 }

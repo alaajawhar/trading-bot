@@ -17,15 +17,15 @@ import java.util.Date;
 public class QuartzConfig {
 
     @Bean
-    public JobDetail thirtySecondsJobDetails() {
-        return JobBuilder.newJob(ThirtySecondsActualJob.class)
-                .withIdentity("thirtySecondsJob")
+    public JobDetail oneSecondJobDetails() {
+        return JobBuilder.newJob(OneSecondsActualJob.class)
+                .withIdentity("oneSecondsJob")
                 .storeDurably()
                 .build();
     }
 
     @Bean
-    public Trigger thirtySecondsJobTrigger(JobDetail thirtySecondsJobDetails) {
+    public Trigger oneSecondsJobTrigger(JobDetail oneSecondJobDetails) {
         java.util.Calendar calendar = java.util.Calendar.getInstance();
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
@@ -34,10 +34,10 @@ public class QuartzConfig {
         Date startTime = calendar.getTime();
 
         return TriggerBuilder.newTrigger()
-                .forJob(thirtySecondsJobDetails)
-                .withIdentity("thirtySecondsJob")
+                .forJob(oneSecondJobDetails)
+                .withIdentity("oneSecondsJob")
                 .startAt(startTime)
-                .withSchedule(SimpleScheduleBuilder.repeatSecondlyForever(30))
+                .withSchedule(SimpleScheduleBuilder.repeatSecondlyForever(1))
                 .build();
     }
 

@@ -20,8 +20,9 @@ public class CandleEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "SYMBOL")
-    private String symbol;
+    @ManyToOne
+    @JoinColumn(name = "SYMBOL_ID")
+    private SymbolEntity symbol;
 
     @Column(name = "CANDLE_DATE")
     private Date date;

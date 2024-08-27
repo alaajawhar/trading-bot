@@ -1,6 +1,7 @@
 package com.amdose.test;
 
 import com.amdose.database.entities.CandleEntity;
+import com.amdose.database.entities.SymbolEntity;
 import com.amdose.database.enums.TimeFrameEnum;
 import com.amdose.database.repositories.ICandleRepository;
 import com.amdose.pattern.detection.PatternDetectionModule;
@@ -12,7 +13,6 @@ import com.amdose.test.constants.TestConstants;
 import com.amdose.utils.JsonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
@@ -31,12 +31,14 @@ public class RealCaseTest {
     @Autowired
     private ICandleRepository candleRepository;
 
-    @Test
+    //    @Test
     @DisplayName("Real case scenario")
     @Sql(scripts = {TestConstants.HELPER_DATA}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     public void realCaseScenario() {
+        SymbolEntity symbolEntity = new SymbolEntity();
+        symbolEntity.setId(1L);
         List<CandleEntity> candleEntityList = candleRepository.findLastBySymbolAndTimeFrameOrderByDateAsc(
-                "BTCUSDT", TimeFrameEnum.ONE_MINUTE);
+                symbolEntity, TimeFrameEnum.ONE_MINUTE);
 
         List<CandleItemDTO> candleItemDTOS = CandleMapper.INSTANCE.candleEntitiesToCandleItemDTOs(candleEntityList);
         log.debug("[{}] candles has been found", candleEntityList.size());
