@@ -13,6 +13,7 @@ import com.amdose.pattern.detection.mappers.CandleMapper;
 import com.amdose.pattern.detection.services.indicators.IIndicatorService;
 import com.amdose.pattern.detection.services.ta.Taj4JImpl;
 import com.amdose.pattern.detection.services.ta.TechnicalAnalysisBaseService;
+import com.amdose.utils.DateUtils;
 import com.amdose.utils.JsonUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -54,13 +55,15 @@ public class IndicatorsService {
                     , bot.getTimeFrame()
             );
 
-            log.debug("Waiting for 1sec then fetch candles...");
-            TimeUnit.SECONDS.sleep(1); // TODO: find a better solution
+//            log.debug("Waiting for 1sec then fetch candles...");
+//            TimeUnit.SECONDS.sleep(1);
+//
+//            List<CandleEntity> candleEntityList = candleRepository.findLastBySymbolAndTimeFrameOrderByDateAsc(
+//                    bot.getSymbol()
+//                    , timeFrame
+//            );
 
-            List<CandleEntity> candleEntityList = candleRepository.findLastBySymbolAndTimeFrameOrderByDateAsc(
-                    bot.getSymbol()
-                    , timeFrame
-            );
+            List<CandleEntity> candleEntityList = this.waitAndGetCandles(bot, timeFrame);
 
             List<CandleItemDTO> candleItemDTOS = CandleMapper.INSTANCE.candleEntitiesToCandleItemDTOs(candleEntityList);
             log.debug("[{}] candles has been found", candleEntityList.size());
@@ -105,4 +108,33 @@ public class IndicatorsService {
         signalRepository.saveAll(allDetectedSignals);
     }
 
+    @SneakyThrows
+    private List<CandleEntity> waitAndGetCandles(BotEntity bot, TimeFrameEnum timeFrame) {
+        List<CandleEntity> candleEntityList = null;
+
+        for (int i = 0; i < 3; i++) {
+            log.debug("Waiting for 1sec then fetch candles of [{}]...", timeFrame);
+            TimeUnit.SECONDS.sleep(1);
+
+            candleEntityList = candleRepository.findLastBySymbolAndTimeFrameOrderByDateAsc(
+                    bot.getSymbol()
+                    , timeFrame
+            );
+
+            log.debug("roundedNow: [{}], substrateTime: [{}], lastCandleDate:[{}], isEqual: [{}]"
+                    , DateUtils.roundSeconds(DateUtils.getNow())
+                    , timeFrame.subtractTime(DateUtils.roundSeconds(DateUtils.getNow()))
+                    , candleEntityList.get(candleEntityList.size() - 1).getDate()
+                    , timeFrame.subtractTime(DateUtils.roundSeconds(DateUtils.getNow())).equals(candleEntityList.get(candleEntityList.size() - 1).getDate())
+            );
+
+            if (timeFrame.subtractTime(DateUtils.roundSeconds(DateUtils.getNow()))
+                    .equals(candleEntityList.get(candleEntityList.size() - 1).getDate())) {
+                log.debug("Returning candles: [{}]", candleEntityList.size());
+                return candleEntityList;
+            }
+        }
+
+        throw new RuntimeException("Waited for 3 seconds but cant get last candle");
+    }
 }

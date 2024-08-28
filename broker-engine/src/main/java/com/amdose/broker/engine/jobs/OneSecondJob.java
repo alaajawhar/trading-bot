@@ -5,13 +5,12 @@ import com.amdose.database.enums.TimeFrameEnum;
 import com.amdose.scheduler.exposed.IOneSecondsJob;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 /**
  * @author Alaa Jawhar
  */
 @Slf4j
-@Component
+//@Component
 @RequiredArgsConstructor
 public class OneSecondJob implements IOneSecondsJob {
 

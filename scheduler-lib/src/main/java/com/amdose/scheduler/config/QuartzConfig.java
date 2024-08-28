@@ -77,9 +77,10 @@ public class QuartzConfig {
     @Bean
     public Trigger threeMinutesJobTrigger(JobDetail threeMinutesJobDetails) {
         java.util.Calendar calendar = java.util.Calendar.getInstance();
+        calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
-        calendar.add(Calendar.MINUTE, 1); // Move to the next minute
+        calendar.add(Calendar.HOUR, 1);
 
         Date startTime = calendar.getTime();
 
@@ -102,9 +103,10 @@ public class QuartzConfig {
     @Bean
     public Trigger fifteenMinutesJobTrigger(JobDetail fifteenMinutesJobDetails) {
         java.util.Calendar calendar = java.util.Calendar.getInstance();
+        calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
-        calendar.add(Calendar.MINUTE, 1); // Move to the next minute
+        calendar.add(Calendar.HOUR, 1);
 
         Date startTime = calendar.getTime();
 
@@ -157,7 +159,7 @@ public class QuartzConfig {
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
-        calendar.add(Calendar.HOUR, 1); // Move to the next minute
+        calendar.add(Calendar.HOUR, 24); // Move to the next minute
 
         Date startTime = calendar.getTime();
 
@@ -185,7 +187,7 @@ public class QuartzConfig {
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
 
-        calendar.add(Calendar.HOUR, 24); // Move to the next minute
+        calendar.add(Calendar.HOUR, 24); // Move to the next day
 
         Date startTime = calendar.getTime();
 
