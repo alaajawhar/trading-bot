@@ -187,7 +187,8 @@ public class QuartzConfig {
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
 
-        calendar.add(Calendar.HOUR, 24); // Move to the next day
+//        calendar.add(Calendar.HOUR, 24); // Move to the next day
+        calendar.add(Calendar.DAY_OF_MONTH, 1); // Move to the next day
 
         Date startTime = calendar.getTime();
 

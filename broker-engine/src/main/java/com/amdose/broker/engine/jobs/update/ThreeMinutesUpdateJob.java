@@ -1,8 +1,8 @@
-package com.amdose.broker.engine.jobs;
+package com.amdose.broker.engine.jobs.update;
 
 import com.amdose.broker.engine.services.DataLoaderService;
 import com.amdose.database.enums.TimeFrameEnum;
-import com.amdose.scheduler.exposed.IOneHourJob;
+import com.amdose.scheduler.exposed.IThreeMinutesJob;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -13,13 +13,13 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class OneHourJob implements IOneHourJob {
+public class ThreeMinutesUpdateJob implements IThreeMinutesJob {
 
     private final DataLoaderService dataLoaderService;
 
     @Override
     public void execute() {
-        log.debug("Fetching [{}] data online...", TimeFrameEnum.ONE_HOUR);
-        dataLoaderService.updateAllSymbols(TimeFrameEnum.ONE_HOUR);
+        log.info("Fetching [{}] data online...", TimeFrameEnum.THREE_MINUTES);
+        dataLoaderService.updateAllSymbols(TimeFrameEnum.THREE_MINUTES);
     }
 }

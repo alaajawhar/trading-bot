@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Alaa Jawhar
@@ -43,4 +44,7 @@ public class SignalEntity {
     @Column(name = "ADDED_DATE")
     private Date addedDate;
 
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "TRADING_SIGNAL_ID")
+    private List<ActionEntity> actionTaken;
 }

@@ -128,6 +128,35 @@
             </column>
         </createTable>
 
+        <createTable tableName="trading_action">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" primaryKeyName="pk_trading_action"/>
+            </column>
+            <column name="trading_signal_id" type="bigint">
+                <constraints nullable="false" referencedTableName="trading_signal" referencedColumnNames="id"
+                             foreignKeyName="fk_trading_action_trading_signal"/>
+            </column>
+            <column name="amount" type="decimal(18, 2)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="broker_request" type="varchar(1000)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="broker_response" type="varchar(1000)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="error" type="varchar(4000)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="status" type="enum('SUCCESS', 'ERROR')">
+                <constraints nullable="false"/>
+            </column>
+            <column name="added_date" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+
         <loadData file="config/liquibase/data/symbol.csv" tableName="symbol">
             <column name="id" header="id"/>
             <column name="name" header="name"/>

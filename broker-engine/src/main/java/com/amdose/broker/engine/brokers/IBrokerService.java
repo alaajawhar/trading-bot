@@ -1,22 +1,22 @@
 package com.amdose.broker.engine.brokers;
 
-import com.amdose.database.entities.CandleEntity;
+import com.amdose.database.entities.SignalEntity;
 import com.amdose.database.entities.SymbolEntity;
 import com.amdose.database.enums.TimeFrameEnum;
-
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
 
 /**
  * @author Alaa Jawhar
  */
 public interface IBrokerService {
 
-    List<CandleEntity> getCandles(SymbolEntity symbol, TimeFrameEnum interval, Date startDate);
+    void updateCandles(SymbolEntity symbol, TimeFrameEnum interval);
 
-    void buy(SymbolEntity symbol, BigDecimal amount);
+    void buyMarket(SignalEntity signal);
 
-    void sell(SymbolEntity symbol, BigDecimal amount);
+    void sellMarket(SignalEntity signal);
+
+    void buyLimit(SignalEntity signal);
+
+    void sellLimit(SignalEntity signal);
 
 }
