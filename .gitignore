@@ -18,3 +18,5 @@ scheduler-lib/scheduler-lib.iml
 
 utils-lib/target/
 utils-lib/utils.iml
+
+ui/target/
