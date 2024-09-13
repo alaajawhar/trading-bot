@@ -29,9 +29,9 @@ public class OneMinuteActionJob implements IOneMinuteJob {
         try {
             TimeUnit.SECONDS.sleep(1);
 
-            log.info("Fetching actions for [{}]...", DateUtils.roundSeconds(DateUtils.getNow()));
+            log.info("Fetching actions for [{}]...", DateUtils.roundSecondsAndMilliseconds(DateUtils.getNow()));
             List<SignalEntity> pendingSignalsWithNoActions =
-                    signalRepository.findAllPendingActionsOfDate(DateUtils.roundSeconds(DateUtils.getNow()));
+                    signalRepository.findAllPendingActionsOfDate(DateUtils.roundSecondsAndMilliseconds(DateUtils.getNow()));
 
             log.info("Found [{}] pending actions", pendingSignalsWithNoActions.size());
 

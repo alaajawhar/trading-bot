@@ -1,0 +1,5 @@
+<app-header *ngIf="!(appHeaderExceptions.indexOf(_router.url) > -1)"></app-header>
+<app-sidebar *ngIf="!(appSideBarExceptions.indexOf(_router.url) > -1)"></app-sidebar>
+<router-outlet></router-outlet>
+<simple-notifications></simple-notifications>
+<app-footer *ngIf="!(appFooterExceptions.indexOf(_router.url) > -1)"></app-footer>

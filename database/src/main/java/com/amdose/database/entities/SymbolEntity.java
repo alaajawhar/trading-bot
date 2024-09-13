@@ -3,6 +3,8 @@ package com.amdose.database.entities;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
 
@@ -28,12 +30,14 @@ public class SymbolEntity {
     @Column(name = "ADDED_BY")
     private Long addedBy;
 
+    @CreationTimestamp
     @Column(name = "ADDED_DATE")
     private Date addedDate;
 
     @Column(name = "MODIFIED_BY")
     private Long modifiedBy;
 
+    @UpdateTimestamp
     @Column(name = "MODIFIED_DATE")
     private Date modifiedDate;
 }

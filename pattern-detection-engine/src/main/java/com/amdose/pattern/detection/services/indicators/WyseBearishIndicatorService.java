@@ -164,7 +164,6 @@ public class WyseBearishIndicatorService implements IIndicatorService {
         sellSignal.setMetaData(JsonUtils.convertToString(metaData));
         sellSignal.setAction(SignalActionEnum.SELL);
         sellSignal.setRisk(0d);
-        sellSignal.setAddedDate(DateUtils.getNow());
 
         SignalEntity buySignal = new SignalEntity();
         buySignal.setDetectionId(detectionId);
@@ -172,7 +171,6 @@ public class WyseBearishIndicatorService implements IIndicatorService {
         buySignal.setScheduledAt(this.addUniteToDate(firstSignalActionDate, interval, 3));
         buySignal.setAction(SignalActionEnum.BUY);
         buySignal.setRisk(0d);
-        buySignal.setAddedDate(DateUtils.getNow());
 
         return List.of(sellSignal, buySignal);
     }

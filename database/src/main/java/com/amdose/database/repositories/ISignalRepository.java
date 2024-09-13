@@ -15,4 +15,6 @@ public interface ISignalRepository extends CrudRepository<SignalEntity, Long> {
 
     @Query(value = "SELECT ts.* FROM trading_signal ts LEFT JOIN trading_action ta ON ts.id = ta.trading_signal_id WHERE ta.trading_signal_id IS NULL AND ts.SCHEDULED_AT = :scheduledAtDate", nativeQuery = true)
     List<SignalEntity> findAllPendingActionsOfDate(Date scheduledAtDate);
+
+    List<SignalEntity> findByDetectionId(String detectionId);
 }

@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @author Alaa Jawhar
@@ -27,12 +29,18 @@ public class OneSecondsActualJob implements Job {
             return;
         }
 
+        ExecutorService executorService = Executors.newFixedThreadPool(oneSecondsJobs.size());
+
         for (BaseJob job : oneSecondsJobs) {
-            try {
-                job.execute();
-            } catch (Exception e) {
-                log.error("Error occurred when executing: [{}]", job.getClass(), e);
-            }
+            executorService.submit(() -> {
+                try {
+                    job.execute();
+                } catch (Exception e) {
+                    log.error("Error occurred when executing: [{}]", job.getClass(), e);
+                }
+            });
         }
+
+        executorService.shutdown();
     }
 }

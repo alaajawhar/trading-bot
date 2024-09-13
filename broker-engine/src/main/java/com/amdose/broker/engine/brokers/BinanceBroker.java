@@ -41,25 +41,19 @@ public class BinanceBroker implements IBrokerService {
     }
 
     @Override
-    public void updateCandles(SymbolEntity symbol, TimeFrameEnum interval) {
-        Optional<CandleEntity> lastCandle = candleRepository.findTopBySymbolAndTimeFrameOrderByDateDesc(symbol, interval);
+    public void updateCandles(SymbolEntity symbol, TimeFrameEnum timeFrame) {
+        Optional<CandleEntity> lastCandle = candleRepository.findTopBySymbolAndTimeFrameOrderByDateDesc(symbol, timeFrame);
 
         Date startDate = null;
 
         if (lastCandle.isPresent()) {
             startDate = lastCandle.get().getDate();
-            startDate = interval.addTime(startDate); // to only retrieve 1 record instead of 2 which was already added
+            startDate = timeFrame.addTime(startDate); // to only retrieve 1 record instead of 2 which was already added
         }
 
-        List<CandleEntity> candles = this.getCandles(symbol, interval, startDate);
+        List<CandleEntity> candles = this.getCandles(symbol, timeFrame, startDate);
 
-        // TODO: handle first initialization when no candle exists in db. it is not stepping into the below IF case.
-        if (startDate != null
-                && candles.size() != 0
-                && candles.get(candles.size() - 1).getDate().equals(interval.addTime(startDate))) {
-            log.debug("Removing last candle: [{}] for startDate: [{}]", JsonUtils.convertToString(candles), DateUtils.convertToString(startDate));
-            candles.remove(candles.size() - 1);
-        }
+        this.removeLastInvalidCandle(candles, timeFrame);
 
         if (candles.size() == 0) {
             log.error("There is something wrong with candles");
@@ -98,9 +92,9 @@ public class BinanceBroker implements IBrokerService {
         parameters.put("symbol", signal.getBot().getSymbol().getName());
         parameters.put("side", "BUY");
         parameters.put("type", "LIMIT");
-        parameters.put("timeInForce", "GTC"); // Good Till Cancelled (GTC)
-        parameters.put("price", this.getCurrentOpenPrice(signal.getBot().getSymbol().getName()));     // Price at which you want to sell
-        parameters.put("quantity", "0.0001"); // Amount of BTC you want to buy
+        parameters.put("timeInForce", "GTC");
+        parameters.put("price", this.getCurrentOpenPrice(signal.getBot().getSymbol().getName()));
+        parameters.put("quantity", "0.0001");
         this.sendRequest(parameters, signal);
     }
 
@@ -110,9 +104,9 @@ public class BinanceBroker implements IBrokerService {
         parameters.put("symbol", signal.getBot().getSymbol().getName());
         parameters.put("side", "SELL");
         parameters.put("type", "LIMIT");
-        parameters.put("timeInForce", "GTC"); // Good Till Cancelled (GTC)
-        parameters.put("price", this.getCurrentOpenPrice(signal.getBot().getSymbol().getName()));     // Price at which you want to sell
-        parameters.put("quantity", "0.0001"); // Amount of BTC you want to buy
+        parameters.put("timeInForce", "GTC");
+        parameters.put("price", this.getCurrentOpenPrice(signal.getBot().getSymbol().getName()));
+        parameters.put("quantity", "0.0001");
         this.sendRequest(parameters, signal);
 
     }
@@ -126,6 +120,8 @@ public class BinanceBroker implements IBrokerService {
         // Fetch candlestick data
         String jsonStr = client.createMarket().klines(parameters);
         List<List<Object>> jsonObj = JsonUtils.convertToObject(jsonStr, List.class);
+
+        // TODO: fix the last candle issue
         return new BigDecimal(String.valueOf(jsonObj.get(jsonObj.size() - 1).get(1))); // return current open price
     }
 
@@ -147,10 +143,8 @@ public class BinanceBroker implements IBrokerService {
         ActionEntity actionEntity = new ActionEntity();
         actionEntity.setSignal(signal);
         actionEntity.setAmount(new BigDecimal(String.valueOf(parameters.get("quantity"))));
-        actionEntity.setAddedDate(new Date());
 
         try {
-
             String requestAsJson = JsonUtils.convertToString(parameters);
             actionEntity.setBrokerRequest(requestAsJson);
             log.info("Request: [{}]", requestAsJson);
@@ -158,8 +152,6 @@ public class BinanceBroker implements IBrokerService {
             log.info("Response: [{}]", responseAsJson);
             actionEntity.setBrokerResponse(responseAsJson);
             actionEntity.setStatus(ActionStatusEnum.SUCCESS);
-
-
         } catch (Exception e) {
             actionEntity.setStatus(ActionStatusEnum.ERROR);
             actionEntity.setError(ExceptionUtils.getStackTraceAsString(e));
@@ -198,6 +190,23 @@ public class BinanceBroker implements IBrokerService {
         }
 
         return response;
+    }
+
+
+    public void removeLastInvalidCandle(List<CandleEntity> candleEntityList, TimeFrameEnum timeFrame) {
+
+        Optional<CandleEntity> notMatchedCandle = candleEntityList.stream()
+                .filter(candleEntity -> candleEntity.getTimeFrame() != timeFrame)
+                .findAny();
+
+        if (notMatchedCandle.isPresent()) {
+            throw new RuntimeException("Not all candles follow the same timeFrame: [" + timeFrame + "]");
+        }
+
+        if (timeFrame.subtractTime(candleEntityList.get(candleEntityList.size() - 1).getDate())
+                .equals(DateUtils.roundSecondsAndMilliseconds(DateUtils.getNow()))) {
+            candleEntityList.remove(candleEntityList.size() - 1);
+        }
     }
 
 

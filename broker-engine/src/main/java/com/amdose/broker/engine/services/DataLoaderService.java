@@ -3,7 +3,6 @@ package com.amdose.broker.engine.services;
 import com.amdose.broker.engine.brokers.BinanceBroker;
 import com.amdose.database.entities.SymbolEntity;
 import com.amdose.database.enums.TimeFrameEnum;
-import com.amdose.database.repositories.ICandleRepository;
 import com.amdose.database.repositories.ISymbolRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +18,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DataLoaderService {
 
-    private final ICandleRepository candleRepository;
     private final BinanceBroker binanceBroker;
     private final ISymbolRepository symbolRepository;
 

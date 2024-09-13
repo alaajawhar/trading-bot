@@ -4,6 +4,7 @@ import com.amdose.database.enums.ActionStatusEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -41,6 +42,7 @@ public class ActionEntity {
     @Enumerated(EnumType.STRING)
     private ActionStatusEnum status;
 
+    @CreationTimestamp
     @Column(name = "ADDED_DATE")
     private Date addedDate;
 }

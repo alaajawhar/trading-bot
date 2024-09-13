@@ -1,0 +1,18 @@
+<aside id="sidebar" class="sidebar">
+  <ul class="sidebar-nav" id="sidebar-nav">
+    <li class="nav-item" *ngFor="let sideBarItem of sideBarList; let i = index">
+      <a class="nav-link collapsed" [attr.data-bs-target]="'#sidebar-nav-item' + i" data-bs-toggle="collapse" href="#">
+        <i class="{{ sideBarItem.bootstrapIcon }}"></i>
+        <span>{{ sideBarItem.title }}</span>
+        <i class="bi bi-chevron-down ms-auto" *ngIf="hasChild(i)"></i>
+      </a>
+      <ul [id]="'sidebar-nav-item' + i" class="nav-content collapse " data-bs-parent="#sidebar-nav" *ngIf="hasChild(i)">
+        <li *ngFor="let childSideBar of sideBarItem.child; let j = index">
+          <a (click)="onChildClick(i, j)">
+            <i [class]="isChildSelected(i, j)?'bi bi-circle-fill': 'bi bi-circle'"></i>
+            <span>{{ childSideBar.title }}</span> </a>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</aside>

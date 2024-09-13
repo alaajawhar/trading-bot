@@ -4,6 +4,7 @@ import com.amdose.database.enums.TimeFrameEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
 
@@ -45,4 +46,8 @@ public class CandleEntity {
     @Column(name = "TIME_FRAME")
     @Enumerated(EnumType.STRING)
     private TimeFrameEnum timeFrame;
+
+    @CreationTimestamp
+    @Column(name = "INSERT_DATE")
+    private Date insertDate;
 }

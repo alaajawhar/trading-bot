@@ -4,6 +4,7 @@ import com.amdose.database.enums.SignalActionEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
 import java.util.List;
@@ -41,6 +42,7 @@ public class SignalEntity {
     @Column(name = "RISK")
     private Double risk;
 
+    @CreationTimestamp
     @Column(name = "ADDED_DATE")
     private Date addedDate;
 

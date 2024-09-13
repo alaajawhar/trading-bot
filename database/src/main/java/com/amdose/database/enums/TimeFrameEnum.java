@@ -10,17 +10,20 @@ import java.util.Date;
  */
 @Getter
 public enum TimeFrameEnum {
-    ONE_SECOND("1 * * * * *"),
-    ONE_MINUTE("0 */1 * * * *"),
-    THREE_MINUTES("0 */3 * * * *"),
-    FIFTEEN_MINUTES("0 */15 * * * *"),
-    ONE_HOUR("0 0 */1 * * *"),
-    FOUR_HOURS("0 0 */4 * * *"),
-    ONE_DAY("0 0 0 * * ?");
 
+    ONE_SECOND("One Second", "1 * * * * *"),
+    ONE_MINUTE("One Minute", "0 */1 * * * *"),
+    THREE_MINUTES("Three Minutes", "0 */3 * * * *"),
+    FIFTEEN_MINUTES("Fifteen Minutes", "0 */15 * * * *"),
+    ONE_HOUR("One Hour", "0 0 */1 * * *"),
+    FOUR_HOURS("Four Hours", "0 0 */4 * * *"),
+    ONE_DAY("One Day", "0 0 0 * * ?");
+
+    private String label;
     private String cronExpression;
 
-    TimeFrameEnum(String cronExpression) {
+    TimeFrameEnum(String label, String cronExpression) {
+        this.label = label;
         this.cronExpression = cronExpression;
     }
 

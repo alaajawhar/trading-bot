@@ -74,6 +74,9 @@
             <column name="candle_date" type="datetime(6)">
                 <constraints nullable="false"/>
             </column>
+            <column name="insert_date" type="datetime(6)">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
         <createTable tableName="bot">
             <column name="id" type="bigint" autoIncrement="true">

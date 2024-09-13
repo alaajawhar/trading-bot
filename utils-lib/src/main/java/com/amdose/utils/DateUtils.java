@@ -34,7 +34,7 @@ public class DateUtils {
         return new Date();
     }
 
-    public static Date roundSeconds(Date date) {
+    public static Date roundSecondsAndMilliseconds(Date date) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         calendar.set(Calendar.SECOND, 0);
@@ -51,7 +51,7 @@ public class DateUtils {
     }
 
     public static Boolean isFutureInHourMinuteSecond(Date date) {
-        Date now = roundSeconds(getNow());
+        Date now = roundSecondsAndMilliseconds(getNow());
         return !date.before(now);
     }
 
