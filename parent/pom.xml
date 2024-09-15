@@ -130,6 +130,7 @@
                                 <copy file="${project.build.directory}/${project.build.finalName}.${project.packaging}"
                                       todir="${project.build.directory}/build/"/>
                             </target>
+                            <failOnError>false</failOnError>
                         </configuration>
                         <goals>
                             <goal>run</goal>
