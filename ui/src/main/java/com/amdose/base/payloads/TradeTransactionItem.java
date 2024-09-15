@@ -12,5 +12,8 @@ import java.util.Date;
 public class TradeTransactionItem {
     private Long tradeId;
     private ActionStatusEnum status;
+    private String brokerRequest;
+    private String brokerResponse;
+    private String brokerError;
     private Date date;
 }

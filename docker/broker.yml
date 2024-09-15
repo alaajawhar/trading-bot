@@ -1,0 +1,16 @@
+name: broker
+services:
+  binance:
+    image: openjdk:17-jdk-alpine
+    container_name: binance-broker
+    volumes:
+      - ../broker-engine/target/build:/app
+    environment:
+      - TZ=Asia/Riyadh  # Set to Riyadh timezone
+      - spring.profiles.active=prod
+      - DB_HOST=host.docker.internal
+      - DB_PORT=3306
+    working_dir: /app
+    entrypoint: >
+      java -cp "./trading-bot-broker.jar:./config:./lib/*" com.amdose.broker.engine.BrokerModule
+    

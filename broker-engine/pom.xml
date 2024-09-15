@@ -4,14 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>broker-engine</artifactId>
+    <artifactId>trading-bot-broker</artifactId>
     <packaging>jar</packaging>
 
     <parent>
         <groupId>com.amdose.trading.bot</groupId>
         <artifactId>trading-bot-parent</artifactId>
         <version>1.0-SNAPSHOT</version>
-        <relativePath/>
+        <relativePath>../parent/pom.xml</relativePath>
     </parent>
 
     <dependencies>
@@ -25,7 +25,7 @@
         <!-- AMDOSE -->
         <dependency>
             <groupId>com.amdose.trading.bot</groupId>
-            <artifactId>database</artifactId>
+            <artifactId>trading-bot-database</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -41,7 +41,20 @@
     </dependencies>
 
     <build>
-        <finalName>trading-bot-broker-engine</finalName>
+        <finalName>trading-bot-broker</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <excludes>
+                        <exclude>**/*.yaml</exclude>
+                        <exclude>**/*.xml</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 
 </project>

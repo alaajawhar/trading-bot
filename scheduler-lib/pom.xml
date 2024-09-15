@@ -11,7 +11,7 @@
         <groupId>com.amdose.trading.bot</groupId>
         <artifactId>trading-bot-parent</artifactId>
         <version>1.0-SNAPSHOT</version>
-        <relativePath/>
+        <relativePath>../parent/pom.xml</relativePath>
     </parent>
 
     <dependencies>

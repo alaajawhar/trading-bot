@@ -28,7 +28,7 @@ export class SignalDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.backend.GetSignalById(this.detectionId).subscribe(resp => {
+    this.backend.getSignalById(this.detectionId).subscribe(resp => {
       this.signalByIdResponse = resp;
       this.isLoadingData = false;
       this.basicInformationData = {

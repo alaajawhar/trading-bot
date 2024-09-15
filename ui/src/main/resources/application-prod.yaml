@@ -1,0 +1,37 @@
+server:
+  servlet:
+    context-path: /trading-bot-ui
+  port: 8080
+
+client:
+  gen:
+    test-base-url: http://localhost:8083
+
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/trading-bot?allowPublicKeyRetrieval=true&useSSL=false?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false&createDatabaseIfNotExist=true
+    username: root
+    password: root
+    hikari:
+      poolName: Hikari
+      auto-commit: false
+      data-source-properties:
+        cachePrepStmts: true
+        prepStmtCacheSize: 250
+        prepStmtCacheSqlLimit: 2048
+        useServerPrepStmts: true
+  jpa:
+    show-sql: true
+
+restTemplate:
+  timeout:
+    connection: 4000
+    socket: 4000
+    read: 4000
+  http-client-max:
+    perroute: 200
+    total: 200
+
+springdoc:
+  show-actuator: true

@@ -84,7 +84,7 @@ export class SignalsComponent implements OnInit {
   }
 
   onSignalClick(detectionId: string) {
-    this.router.navigate(['/signal', detectionId]);
+    this.router.navigate(['/signals', detectionId]);
   }
 
   getValueById(dropdowns: DropdownItem[], id: string): string | undefined {

@@ -10,7 +10,7 @@ import {SignalDetailsComponent} from "./modules/signals/signal-details/signal-de
 const routes: Routes = [
   {path: '', component: SignalsComponent},
   {path: 'signals', component: SignalsComponent},
-  {path: 'signal/:detectionId', component: SignalDetailsComponent},
+  {path: 'signals/:detectionId', component: SignalDetailsComponent},
   {path: 'profile', component: UsersProfileComponent},
   {path: 'login', component: PagesLoginComponent},
   {path: 'register', component: PagesRegisterComponent},

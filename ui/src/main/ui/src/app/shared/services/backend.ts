@@ -13,7 +13,7 @@ export class Backend {
     return this.http.post<GetSignalListResponse>(environment.backendUrl + "/signal/list", request);
   }
 
-  public GetSignalById(id: string) {
+  public getSignalById(id: string) {
     return this.http.get<GetSignalByIdResponse>(environment.backendUrl + "/signal/" + id);
   }
 

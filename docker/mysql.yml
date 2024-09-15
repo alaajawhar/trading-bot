@@ -1,22 +1,23 @@
 # This configuration is intended for development purpose, it's **your** responsibility to harden it for production
-name: trading-bot
+name: database
 services:
   mysql:
-    image: mysql:8.2.0
-    # volumes:
-    #   - ~/volumes/trading-bot/mysql/:/var/lib/mysql/
+    image: mysql:9.0.1
+    container_name: mysql
+    volumes:
+      - ./dockerConfig/mysql:/etc/mysql/conf.d
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
       - MYSQL_DATABASE=trading-bot
       - MYSQL_PASSWORD=trading-bot
-      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_ROOT_PASSWORD=root
     # If you want to expose these ports outside your dev PC,
     # remove the "127.0.0.1:" prefix
     ports:
       - 127.0.0.1:3306:3306
-    command: mysqld --lower_case_table_names=1 --skip-ssl --character_set_server=utf8mb4 --explicit_defaults_for_timestamp --skip-networking=0 --skip-bind-address
+    command: mysqld --lower_case_table_names=1 --skip-mysqlx --character_set_server=utf8mb4 --explicit_defaults_for_timestamp --skip-networking=0 --skip-bind-address
     healthcheck:
-      test: [ 'CMD', 'mysql', '-e', 'SHOW DATABASES;' ]
+      test: ['CMD', 'mysql', '-e', 'SHOW DATABASES;']
       interval: 5s
       timeout: 5s
       retries: 10

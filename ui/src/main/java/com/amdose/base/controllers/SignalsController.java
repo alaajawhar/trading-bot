@@ -50,6 +50,9 @@ public class SignalsController implements ISignalsController {
                 TradeTransactionItem tradeTransactionItem = new TradeTransactionItem();
                 tradeTransactionItem.setTradeId(actionEntity.getId());
                 tradeTransactionItem.setStatus(actionEntity.getStatus());
+                tradeTransactionItem.setBrokerRequest(actionEntity.getBrokerRequest());
+                tradeTransactionItem.setBrokerResponse(actionEntity.getBrokerResponse());
+                tradeTransactionItem.setBrokerError(actionEntity.getError());
                 tradeTransactionItem.setDate(actionEntity.getAddedDate());
                 tradeItem.addTrade(tradeTransactionItem);
             }

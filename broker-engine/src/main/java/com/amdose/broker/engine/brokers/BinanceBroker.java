@@ -13,6 +13,7 @@ import com.amdose.utils.ExceptionUtils;
 import com.amdose.utils.JsonUtils;
 import com.binance.connector.client.impl.SpotClientImpl;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,16 +52,17 @@ public class BinanceBroker implements IBrokerService {
             startDate = timeFrame.addTime(startDate); // to only retrieve 1 record instead of 2 which was already added
         }
 
-        List<CandleEntity> candles = this.getCandles(symbol, timeFrame, startDate);
+        List<CandleEntity> binanceCandles = this.getCandlesFromBinance(symbol, timeFrame, startDate);
 
-        this.removeLastInvalidCandle(candles, timeFrame);
-
-        if (candles.size() == 0) {
-            log.error("There is something wrong with candles");
+        if (CollectionUtils.isEmpty(binanceCandles) == Boolean.TRUE) {
+            log.error("There is something wrong with binanceCandles");
+            return;
         }
 
+        this.removeLastInvalidCandle(binanceCandles, timeFrame);
+
         log.debug("before inserting");
-        candleRepository.saveAll(candles);
+        candleRepository.saveAll(binanceCandles);
         log.debug("after inserting");
     }
 
@@ -160,7 +162,7 @@ public class BinanceBroker implements IBrokerService {
         actionRepository.save(actionEntity);
     }
 
-    private List<CandleEntity> getCandles(SymbolEntity symbol, TimeFrameEnum interval, Date startDate) {
+    private List<CandleEntity> getCandlesFromBinance(SymbolEntity symbol, TimeFrameEnum interval, Date startDate) {
         // Set parameters for the request
         LinkedHashMap<String, Object> parameters = new LinkedHashMap<>();
         parameters.put("symbol", symbol.getName());
@@ -195,6 +197,10 @@ public class BinanceBroker implements IBrokerService {
 
     public void removeLastInvalidCandle(List<CandleEntity> candleEntityList, TimeFrameEnum timeFrame) {
 
+        if (CollectionUtils.isEmpty(candleEntityList) == Boolean.TRUE) {
+            return;
+        }
+
         Optional<CandleEntity> notMatchedCandle = candleEntityList.stream()
                 .filter(candleEntity -> candleEntity.getTimeFrame() != timeFrame)
                 .findAny();
@@ -203,8 +209,8 @@ public class BinanceBroker implements IBrokerService {
             throw new RuntimeException("Not all candles follow the same timeFrame: [" + timeFrame + "]");
         }
 
-        if (timeFrame.subtractTime(candleEntityList.get(candleEntityList.size() - 1).getDate())
-                .equals(DateUtils.roundSecondsAndMilliseconds(DateUtils.getNow()))) {
+        if (DateUtils.roundSecondsAndMilliseconds(DateUtils.getNow())
+                .equals(candleEntityList.get(candleEntityList.size() - 1).getDate())) {
             candleEntityList.remove(candleEntityList.size() - 1);
         }
     }

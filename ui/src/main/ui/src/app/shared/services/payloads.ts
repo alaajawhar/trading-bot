@@ -48,5 +48,8 @@ export interface TradeDetailsItem {
 export interface TradeItem {
   tradeId: number;
   status: string;
+  brokerRequest: string;
+  brokerResponse: string;
+  brokerError: string;
   date: Date;
 }
