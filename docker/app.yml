@@ -21,7 +21,7 @@ services:
         condition: service_healthy
   pattern-detection:
     extends:
-      file: ./pattern-detection.yml
+      file: ./pattern-detection-engine.yml
       service: engine
     depends_on:
       mysql:
