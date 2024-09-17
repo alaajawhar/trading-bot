@@ -30,7 +30,7 @@
         </dependency>
         <dependency>
             <groupId>com.amdose.trading.bot</groupId>
-            <artifactId>utils</artifactId>
+            <artifactId>trading-bot-utils</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

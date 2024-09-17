@@ -4,6 +4,7 @@ services:
     image: openjdk:17-jdk-alpine
     container_name: pattern-detection-engine
     volumes:
+      # - ~/volumes/trading-bot/pattern-detection-engine/logs/:/tmp/trading-bot/logs/
       - ../pattern-detection-engine/target/build:/app
     environment:
       - TZ=Asia/Riyadh  # Set to Riyadh timezone

@@ -1,0 +1,17 @@
+services:
+  mvn:
+    image: openjdk:17-alpine
+    container_name: mvn-builder
+    volumes:
+      - ../:/app  # Mount the parent folder (which includes all your projects and the mvn-all script)
+      - ~/volumes/trading-bot/app-build/maven-repo/:/root/.m2
+    environment:
+      - TZ=Asia/Riyadh  # Set timezone to Riyadh
+    working_dir: /app  # The working directory inside the container
+    entrypoint: ["/bin/sh", "-c", "apk add --no-cache bash nodejs npm && npm install -g @angular/cli@14 && /bin/bash /app/mvn-all && tail -f /dev/null"]
+    healthcheck:
+      test: ["CMD-SHELL", "/bin/bash /app/.docker/dockerConfig/app-builder/target-folder-checker"]  # Run the check_target.sh script
+      interval: 60s
+      timeout: 10s
+      retries: 10
+      start_period: 20s

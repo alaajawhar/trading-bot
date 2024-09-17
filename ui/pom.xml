@@ -61,7 +61,7 @@
         </dependency>
         <dependency>
             <groupId>com.amdose.trading.bot</groupId>
-            <artifactId>utils</artifactId>
+            <artifactId>trading-bot-utils</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
@@ -128,21 +128,42 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.6.0</version>
                 <executions>
+                    <!-- Execution for npm install -->
                     <execution>
+                        <id>npm-install</id>
                         <phase>validate</phase>
                         <goals>
                             <goal>exec</goal>
                         </goals>
+                        <configuration>
+                            <executable>npm</executable>
+                            <workingDirectory>src/main/ui</workingDirectory>
+                            <arguments>
+                                <argument>install</argument>
+                                <argument>--legacy-peer-deps</argument>
+                                <argument>--loglevel=error</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+
+                    <!-- Execution for ng build -->
+                    <execution>
+                        <id>ng-build</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>ng</executable>
+                            <workingDirectory>src/main/ui</workingDirectory>
+                            <arguments>
+                                <argument>build</argument>
+                            </arguments>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <executable>ng</executable>
-                    <workingDirectory>src/main/ui</workingDirectory>
-                    <arguments>
-                        <argument>build</argument>
-                    </arguments>
-                </configuration>
             </plugin>
+
         </plugins>
     </build>
 </project>

@@ -1,0 +1,2 @@
+#!/bin/bash 
+for project in */; do if [ -f "$project/pom.xml" ]; then if [ -d "$project/target/build" ]; then echo "$project: target folder exists"; else echo "$project: target folder does not exist"; exit 1; fi; fi; done; echo "All target folders exist for projects with a pom.xml!"
