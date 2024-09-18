@@ -24,6 +24,7 @@ import {Backend} from "./shared/services/backend";
 import {HttpClientModule} from "@angular/common/http";
 import {SignalDetailsComponent} from './modules/signals/signal-details/signal-details.component';
 import {DisabledFieldCardComponent} from './shared/components/disabled-field-card/disabled-field-card.component';
+import {CustomDateFormatPipe} from './shared/pipes/custom-date-format.pipe';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import {DisabledFieldCardComponent} from './shared/components/disabled-field-car
     SignalsComponent,
     SignalDetailsComponent,
     DisabledFieldCardComponent,
+    CustomDateFormatPipe,
   ],
   imports: [
     BrowserModule,

@@ -30,4 +30,9 @@
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE"/>
     </logger>
+
+    <logger name="com.binance" additivity="false" level="DEBUG">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
+    </logger>
 </configuration>

@@ -1,13 +1,10 @@
 package com.amdose.base.config;
 
-import com.amdose.base.constants.AppConstants;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-
-import java.text.SimpleDateFormat;
 
 /**
  * @author Alaa Jawhar
@@ -22,7 +19,7 @@ public class JacksonConfig {
         builder.serializationInclusion(JsonInclude.Include.NON_EMPTY);
         builder.failOnEmptyBeans(Boolean.FALSE);
         builder.failOnUnknownProperties(Boolean.FALSE);
-        builder.indentOutput(true).dateFormat(new SimpleDateFormat(AppConstants.APPLICATION_DATE_FORMAT));
+    //        builder.indentOutput(true).dateFormat(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss"));
         return new MappingJackson2HttpMessageConverter(builder.build());
     }
 }

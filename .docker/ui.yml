@@ -13,7 +13,7 @@ services:
     environment:
       - TZ=Asia/Riyadh  # Set to Riyadh timezone
       - spring.profiles.active=prod
-      - DB_HOST=host.docker.internal
+      - DB_HOST=mysql
       - DB_PORT=3306
     entrypoint: >
       java -cp "./trading-bot-ui.jar:./config:./lib/*" com.amdose.base.App

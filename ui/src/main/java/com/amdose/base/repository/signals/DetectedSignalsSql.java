@@ -45,7 +45,7 @@ public class DetectedSignalsSql {
         signalItem.setDetectionId(rs.getString(1));
         signalItem.setBotId(rs.getLong(2));
         signalItem.setTimeFrame(TimeFrameEnum.valueOf(rs.getString(3)));
-        signalItem.setDate(rs.getDate(4));
+        signalItem.setDate(rs.getTimestamp(4));
         signalItem.setProfit(rs.getDouble(5));
         signalItem.setOutcomeResult(signalItem.getProfit() > 0 ? OutcomeResultEnum.WIN : OutcomeResultEnum.LOSE);
         return signalItem;

@@ -3,8 +3,6 @@ package com.amdose.base.payloads;
 import com.amdose.database.enums.ActionStatusEnum;
 import lombok.Data;
 
-import java.util.Date;
-
 /**
  * @author Alaa Jawhar
  */
@@ -15,5 +13,5 @@ public class TradeTransactionItem {
     private String brokerRequest;
     private String brokerResponse;
     private String brokerError;
-    private Date date;
+    private String date;
 }

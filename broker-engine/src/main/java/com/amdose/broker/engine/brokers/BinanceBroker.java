@@ -142,6 +142,9 @@ public class BinanceBroker implements IBrokerService {
 
     private void sendRequest(LinkedHashMap<String, Object> parameters, SignalEntity signal) {
 
+        // To avoid "Timestamp for this request was 1000ms ahead of the server's time." Error response from binance
+        parameters.put("timestamp", this.getBinanceTime());
+
         ActionEntity actionEntity = new ActionEntity();
         actionEntity.setSignal(signal);
         actionEntity.setAmount(new BigDecimal(String.valueOf(parameters.get("quantity"))));
@@ -154,7 +157,9 @@ public class BinanceBroker implements IBrokerService {
             log.info("Response: [{}]", responseAsJson);
             actionEntity.setBrokerResponse(responseAsJson);
             actionEntity.setStatus(ActionStatusEnum.SUCCESS);
+
         } catch (Exception e) {
+            log.error("ErrorResponse: ", e);
             actionEntity.setStatus(ActionStatusEnum.ERROR);
             actionEntity.setError(ExceptionUtils.getStackTraceAsString(e));
         }
@@ -215,5 +220,9 @@ public class BinanceBroker implements IBrokerService {
         }
     }
 
-
+    public Long getBinanceTime() {
+        String serverTime = client.createMarket().time();
+        Map<String, Long> o = JsonUtils.convertToObject(serverTime, Map.class);
+        return o.get("serverTime");
+    }
 }

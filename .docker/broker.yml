@@ -4,12 +4,12 @@ services:
     image: openjdk:17-jdk-alpine
     container_name: binance-broker
     volumes:
-      # - ~/volumes/trading-bot/broker/logs/:/tmp/trading-bot/logs/
+      - ~/volumes/trading-bot/broker/logs/:/tmp/trading-bot/logs/
       - ../broker-engine/target/build:/app
     environment:
       - TZ=Asia/Riyadh  # Set to Riyadh timezone
       - spring.profiles.active=prod
-      - DB_HOST=host.docker.internal
+      - DB_HOST=mysql
       - DB_PORT=3306
     working_dir: /app
     entrypoint: >

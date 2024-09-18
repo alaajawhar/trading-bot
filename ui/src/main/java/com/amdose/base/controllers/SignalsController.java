@@ -10,6 +10,7 @@ import com.amdose.base.utils.JsonUtils;
 import com.amdose.database.entities.ActionEntity;
 import com.amdose.database.entities.SignalEntity;
 import com.amdose.database.repositories.ISignalRepository;
+import com.amdose.utils.DateUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -53,7 +54,7 @@ public class SignalsController implements ISignalsController {
                 tradeTransactionItem.setBrokerRequest(actionEntity.getBrokerRequest());
                 tradeTransactionItem.setBrokerResponse(actionEntity.getBrokerResponse());
                 tradeTransactionItem.setBrokerError(actionEntity.getError());
-                tradeTransactionItem.setDate(actionEntity.getAddedDate());
+                tradeTransactionItem.setDate(DateUtils.convertToString(actionEntity.getAddedDate()));
                 tradeItem.addTrade(tradeTransactionItem);
             }
 
