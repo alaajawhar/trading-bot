@@ -16,5 +16,6 @@ public class GetSignalListRequest extends PaginationRequest {
     private TimeFrameEnum timeFrame;
     private Long botId;
     private OutcomeResultEnum outcomeResult;
-    private Date date;
+    private Date fromDate;
+    private Date toDate;
 }

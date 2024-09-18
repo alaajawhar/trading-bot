@@ -2,6 +2,8 @@ export interface GetSignalListRequest {
   detectionId: string;
   timeFrame: string;
   botId: number;
+  fromDate: Date;
+  toDate: Date;
   outcomeResult: string;
   offset: number;
   limit: number;

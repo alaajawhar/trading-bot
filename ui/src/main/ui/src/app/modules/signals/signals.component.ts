@@ -28,6 +28,8 @@ export class SignalsComponent implements OnInit {
   getSignalListRequest: GetSignalListRequest = {
     botId: undefined!,
     detectionId: undefined!,
+    fromDate: undefined!,
+    toDate: undefined!,
     outcomeResult: undefined!,
     timeFrame: undefined!,
     limit: this.itemsPerPage,
@@ -94,5 +96,18 @@ export class SignalsComponent implements OnInit {
 
   resetPagination() {
     this.selectedPageNumber = 0;
+  }
+
+  onFilterReset() {
+    this.getSignalListRequest = {
+      botId: undefined!,
+      detectionId: undefined!,
+      fromDate: undefined!,
+      toDate: undefined!,
+      outcomeResult: undefined!,
+      timeFrame: undefined!,
+      limit: this.itemsPerPage,
+      offset: 0
+    };
   }
 }

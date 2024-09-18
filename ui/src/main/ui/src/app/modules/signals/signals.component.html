@@ -54,7 +54,22 @@
                                   [value]="outcome.id">{{outcome.value}}</option>
                         </select>
                       </div>
+                      <div class="col-md-4">
+                        <label for="inputFromDateTime" class="form-label">From Date</label>
+                        <div id="inputFromDateTime"><input type="datetime-local" class="form-control"
+                                                           [(ngModel)]="getSignalListRequest.fromDate"
+                                                           [ngModelOptions]="{standalone: true}"></div>
+                      </div>
+
+                      <div class="col-md-4">
+                        <label for="inputToDateTime" class="form-label">To Date</label>
+                        <div id="inputToDateTime"><input type="datetime-local" class="form-control"
+                                                         [(ngModel)]="getSignalListRequest.toDate"
+                                                         [ngModelOptions]="{standalone: true}"></div>
+                      </div>
+
                       <div class="text-end">
+                        <div class="btn btn-secondary me-3" (click)="onFilterReset()">Reset</div>
                         <div class="btn btn-primary" (click)="onFilter()">Filter</div>
                       </div>
                     </form>

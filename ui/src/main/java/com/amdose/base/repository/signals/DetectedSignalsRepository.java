@@ -51,9 +51,14 @@ public class DetectedSignalsRepository {
             params = ArrayUtils.add(params, filters.getTimeFrame().name());
         }
 
-        if (filters.getDate() != null) {
-            query += " and DATE(sell_candle.candle_date) = ? ";
-            params = ArrayUtils.add(params, filters.getDate());
+        if (filters.getFromDate() != null) {
+            query += " and DATE(sell_candle.candle_date) >= ? ";
+            params = ArrayUtils.add(params, filters.getFromDate());
+        }
+
+        if (filters.getToDate() != null) {
+            query += " and DATE(sell_candle.candle_date) <= ? ";
+            params = ArrayUtils.add(params, filters.getToDate());
         }
 
         query += "order by sell_candle.candle_date desc";
