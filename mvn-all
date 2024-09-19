@@ -23,7 +23,7 @@ for project in "${projects[@]}"; do
 done
 
 # Number of retries
-MAX_RETRIES=3
+MAX_RETRIES=4
 
 # Loop through each project and run mvnw install
 for project in "${projects[@]}"; do
