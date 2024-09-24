@@ -14,7 +14,7 @@ import java.util.Date;
 public class GetSignalListRequest extends PaginationRequest {
     private String detectionId;
     private TimeFrameEnum timeFrame;
-    private Long botId;
+    private Long strategyId;
     private OutcomeResultEnum outcomeResult;
     private Date fromDate;
     private Date toDate;

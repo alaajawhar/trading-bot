@@ -3,9 +3,9 @@ package com.amdose.base.controllers;
 import com.amdose.base.models.enums.OutcomeResultEnum;
 import com.amdose.base.payloads.DropDownResponse;
 import com.amdose.base.payloads.KeyValueItem;
-import com.amdose.database.entities.BotEntity;
+import com.amdose.database.entities.StrategyEntity;
 import com.amdose.database.enums.TimeFrameEnum;
-import com.amdose.database.repositories.IBotRepository;
+import com.amdose.database.repositories.IStrategyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,17 +18,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DropdownController implements IDropdownController {
 
-    private final IBotRepository botRepository;
+    private final IStrategyRepository strategyRepository;
 
     @Override
-    public DropDownResponse getDropdownBots() {
+    public DropDownResponse getDropdownStrategies() {
         DropDownResponse response = new DropDownResponse();
 
-        List<BotEntity> bots = botRepository.findAll();
-        for (BotEntity bot : bots) {
+        List<StrategyEntity> strategies = strategyRepository.findAll();
+        for (StrategyEntity bot : strategies) {
             KeyValueItem item = new KeyValueItem();
             item.setId(String.valueOf(bot.getId()));
-            item.setValue(bot.getDescription());
+            item.setValue(bot.getName());
             response.addKeyValueItem(item);
         }
 

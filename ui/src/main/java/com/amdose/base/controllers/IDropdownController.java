@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
  */
 public interface IDropdownController {
 
-    @GetMapping(UriConstants.GET_BOTS)
-    DropDownResponse getDropdownBots();
+    @GetMapping(UriConstants.GET_STRATEGIES)
+    DropDownResponse getDropdownStrategies();
 
     @GetMapping(UriConstants.GET_OUTCOME_RESULTS)
     @Cacheable(value = "outcomeResults", keyGenerator = "localizedGenerator")

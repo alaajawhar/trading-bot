@@ -13,8 +13,12 @@ public class UriConstants {
     public static final String GET_SIGNAL_BY_ID = "/signal/{detectionId}";
 
     // DROPDOWNS
-    public static final String GET_BOTS = "/dropdown/bots";
+    public static final String GET_STRATEGIES = "/dropdown/strategies";
     public static final String GET_OUTCOME_RESULTS = "/dropdown/outcomes";
     public static final String GET_TIMEFRAMES = "/dropdown/timeframes";
 
+    // DASHBOARD
+    public static final String GET_DASHBOARD_SUMMARY = "/dashboard/summary";
+    public static final String GET_DASHBOARD_STRATEGY_PERFORMANCE_OVER_PERIOD = "/dashboard/strategies/performance/period";
+    public static final String GET_DASHBOARD_BOTS_PERFORMANCE_BASE_ON_TIMEFRAME = "/dashboard/strategies/performance/timeframes";
 }

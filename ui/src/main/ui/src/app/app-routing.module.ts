@@ -6,9 +6,10 @@ import {PagesRegisterComponent} from "./modules/pages-register/pages-register.co
 import {PagesLoginComponent} from "./modules/pages-login/pages-login.component";
 import {SignalsComponent} from "./modules/signals/signals.component";
 import {SignalDetailsComponent} from "./modules/signals/signal-details/signal-details.component";
+import {DashboardComponent} from "./modules/dashboard/dashboard.component";
 
 const routes: Routes = [
-  {path: '', component: SignalsComponent},
+  {path: '', component: DashboardComponent},
   {path: 'signals', component: SignalsComponent},
   {path: 'signals/:detectionId', component: SignalDetailsComponent},
   {path: 'profile', component: UsersProfileComponent},

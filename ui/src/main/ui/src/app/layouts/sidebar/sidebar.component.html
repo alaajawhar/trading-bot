@@ -1,7 +1,8 @@
 <aside id="sidebar" class="sidebar">
   <ul class="sidebar-nav" id="sidebar-nav">
     <li class="nav-item" *ngFor="let sideBarItem of sideBarList; let i = index">
-      <a class="nav-link collapsed" [attr.data-bs-target]="'#sidebar-nav-item' + i" data-bs-toggle="collapse" href="#">
+      <a class="nav-link collapsed" [attr.data-bs-target]="'#sidebar-nav-item' + i" data-bs-toggle="collapse" href="#"
+         (click)="!hasChild(i) ? onParentClick(i) : null">
         <i class="{{ sideBarItem.bootstrapIcon }}"></i>
         <span>{{ sideBarItem.title }}</span>
         <i class="bi bi-chevron-down ms-auto" *ngIf="hasChild(i)"></i>

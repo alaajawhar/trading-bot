@@ -40,11 +40,11 @@
                         </select>
                       </div>
                       <div class="col-md-4">
-                        <label for="timeFrameInput" class="form-label">Bot Name</label>
-                        <select id="timeFrameInput" class="form-select" [(ngModel)]="getSignalListRequest.botId"
-                                [ngModelOptions]="{standalone: true}">
-                          <option *ngFor="let bots of dropdownBots.list" [value]="bots.id">{{bots.value}}</option>
-                        </select>
+                          <label for="timeFrameInput" class="form-label">Strategy</label>
+                          <select id="timeFrameInput" class="form-select" [(ngModel)]="getSignalListRequest.strategyId"
+                                  [ngModelOptions]="{standalone: true}">
+                              <option *ngFor="let bots of dropdownBots.list" [value]="bots.id">{{bots.value}}</option>
+                          </select>
                       </div>
                       <div class="col-md-4">
                         <label for="outcomeResultInput" class="form-label">Outcome Result</label>
@@ -112,9 +112,9 @@
               </tr>
               </tbody>
             </table>
-            <div class="text-center"
-                 *ngIf="signalListResponse?.totalCount == undefined || signalListResponse?.totalCount! == 0"><p>No
-              Signals have detected</p></div>
+              <div class="text-center"
+                   *ngIf="!isLoadingData && signalListResponse?.totalCount == undefined && signalListResponse?.totalCount! == 0">
+                  <p>No Signals have detected</p></div>
             <div class="text-center" *ngIf="isLoadingData">
               <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span>
               </div>

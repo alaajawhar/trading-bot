@@ -1,7 +1,6 @@
 package com.amdose.broker.engine.jobs.update;
 
 import com.amdose.broker.engine.services.DataLoaderService;
-import com.amdose.database.enums.TimeFrameEnum;
 import com.amdose.scheduler.exposed.IOneSecondsJob;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +17,7 @@ public class OneSecondUpdateJob implements IOneSecondsJob {
 
     @Override
     public void execute() {
-        log.info("Fetching [{}] data online...", TimeFrameEnum.ONE_SECOND);
-        dataLoaderService.updateAllSymbols(TimeFrameEnum.ONE_SECOND);
+//        log.info("Fetching [{}] data online...", TimeFrameEnum.ONE_SECOND);
+//        dataLoaderService.updateAllSymbols(TimeFrameEnum.ONE_SECOND);
     }
 }

@@ -19,14 +19,22 @@ export class SignalsComponent implements OnInit {
   pageNumberArr: number[] = [];
   isLoadingData: boolean = true;
 
-  dropdownBots: DropdownResponse = undefined!;
-  dropdownTimeframes: DropdownResponse = undefined!;
-  dropdownOutcomes: DropdownResponse = undefined!;
-  signalListResponse: GetSignalListResponse = undefined!;
+  dropdownBots: DropdownResponse = {
+    list: []
+  };
+  dropdownTimeframes: DropdownResponse = {
+    list: []
+  };
+  dropdownOutcomes: DropdownResponse = {
+    list: []
+  };
+  signalListResponse: GetSignalListResponse = {
+    list: [], offset: 0, totalCount: 0
+  };
 
 
   getSignalListRequest: GetSignalListRequest = {
-    botId: undefined!,
+    strategyId: undefined!,
     detectionId: undefined!,
     fromDate: undefined!,
     toDate: undefined!,
@@ -100,7 +108,7 @@ export class SignalsComponent implements OnInit {
 
   onFilterReset() {
     this.getSignalListRequest = {
-      botId: undefined!,
+      strategyId: undefined!,
       detectionId: undefined!,
       fromDate: undefined!,
       toDate: undefined!,

@@ -31,9 +31,9 @@ public class DetectedSignalsRepository {
             params = ArrayUtils.add(params, filters.getDetectionId());
         }
 
-        if (filters.getBotId() != null) {
+        if (filters.getStrategyId() != null) {
             query += " and sell_ts.bot_id = ? ";
-            params = ArrayUtils.add(params, filters.getBotId());
+            params = ArrayUtils.add(params, filters.getStrategyId());
         }
 
         if (filters.getOutcomeResult() != null) {
@@ -86,4 +86,6 @@ public class DetectedSignalsRepository {
 
         return response;
     }
+
+
 }

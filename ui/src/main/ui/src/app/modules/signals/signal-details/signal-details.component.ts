@@ -12,12 +12,20 @@ import {DisabledFieldItem, DisabledFieldsCard} from "../../../shared/components/
 export class SignalDetailsComponent implements OnInit {
   private isLoadingData: boolean = true;
   // DTO
-  basicInformationData: DisabledFieldsCard = undefined!
-  responseMetaData: DisabledFieldsCard = undefined!
+  basicInformationData: DisabledFieldsCard = {
+    list: []
+  };
+  responseMetaData: DisabledFieldsCard = {
+    list: []
+  };
 
   // BACKEND RESPONSE
   detectionId: string = undefined!;
-  signalByIdResponse: GetSignalByIdResponse;
+
+  signalByIdResponse: GetSignalByIdResponse = {
+    botId: "", detectionId: "", metaData: {}, timeframe: "", tradeList: []
+  };
+
   dropdownTimeframes: DropdownResponse = undefined!;
 
 

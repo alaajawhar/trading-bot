@@ -8,7 +8,9 @@ import {DisabledFieldsCard} from './models';
 })
 export class DisabledFieldCardComponent implements OnInit {
   @Input() cardTitle: string;
-  @Input() disabledFieldsCard!: DisabledFieldsCard;
+  @Input() disabledFieldsCard: DisabledFieldsCard = {
+    list: []
+  };
 
   constructor() {
   }

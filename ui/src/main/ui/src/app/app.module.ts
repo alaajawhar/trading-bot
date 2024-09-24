@@ -25,6 +25,10 @@ import {HttpClientModule} from "@angular/common/http";
 import {SignalDetailsComponent} from './modules/signals/signal-details/signal-details.component';
 import {DisabledFieldCardComponent} from './shared/components/disabled-field-card/disabled-field-card.component';
 import {CustomDateFormatPipe} from './shared/pipes/custom-date-format.pipe';
+import {DashboardComponent} from "./modules/dashboard/dashboard.component";
+import {LineChartComponent} from './shared/components/charts/line-chart/line-chart.component';
+import {BudgetChartComponent} from './shared/components/charts/budget-chart/budget-chart.component';
+import {TrafficChartComponent} from './shared/components/charts/traffic-chart/traffic-chart.component';
 
 @NgModule({
   declarations: [
@@ -37,9 +41,13 @@ import {CustomDateFormatPipe} from './shared/pipes/custom-date-format.pipe';
     PagesLoginComponent,
     PagesRegisterComponent,
     SignalsComponent,
+    DashboardComponent,
     SignalDetailsComponent,
     DisabledFieldCardComponent,
     CustomDateFormatPipe,
+    LineChartComponent,
+    BudgetChartComponent,
+    TrafficChartComponent,
   ],
   imports: [
     BrowserModule,

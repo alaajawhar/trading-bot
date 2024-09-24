@@ -10,9 +10,15 @@ import {SideBarItem} from "./sidebar.component.model";
 export class SidebarComponent implements OnInit {
   sideBarList: SideBarItem[] = [
     {
+      bootstrapIcon: 'bi bi-grid',
+      routing: '',
+      title: 'Dashboard',
+      child: undefined!,
+    },
+    {
       bootstrapIcon: 'bi bi-list-check',
-      routing: '/requirements',
-      title: 'Group1',
+      routing: undefined!,
+      title: 'Trades',
       child: [
         {
           routing: '/signals',
@@ -46,6 +52,13 @@ export class SidebarComponent implements OnInit {
     this.selectedChild = this.sideBarList[tabIndex].child[childIndex].routing;
 
     this.router.navigate([this.selectedChild]);
+  }
+
+  onParentClick(tabIndex: number) {
+    const parentItem = this.sideBarList[tabIndex];
+    if (!this.hasChild(tabIndex)) {
+      this.router.navigate([parentItem.routing]);
+    }
   }
 
 }
