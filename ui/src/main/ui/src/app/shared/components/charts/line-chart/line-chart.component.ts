@@ -52,6 +52,13 @@ export class LineChartComponent implements OnInit, OnChanges {
 
     // Set up the options for the lineChart chart
     const options = {
+      grid: {
+        left: '2%',   // Set to 0% or adjust to reduce space from the left
+        right: '3%',  // Set to 0% or adjust to reduce space from the right
+        top: '10%',   // Adjust as needed (for example, if you have a legend or title at the top)
+        bottom: '3%', // Adjust for bottom space, like axis labels
+        containLabel: true  // Ensure labels are not cut off
+      },
       legend: {
         data: legends,
         icon: 'roundRect',// Automatically use the series names for the legend
