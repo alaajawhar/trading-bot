@@ -29,6 +29,7 @@ import {DashboardComponent} from "./modules/dashboard/dashboard.component";
 import {LineChartComponent} from './shared/components/charts/line-chart/line-chart.component';
 import {BudgetChartComponent} from './shared/components/charts/budget-chart/budget-chart.component';
 import {TrafficChartComponent} from './shared/components/charts/traffic-chart/traffic-chart.component';
+import {StrategiesTestComponent} from "./modules/test/strategies-test/strategies-test.component";
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import {TrafficChartComponent} from './shared/components/charts/traffic-chart/tr
     LineChartComponent,
     BudgetChartComponent,
     TrafficChartComponent,
+    StrategiesTestComponent
   ],
   imports: [
     BrowserModule,

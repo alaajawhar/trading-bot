@@ -1,5 +1,4 @@
 export interface BudgetChartModel {
-    maxValue: number;
     indicators: string[];
     list: BudgetChartItem[];
 }

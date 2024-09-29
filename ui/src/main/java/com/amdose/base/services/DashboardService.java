@@ -34,17 +34,17 @@ public class DashboardService {
     public GetDashboardSummaryResponse getDashboardSummary(DashboardRequest request) {
         Long totalLose = dashboardRepository.getTotalLose(request);
         Long totalWins = dashboardRepository.getTotalWins(request);
-        Long totalProfit = dashboardRepository.getTotalProfit(request);
+        double totalProfit = dashboardRepository.getTotalProfit(request);
 
         GetDashboardSummaryResponse response = new GetDashboardSummaryResponse();
         response.setTotalWins(totalWins);
-        response.setTotalProfit(totalProfit);
+        response.setTotalProfit((long) totalProfit);
         response.setTotalLose(totalLose);
         return response;
     }
 
-    public GetStrategiesPerformanceOverTimeResponse getStrategiesPerformanceOverTime(DashboardRequest request) {
-        GetStrategiesPerformanceOverTimeResponse response = new GetStrategiesPerformanceOverTimeResponse();
+    public GetLineChartResponse getStrategiesPerformanceOverTime(DashboardRequest request) {
+        GetLineChartResponse response = new GetLineChartResponse();
 
         switch (request.getFilter()) {
             case TODAY -> response.setLabels(List.of("00:00", "01:00", "02:00", "03:00", "04:00", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00", "20:00", "21:00", "22:00", "23:00"));
@@ -52,19 +52,21 @@ public class DashboardService {
             case THIS_MONTH -> response.setLabels(List.of("Week 1", "Week 2", "Week 3", "Week 4"));
         }
 
-        List<StrategyPerformanceItem> list = new ArrayList<>();
+        List<ChartItem> list = new ArrayList<>();
 
         for (StrategyEntity strategyItem : strategyRepository.findAll()) {
-            StrategyPerformanceItem strategyPerformanceItem = new StrategyPerformanceItem();
-            strategyPerformanceItem.setStrategyName(strategyItem.getName());
-            strategyPerformanceItem.setStrategyColor("#5a0bba");
+            ChartItem chartItem = new ChartItem();
+            chartItem.setChartName(strategyItem.getName());
+            chartItem.setChartColor("#5a0bba");
 
             if (request.getFilter() == DashboardFilterEnum.TODAY) {
                 List<StrategyPerformanceItemDao> todaysPerformanceList = dashboardRepository.getStrategyTodaysPerformanceByStrategyId(request, strategyItem.getId());
-                strategyPerformanceItem.setData(todaysPerformanceList.stream().map(StrategyPerformanceItemDao::getPerformanceValue).collect(Collectors.toList()));
+                List<Double> collect = todaysPerformanceList.stream().map(StrategyPerformanceItemDao::getPerformanceValue).mapToDouble(BigDecimal::doubleValue).boxed().collect(Collectors.toList());
+                collect.add(0, 0.0d); // just for chart beginning. TODO: find a better solution
+                chartItem.setData(collect);
             }
 
-            list.add(strategyPerformanceItem);
+            list.add(chartItem);
         }
 
         response.setList(list);
@@ -73,24 +75,23 @@ public class DashboardService {
 
     public GetStrategiesPerformanceBaseOnTimeframesResponse getStrategiesPerformanceOverTimeframes(DashboardRequest request) {
         GetStrategiesPerformanceBaseOnTimeframesResponse response = new GetStrategiesPerformanceBaseOnTimeframesResponse();
-        List<StrategyPerformanceItem> list = new ArrayList<>();
+        List<ChartItem> list = new ArrayList<>();
 
         response.setLabels(Arrays.stream(TimeFrameEnum.values()).map(TimeFrameEnum::getLabel).collect(Collectors.toList()));
 
         for (StrategyEntity strategyItem : strategyRepository.findAll()) {
-            StrategyPerformanceItem strategyPerformanceItem = new StrategyPerformanceItem();
-            strategyPerformanceItem.setStrategyName(strategyItem.getName());
-            strategyPerformanceItem.setStrategyColor("#5a0bba");
+            ChartItem chartItem = new ChartItem();
+            chartItem.setChartName(strategyItem.getName());
+            chartItem.setChartColor("#5a0bba");
 
             if (request.getFilter() == DashboardFilterEnum.TODAY) {
                 List<StrategyPerformanceItemDao> todaysPerformanceList = dashboardRepository.getStrategyOverTimeframesByStrategyId(request, strategyItem.getId());
-                List<BigDecimal> dataList = todaysPerformanceList.stream().map(StrategyPerformanceItemDao::getPerformanceValue).collect(Collectors.toList());
-                BigDecimal maxValue = dataList.stream().max(Comparator.naturalOrder()).get();
-                strategyPerformanceItem.setData(dataList);
-                response.setMaxValue(new BigDecimal("300"));
+                List<Double> dataList = todaysPerformanceList.stream().map(StrategyPerformanceItemDao::getPerformanceValue).mapToDouble(BigDecimal::doubleValue).boxed().collect(Collectors.toList());
+                Double maxValue = dataList.stream().max(Comparator.naturalOrder()).get();
+                chartItem.setData(dataList);
             }
 
-            list.add(strategyPerformanceItem);
+            list.add(chartItem);
         }
 
 

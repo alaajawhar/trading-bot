@@ -7,6 +7,7 @@ import {PagesLoginComponent} from "./modules/pages-login/pages-login.component";
 import {SignalsComponent} from "./modules/signals/signals.component";
 import {SignalDetailsComponent} from "./modules/signals/signal-details/signal-details.component";
 import {DashboardComponent} from "./modules/dashboard/dashboard.component";
+import {StrategiesTestComponent} from "./modules/test/strategies-test/strategies-test.component";
 
 const routes: Routes = [
   {path: '', component: DashboardComponent},
@@ -15,6 +16,7 @@ const routes: Routes = [
   {path: 'profile', component: UsersProfileComponent},
   {path: 'login', component: PagesLoginComponent},
   {path: 'register', component: PagesRegisterComponent},
+  {path: 'test/strategies', component: StrategiesTestComponent},
   {path: 'error404', component: PagesError404Component, data: {fullScreen: true}},
 ];
 

@@ -11,10 +11,11 @@ import org.springframework.jdbc.core.RowMapper;
 public class DetectedSignalsSql {
     public static final String query = """
             SELECT distinct sell_ts.detection_id as detection_id,
-                   sell_ts.bot_id as bot_id,
+                   strategy.id as strategyId,
                    bot.time_frame as timeframe,
                    sell_candle.candle_date            AS sell_date,
-                   sell_candle.open - buy_candle.open AS result_difference
+                   sell_candle.open - buy_candle.open AS result_difference,
+                   sell_ts.id
             FROM trading_signal sell_ts
                      JOIN
                  trading_signal buy_ts
@@ -36,6 +37,8 @@ public class DetectedSignalsSql {
                      JOIN
                  candle buy_candle ON buy_ts.scheduled_at = buy_candle.candle_date
                      JOIN bot bot on bot.id = sell_ts.bot_id
+                     JOIN strategy strategy 
+                     on strategy.id = bot.strategy_id
             WHERE sell_ts.action = 'SELL'
               AND buy_ts.action = 'BUY'
             """;

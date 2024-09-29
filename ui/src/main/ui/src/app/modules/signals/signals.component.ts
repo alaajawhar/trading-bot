@@ -7,6 +7,7 @@ import {
   GetSignalListResponse
 } from "../../shared/services/payloads";
 import {Router} from "@angular/router";
+import {getDropdownValueFromKey} from "../../shared/utils/function.utils";
 
 @Component({
   selector: 'app-signals',
@@ -16,7 +17,6 @@ import {Router} from "@angular/router";
 export class SignalsComponent implements OnInit {
   itemsPerPage: number = 15;
   selectedPageNumber: number = 0;
-  pageNumberArr: number[] = [];
   isLoadingData: boolean = true;
 
   dropdownBots: DropdownResponse = {
@@ -35,6 +35,7 @@ export class SignalsComponent implements OnInit {
 
   getSignalListRequest: GetSignalListRequest = {
     strategyId: undefined!,
+    symbolId: undefined!,
     detectionId: undefined!,
     fromDate: undefined!,
     toDate: undefined!,
@@ -54,7 +55,7 @@ export class SignalsComponent implements OnInit {
       this.isLoadingData = false;
     })
 
-    this.backend.getDropdownBots().subscribe(resp => {
+    this.backend.getDropdownStrategies().subscribe(resp => {
       this.dropdownBots = resp;
     })
 
@@ -97,10 +98,7 @@ export class SignalsComponent implements OnInit {
     this.router.navigate(['/signals', detectionId]);
   }
 
-  getValueById(dropdowns: DropdownItem[], id: string): string | undefined {
-    const item = dropdowns.find(item => item.id == id);
-    return item?.value;
-  }
+  getValueById = (dropdowns: DropdownItem[], id: string) => getDropdownValueFromKey(dropdowns, id);
 
   resetPagination() {
     this.selectedPageNumber = 0;
@@ -109,6 +107,7 @@ export class SignalsComponent implements OnInit {
   onFilterReset() {
     this.getSignalListRequest = {
       strategyId: undefined!,
+      symbolId: undefined!,
       detectionId: undefined!,
       fromDate: undefined!,
       toDate: undefined!,

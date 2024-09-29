@@ -8,7 +8,7 @@ import java.util.List;
  * @author Alaa Jawhar
  */
 @Data
-public class GetStrategiesPerformanceOverTimeResponse {
+public class GetLineChartResponse {
     private List<String> labels;
-    private List<StrategyPerformanceItem> list;
+    private List<ChartItem> list;
 }

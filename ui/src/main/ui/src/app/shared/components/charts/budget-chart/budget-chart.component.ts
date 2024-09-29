@@ -37,12 +37,24 @@ export class BudgetChartComponent implements OnInit, OnChanges {
 
     const seriesData = this.data.list.map(item => ({
       name: item.label,
-      value: item.data
+      value: item.data,
+      lineStyle: {
+        width: 2,         // Set the line thickness
+        type: 'solid',    // Can be 'solid', 'dashed', 'dotted'
+        color: item.color // Set the color for the line
+      },
+      itemStyle: {
+        color: item.color,  // Color for the dots and the line
+      },
     }));
+
+    const maxValue = Math.abs(Math.max(...this.data.list.flatMap(item => item.data)));
+    const minValue = Math.abs(Math.min(...this.data.list.flatMap(item => item.data)));
+
 
     const indicatorsData = this.data.indicators.map(item => ({
       name: item,
-      max: this.data.maxValue
+      max: Math.max(maxValue, minValue)
     }));
 
     // Set up the options for the radar chart

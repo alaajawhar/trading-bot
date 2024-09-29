@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {Backend} from "../../../shared/services/backend";
-import {DropdownResponse, GetSignalByIdResponse} from "../../../shared/services/payloads";
+import {DropdownItem, DropdownResponse, GetSignalByIdResponse} from "../../../shared/services/payloads";
 import {DisabledFieldItem, DisabledFieldsCard} from "../../../shared/components/disabled-field-card/models";
+import {getDropdownValueFromKey} from "../../../shared/utils/function.utils";
 
 @Component({
   selector: 'app-signal-details',
@@ -43,7 +44,7 @@ export class SignalDetailsComponent implements OnInit {
         list: [
           {label: 'Detection Id', value: resp.detectionId},
           {label: 'Bot Name', value: resp.botId},
-          {label: 'Timeframe', value: resp.timeframe}
+          {label: 'Timeframe', value: this.getValueById(this.dropdownTimeframes.list, resp.timeframe)!}
         ]
       };
 
@@ -80,5 +81,7 @@ export class SignalDetailsComponent implements OnInit {
       .replace(/([A-Z])/g, ' $1')  // Insert space before capital letters
       .replace(/^./, str => str.toUpperCase());  // Capitalize the first letter
   }
+
+  getValueById = (dropdowns: DropdownItem[], id: string) => getDropdownValueFromKey(dropdowns, id);
 
 }

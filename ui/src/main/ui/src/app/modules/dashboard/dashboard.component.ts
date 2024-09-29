@@ -28,7 +28,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   * Budget Chart
   */
   budgetChartData: BudgetChartModel = {
-    maxValue: 0,
     indicators: [],
     list: []
   };
@@ -66,8 +65,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       this.lineChartData.xValues = resp.labels;
 
       const data = resp.list.map(item => ({
-        label: item.strategyName,
-        color: item.strategyColor,
+        label: item.chartName,
+        color: item.chartColor,
         yValues: item.data
       }));
 
@@ -76,11 +75,10 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
     this.backend.getDashboardStrategiesPerformanceBaseOnTimeframe({filter: 'TODAY'}).subscribe(resp => {
       this.budgetChartData.indicators = resp.labels;
-      this.budgetChartData.maxValue = resp.maxValue;
 
       const data = resp.list.map(item => ({
-        label: item.strategyName,
-        color: item.strategyColor,
+        label: item.chartName,
+        color: item.chartColor,
         data: item.data
       }));
 

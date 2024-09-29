@@ -1,8 +1,8 @@
 package com.amdose.base.controllers;
 
-import com.amdose.base.payloads.TestRequest;
-import com.amdose.base.payloads.TestResponse;
-import com.amdose.base.services.test.TestService;
+import com.amdose.base.payloads.test.strategy.GetStrategyTestRequest;
+import com.amdose.base.payloads.test.strategy.GetStrategyTestResponse;
+import com.amdose.base.services.test.StrategyTestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,13 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController implements ITestController {
 
     @Autowired
-    private TestService testService;
+    private StrategyTestService strategyTestService;
 
-    public TestResponse successTest(TestRequest testRequest) {
-        return testService.serve(testRequest);
-    }
-
-    public TestResponse failureTest(TestRequest testRequest) {
-        throw new RuntimeException("Just for testing");
+    @Override
+    public GetStrategyTestResponse getStrategyTest(GetStrategyTestRequest request) {
+        return strategyTestService.getStrategyTest(request);
     }
 }

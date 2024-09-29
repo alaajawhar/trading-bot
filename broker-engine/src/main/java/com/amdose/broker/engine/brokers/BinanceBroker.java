@@ -185,7 +185,7 @@ public class BinanceBroker implements IBrokerService {
         List<CandleEntity> response = new ArrayList<>();
         for (List<Object> doubles : jsonObj) {
             CandleEntity brokerCandle = new CandleEntity();
-            brokerCandle.setDate(DateUtils.convertLongToDate((long) doubles.get(0)));
+            brokerCandle.setDate(DateUtils.roundSecondsAndMilliseconds(DateUtils.convertLongToDate((long) doubles.get(0))));
             brokerCandle.setOpen(Double.parseDouble((String) doubles.get(1)));
             brokerCandle.setHigh(Double.parseDouble((String) doubles.get(2)));
             brokerCandle.setLow(Double.parseDouble((String) doubles.get(3)));

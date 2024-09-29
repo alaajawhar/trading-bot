@@ -6,6 +6,6 @@ import lombok.Data;
  * @author Alaa Jawhar
  */
 @Data
-public class TestResponse {
+public class StrategyTestResponse {
     private String s;
 }

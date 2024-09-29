@@ -61,7 +61,7 @@ public class DetectedSignalsRepository {
             params = ArrayUtils.add(params, filters.getToDate());
         }
 
-        query += "order by sell_candle.candle_date desc";
+        query += "order by sell_ts.id desc";
 
         String countQuery = query;
         Object[] countParams = ArrayUtils.clone(params);

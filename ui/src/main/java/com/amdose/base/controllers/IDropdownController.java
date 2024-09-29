@@ -20,4 +20,7 @@ public interface IDropdownController {
     @GetMapping(UriConstants.GET_TIMEFRAMES)
     @Cacheable(value = "timeFrames", keyGenerator = "localizedGenerator")
     DropDownResponse getTimeFrames();
+
+    @GetMapping(UriConstants.GET_SYMBOLS)
+    DropDownResponse getSymbols();
 }

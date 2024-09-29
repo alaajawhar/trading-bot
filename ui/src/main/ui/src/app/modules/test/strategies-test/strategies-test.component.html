@@ -1,0 +1,127 @@
+<main id="main" class="main">
+  <div class="pagetitle">
+    <h1>Blank Page</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+        <li class="breadcrumb-item">Pages</li>
+        <li class="breadcrumb-item active">Blank</li>
+      </ol>
+    </nav>
+  </div>
+  <section class="section">
+    <div class="row dashboard">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Strategy Test</h5>
+            <p>Here you can execute and test your strategies</p>
+            <div class="accordion" id="accordionExample">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingTwo">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                          data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"> Filter
+                  </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse show" aria-labelledby="headingTwo"
+                     data-bs-parent="#accordionExample">
+                  <div class="accordion-body">
+                    <form class="row g-3">
+                      <div class="col-md-4">
+                        <label for="timeFrameInput" class="form-label">Strategy</label>
+                        <select id="timeFrameInput" class="form-select" [(ngModel)]="strategyTestRequest.strategyId"
+                                [ngModelOptions]="{standalone: true}">
+                          <option *ngFor="let bots of dropdownStrategies.list" [value]="bots.id">{{bots.value}}</option>
+                        </select>
+                      </div>
+                      <div class="col-md-4">
+                        <label for="symbolInput" class="form-label">Symbol</label>
+                        <select id="symbolInput" class="form-select" [(ngModel)]="strategyTestRequest.symbolId"
+                                [ngModelOptions]="{standalone: true}">
+                          <option *ngFor="let symbol of dropdownSymbols.list"
+                                  [value]="symbol.id">{{symbol.value}}</option>
+                        </select>
+                      </div>
+
+                      <div class="text-end">
+                        <div class="btn btn-secondary me-3" (click)="onFilterReset()">Reset</div>
+                        <div class="btn btn-primary" (click)="onGo()">Go</div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-8" *ngIf="!isLoadingData">
+        <div class="row">
+          <div class="col-xxl-4 col-md-6">
+            <div class="card info-card sales-card">
+              <div class="card-body">
+                <h5 class="card-title">Wins</h5>
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i
+                      class="bi bi-graph-up-arrow"></i></div>
+                  <div class="ps-3">
+                    <h6>{{dashboardSummaryResponse.totalWins}}</h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xxl-4 col-md-6">
+            <div class="card info-card revenue-card">
+              <div class="card-body">
+                <h5 class="card-title">Profit</h5>
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i
+                      class="bi bi-currency-dollar"></i></div>
+                  <div class="ps-3">
+                    <h6>${{dashboardSummaryResponse.totalProfit}}</h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xxl-4 col-xl-12">
+            <div class="card info-card customers-card">
+              <div class="card-body">
+                <h5 class="card-title">Loses</h5>
+                <div class="d-flex align-items-center">
+                  <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                    <i
+                      class="bi bi-graph-down-arrow"></i></div>
+                  <div class="ps-3">
+                    <h6>{{dashboardSummaryResponse.totalLose}}</h6>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Performance Report  -->
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">Performance Report</h5>
+                <app-line-chart [data]="lineChartData"></app-line-chart>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4" *ngIf="!isLoadingData">
+        <div class="card">
+          <div class="card-body pb-0">
+            <h5 class="card-title">Timeframes Report</h5>
+            <app-budget-chart [data]="budgetChartData"></app-budget-chart>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>

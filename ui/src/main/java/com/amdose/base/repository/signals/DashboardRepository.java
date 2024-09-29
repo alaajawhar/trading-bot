@@ -54,7 +54,7 @@ public class DashboardRepository {
         return jdbcTemplate.queryForObject(RepositoryUtils.getCountQuery(query), params, Long.class);
     }
 
-    public Long getTotalProfit(DashboardRequest filters) {
+    public Double getTotalProfit(DashboardRequest filters) {
         String query = DetectedSignalsSql.query;
         Object[] params = new Object[]{};
 
@@ -63,11 +63,11 @@ public class DashboardRepository {
         }
 
 
-        Long totalProfit = jdbcTemplate.queryForObject(
-                RepositoryUtils.getSumQuery(query, "result_difference"), params, Long.class);
+        Double totalProfit = jdbcTemplate.queryForObject(
+                RepositoryUtils.getSumQuery(query, "result_difference"), params, Double.class);
 
         if (totalProfit == null) {
-            return 0L;
+            return 0d;
         }
 
         return totalProfit;

@@ -10,7 +10,7 @@ import {SideBarItem} from "./sidebar.component.model";
 export class SidebarComponent implements OnInit {
   sideBarList: SideBarItem[] = [
     {
-      bootstrapIcon: 'bi bi-grid',
+      bootstrapIcon: 'bi bi-bar-chart',
       routing: '',
       title: 'Dashboard',
       child: undefined!,
@@ -23,6 +23,17 @@ export class SidebarComponent implements OnInit {
         {
           routing: '/signals',
           title: 'Signals',
+        },
+      ],
+    },
+    {
+      bootstrapIcon: 'bi bi-speedometer2',
+      routing: undefined!,
+      title: 'Test',
+      child: [
+        {
+          routing: '/test/strategies',
+          title: 'Strategies',
         },
       ],
     },

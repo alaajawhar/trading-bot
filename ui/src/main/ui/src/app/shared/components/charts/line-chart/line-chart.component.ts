@@ -53,10 +53,10 @@ export class LineChartComponent implements OnInit, OnChanges {
     // Set up the options for the lineChart chart
     const options = {
       grid: {
-        left: '2%',   // Set to 0% or adjust to reduce space from the left
-        right: '3%',  // Set to 0% or adjust to reduce space from the right
-        top: '10%',   // Adjust as needed (for example, if you have a legend or title at the top)
-        bottom: '3%', // Adjust for bottom space, like axis labels
+        left: '2%',
+        right: '3%',
+        top: '10%',
+        bottom: '3%',
         containLabel: true  // Ensure labels are not cut off
       },
       legend: {
@@ -70,7 +70,7 @@ export class LineChartComponent implements OnInit, OnChanges {
           interval: 0,  // Show all labels
           rotate: 45,  // Optional: Rotate labels for better readability if they overlap
           formatter: function (value: string) {
-            return value;  // Custom formatting if needed
+            return value;
           },
           textStyle: {
             color: '#666',  // Optional: Customize label color

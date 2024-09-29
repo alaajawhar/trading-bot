@@ -61,6 +61,11 @@
         </dependency>
         <dependency>
             <groupId>com.amdose.trading.bot</groupId>
+            <artifactId>trading-bot-pattern-detection-engine</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.amdose.trading.bot</groupId>
             <artifactId>trading-bot-utils</artifactId>
             <version>${project.version}</version>
         </dependency>
