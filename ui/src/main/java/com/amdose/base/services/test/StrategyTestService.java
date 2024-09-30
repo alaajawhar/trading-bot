@@ -173,16 +173,16 @@ public class StrategyTestService {
 
             chartItem.setData(List.of(
                     0.0d,
-                    sum0_100,
-                    sum100_200,
-                    sum200_300,
-                    sum300_400,
-                    sum400_500,
-                    sum500_600,
-                    sum600_700,
-                    sum700_800,
-                    sum800_900,
-                    sum900_1000
+                    DisplayUtils.roundAmountToDouble(sum0_100),
+                    DisplayUtils.roundAmountToDouble(sum100_200),
+                    DisplayUtils.roundAmountToDouble(sum200_300),
+                    DisplayUtils.roundAmountToDouble(sum300_400),
+                    DisplayUtils.roundAmountToDouble(sum400_500),
+                    DisplayUtils.roundAmountToDouble(sum500_600),
+                    DisplayUtils.roundAmountToDouble(sum600_700),
+                    DisplayUtils.roundAmountToDouble(sum700_800),
+                    DisplayUtils.roundAmountToDouble(sum800_900),
+                    DisplayUtils.roundAmountToDouble(sum900_1000)
             ));
 
             list.add(chartItem);
@@ -203,7 +203,7 @@ public class StrategyTestService {
 
         for (TimeFrameEnum timeFrame : TimeFrameEnum.values()) {
             double timeframeSum = detectedSignals.stream().filter(signal -> signal.getTimeFrame() == timeFrame).mapToDouble(TestTradeDTO::getProfit).sum();
-            chartItem.addData(timeframeSum);
+            chartItem.addData(DisplayUtils.roundAmountToDouble(timeframeSum));
             list.add(chartItem);
         }
 
@@ -263,8 +263,8 @@ public class StrategyTestService {
             double winsSum = detectedSignals.stream().filter(signal -> signal.getTimeFrame() == timeFrame).mapToDouble(TestTradeDTO::getProfit).filter(profit -> profit > 0).sum();
             double losesSum = detectedSignals.stream().filter(signal -> signal.getTimeFrame() == timeFrame).mapToDouble(TestTradeDTO::getProfit).filter(profit -> profit < 0).sum();
 
-            winsData.add(winsSum);
-            losesData.add(Math.abs(losesSum));
+            winsData.add(DisplayUtils.roundAmountToDouble(winsSum));
+            losesData.add(DisplayUtils.roundAmountToDouble(Math.abs(losesSum)));
         }
 
         list.add(winsChart);
@@ -290,7 +290,7 @@ public class StrategyTestService {
             TestSignalItem testSignalItem = new TestSignalItem();
             testSignalItem.setTimeframe(detectedSignal.getTimeFrame());
             testSignalItem.setOutcomeResult(detectedSignal.getProfit() > 0 ? OutcomeResultEnum.WIN : OutcomeResultEnum.LOSE);
-            testSignalItem.setProfit(DisplayUtils.roundAmount(detectedSignal.getProfit()));
+            testSignalItem.setProfit(DisplayUtils.roundAmountToString(detectedSignal.getProfit()));
             testSignalItem.setMetaData(JsonUtils.convertToObject(detectedSignal.getMetaData(), Object.class));
             testSignalItem.setDate(detectedSignal.getDate());
             list.add(testSignalItem);

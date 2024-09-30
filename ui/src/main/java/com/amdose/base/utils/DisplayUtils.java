@@ -11,17 +11,32 @@ import java.math.RoundingMode;
 @UtilityClass
 public class DisplayUtils {
 
-    public static final String roundAmount(Double value) {
-        return roundAmount(String.valueOf(value));
+    public static String roundAmountToString(Double value) {
+        return roundAmountToString(String.valueOf(value));
     }
 
-    public static final String roundAmount(String value) {
+    public static String roundAmountToString(String value) {
         BigDecimal bd = new BigDecimal(value);
-        return roundAmount(bd);
+        return roundAmountToString(bd);
     }
 
-    public static final String roundAmount(BigDecimal value) {
+    public static String roundAmountToString(BigDecimal value) {
         value = value.setScale(2, RoundingMode.HALF_UP);
         return String.valueOf(value.doubleValue());
+    }
+
+
+    public static Double roundAmountToDouble(Double value) {
+        return roundAmountToDouble(String.valueOf(value));
+    }
+
+    public static Double roundAmountToDouble(String value) {
+        BigDecimal bd = new BigDecimal(value);
+        return roundAmountToDouble(bd);
+    }
+
+    public static Double roundAmountToDouble(BigDecimal value) {
+        value = value.setScale(2, RoundingMode.HALF_UP);
+        return value.doubleValue();
     }
 }
