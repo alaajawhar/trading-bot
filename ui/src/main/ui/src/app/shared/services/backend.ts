@@ -65,5 +65,4 @@ export class Backend {
   public getTestStrategy(request: StrategyTestRequest) {
     return this.http.post<StrategyTestResponse>(environment.backendUrl + "/strategy/test/summary", request, {headers: this.headers});
   }
-
 }

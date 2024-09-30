@@ -94,14 +94,52 @@ export interface DashboardBotPerformanceOverTimeframeResponseItem {
   data: number[]
 }
 
+export interface PieChartResponse {
+  labels: string[];
+  list: PieChartResponseItem[]
+}
+
+export interface PieChartResponseItem {
+  chartName: string;
+  chartColor: string;
+  data: number
+}
+
+export interface MultiBarChartResponse {
+  labels: string[];
+  list: MultiBarChartResponseItem[]
+}
+
+export interface MultiBarChartResponseItem {
+  chartName: string;
+  chartColor: string;
+  data: number[]
+}
+
 export interface StrategyTestResponse {
   summaryResponse: DashboardSummaryResponse;
   performanceBaseOnTimeframesResponse: DashboardStrategiesPerformanceOverTimeframeResponse;
   performanceOverTimeResponse: DashboardStrategiesPerformanceOverPeriodResponse;
+  pieChartResponse: PieChartResponse;
+  multiBarChartResponse: MultiBarChartResponse;
+  signals: GetSignalTestListResponse;
 }
 
 export interface StrategyTestRequest {
   strategyId: number;
   symbolId: number;
 }
+
+export interface GetSignalTestListResponse {
+  list: SignalTestItem[];
+}
+
+export interface SignalTestItem {
+  timeframe: string;
+  outcomeResult: string;
+  profit: string;
+  metaData: object;
+  date: Date;
+}
+
 

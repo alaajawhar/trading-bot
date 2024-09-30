@@ -19,6 +19,8 @@ public interface ICandleRepository extends CrudRepository<CandleEntity, Long> {
 
     List<CandleEntity> findAllByDateBeforeOrderByDateAsc(Date date);
 
+    List<CandleEntity> findAllByDateAfterAndSymbolAndTimeFrameOrderByDateAsc(Date date, SymbolEntity symbol, TimeFrameEnum timeFrame);
+
     List<CandleEntity> findAllByTimeFrameOrderByDateAsc(TimeFrameEnum timeFrame);
 
     List<CandleEntity> findAllBySymbolAndTimeFrameOrderByDateAsc(SymbolEntity symbol, TimeFrameEnum timeFrame);

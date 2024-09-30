@@ -1,6 +1,5 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {BudgetChartModel} from "../../shared/components/charts/budget-chart/models";
-import {TrafficChartModel} from "../../shared/components/charts/traffic-chart/models";
 import {LineChartModel} from "../../shared/components/charts/line-chart/models";
 import {Backend} from "../../shared/services/backend";
 import {Router} from "@angular/router";
@@ -31,27 +30,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     indicators: [],
     list: []
   };
-
-  /*
-  * Traffic Chart
-  */
-  trafficChartData: TrafficChartModel = {
-    subTitle: 'Result of',
-    list: [
-      {
-        label: 'Bot1',
-        percentage: 40
-      },
-      {
-        label: 'Bot2',
-        percentage: 30
-      },
-      {
-        label: 'Bot3',
-        percentage: 30
-      }]
-  };
-
 
   constructor(private backend: Backend, private router: Router) {
   }

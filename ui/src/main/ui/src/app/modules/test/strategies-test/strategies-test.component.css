@@ -1,0 +1,5 @@
+/* Custom class for the modal dialog */
+.rounded-modal .modal-content {
+  border-radius: 15px; /* Adjust the value for more or less roundness */
+  overflow: hidden; /* Ensures the content inside is clipped to the rounded border */
+}

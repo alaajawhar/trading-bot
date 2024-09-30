@@ -43,10 +43,6 @@ public class DateUtils {
     }
 
     public static Boolean isPresentOrFutureInHourMinuteSecond(Date date) {
-        log.debug("Date: [{}], isFuture: [{}], isPresent: [{}]", convertToString(date), isFutureInHourMinuteSecond(date), isPresentInHourMinuteSecond(date));
-        log.debug("getNow(): [{}], date: [{}], result: [{}]", convertToString(getNow()), convertToString(date), getNow().before(date));
-        log.debug("getNow(): [{}], date: [{}], isFutureInHourMinuteSecondResult: [{}]", convertToString(getNow()), convertToString(date), isFutureInHourMinuteSecond(date));
-        log.debug("getNow(): [{}], date: [{}], result: [{}]", getNow().getTime(), date.getTime(), getNow().before(date));
         return getNow().before(date); // isFutureInHourMinuteSecond(date) || isPresentInHourMinuteSecond(date);
     }
 

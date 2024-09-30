@@ -1,14 +1,19 @@
 import {Component, OnInit} from '@angular/core';
 import {
   DashboardSummaryResponse,
+  DropdownItem,
   DropdownResponse,
-  GetSignalListResponse,
+  GetSignalTestListResponse,
   StrategyTestRequest
 } from "../../../shared/services/payloads";
 import {Backend} from "../../../shared/services/backend";
 import {Router} from "@angular/router";
 import {LineChartModel} from "../../../shared/components/charts/line-chart/models";
 import {BudgetChartModel} from "../../../shared/components/charts/budget-chart/models";
+import {PieChartModel} from "../../../shared/components/charts/pie-chart/pie-chart.models";
+import {MultiBarModel} from "../../../shared/components/charts/multi-bar-chart/multi-bar-chart.models";
+import {convertResponseToDisabledFieldsCard, getDropdownValueFromKey} from "../../../shared/utils/function.utils";
+import {DisabledFieldsCard} from "../../../shared/components/disabled-field-card/models";
 
 @Component({
   selector: 'app-strategies-test',
@@ -17,12 +22,11 @@ import {BudgetChartModel} from "../../../shared/components/charts/budget-chart/m
 })
 export class StrategiesTestComponent implements OnInit {
   isLoadingData: boolean = true;
-  selectedPageNumber: number = 0;
-  itemsPerPage: number = 15;
 
   dropdownStrategies: DropdownResponse = {
     list: []
   };
+
   dropdownTimeframes: DropdownResponse = {
     list: []
   };
@@ -31,9 +35,12 @@ export class StrategiesTestComponent implements OnInit {
     list: []
   };
 
-  signalListResponse: GetSignalListResponse = {
-    list: [], offset: 0, totalCount: 0
+  dropdownOutcomes: DropdownResponse = {
+    list: []
   };
+
+  timeFrameFilter: string;
+  testSignalsResponse: GetSignalTestListResponse;
 
   dashboardSummaryResponse: DashboardSummaryResponse = {
     totalLose: 0, totalProfit: 0, totalWins: 0
@@ -60,11 +67,32 @@ export class StrategiesTestComponent implements OnInit {
     list: []
   };
 
+  /*
+  * Pie Chart
+  */
+  pieChartData: PieChartModel = {
+    list: [
+      {value: 1048, name: 'Search Engine', color: "#ff7f50"},
+      {value: 735, name: 'Direct', color: "#87cefa"},
+    ]
+  };
+
+  /*
+  * Multi-bar Chart
+  */
+  multiBarChart: MultiBarModel = {
+    labels: [],
+    list: []
+  };
 
   constructor(private backend: Backend, private router: Router) {
   }
 
   ngOnInit(): void {
+    this.backend.getDropdownOutcomes().subscribe(resp => {
+      this.dropdownOutcomes = resp;
+    })
+
     this.backend.getDropdownStrategies().subscribe(resp => {
       this.dropdownStrategies = resp;
       this.strategyTestRequest.strategyId = Number(resp.list[0].id);
@@ -104,6 +132,32 @@ export class StrategiesTestComponent implements OnInit {
       }));
 
       this.budgetChartData.list = budgetData;
+
+      // pieChart
+      const pieChartData = resp.pieChartResponse.list.map(item => ({
+        name: item.chartName,
+        value: item.data,
+        color: item.chartColor
+      }));
+
+      this.pieChartData.list = pieChartData;
+
+
+      // multi-chart
+      const multiChartData = resp.multiBarChartResponse.list.map(item => ({
+        name: item.chartName,
+        color: item.chartColor,
+        data: item.data,
+      }));
+
+      this.multiBarChart.labels = resp.multiBarChartResponse.labels;
+      this.multiBarChart.list = multiChartData;
+
+      // detected signals as table
+
+
+      this.testSignalsResponse = resp.signals;
+
       this.isLoadingData = false;
     });
   }
@@ -114,4 +168,19 @@ export class StrategiesTestComponent implements OnInit {
       symbolId: undefined!,
     };
   }
+
+  onDetectedSignalsFilter() {
+    this.timeFrameFilter = undefined!;
+  }
+
+  selectedSignalMetaData: DisabledFieldsCard = {
+    list: []
+  };
+
+  onTestSignalClick(index: number) {
+    this.selectedSignalMetaData = convertResponseToDisabledFieldsCard(this.testSignalsResponse.list[index].metaData)
+  }
+
+  getValueById = (dropdowns: DropdownItem[], id: string) => getDropdownValueFromKey(dropdowns, id);
+
 }

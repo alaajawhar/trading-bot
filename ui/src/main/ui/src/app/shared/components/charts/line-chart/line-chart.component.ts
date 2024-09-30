@@ -91,8 +91,11 @@ export class LineChartComponent implements OnInit, OnChanges {
           type: 'line'  // Display a line indicator
         },
         formatter: function (params: any) {
-          const [param] = params;
-          return `${param.marker} ${param.seriesName}: ${param.value}`;
+          let tooltipContent = '';
+          params.forEach((param: any) => {
+            tooltipContent += `${param.marker} ${param.seriesName}: ${param.value}<br/>`;
+          });
+          return tooltipContent;
         }
       },
       series: dataSeries

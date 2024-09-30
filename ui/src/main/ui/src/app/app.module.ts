@@ -9,7 +9,7 @@ import {SidebarComponent} from './layouts/sidebar/sidebar.component';
 import {SimpleNotificationsModule} from "angular2-notifications";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {CollapseModule} from "ngx-bootstrap/collapse";
-import {BsModalService} from "ngx-bootstrap/modal";
+import {BsModalService, ModalModule} from "ngx-bootstrap/modal";
 import {ComponentLoaderFactory} from "ngx-bootstrap/component-loader";
 import {PositioningService} from "ngx-bootstrap/positioning";
 import {FormsModule} from "@angular/forms";
@@ -28,8 +28,10 @@ import {CustomDateFormatPipe} from './shared/pipes/custom-date-format.pipe';
 import {DashboardComponent} from "./modules/dashboard/dashboard.component";
 import {LineChartComponent} from './shared/components/charts/line-chart/line-chart.component';
 import {BudgetChartComponent} from './shared/components/charts/budget-chart/budget-chart.component';
-import {TrafficChartComponent} from './shared/components/charts/traffic-chart/traffic-chart.component';
 import {StrategiesTestComponent} from "./modules/test/strategies-test/strategies-test.component";
+import {PieChartComponent} from './shared/components/charts/pie-chart/pie-chart.component';
+import {MultiBarChartComponent} from './shared/components/charts/multi-bar-chart/multi-bar-chart.component';
+import {DialogService} from "./shared/services/dialogService/dialog.service";
 
 @NgModule({
   declarations: [
@@ -48,8 +50,9 @@ import {StrategiesTestComponent} from "./modules/test/strategies-test/strategies
     CustomDateFormatPipe,
     LineChartComponent,
     BudgetChartComponent,
-    TrafficChartComponent,
-    StrategiesTestComponent
+    StrategiesTestComponent,
+    PieChartComponent,
+    MultiBarChartComponent
   ],
   imports: [
     BrowserModule,
@@ -61,6 +64,7 @@ import {StrategiesTestComponent} from "./modules/test/strategies-test/strategies
     AngularMultiSelectModule,
     DragDropModule,
     HttpClientModule,
+    ModalModule.forRoot()
   ],
   providers: [
     BsModalService,
@@ -68,6 +72,7 @@ import {StrategiesTestComponent} from "./modules/test/strategies-test/strategies
     PositioningService,
     HttpClientModule,
     Backend,
+    DialogService
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
