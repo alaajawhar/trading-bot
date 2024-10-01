@@ -1,7 +1,7 @@
 package com.amdose.base.interceptors;
 
 import com.amdose.base.constants.AppConstants;
-import com.amdose.base.utils.JsonUtils;
+import com.amdose.utils.JsonUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;

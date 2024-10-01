@@ -1,7 +1,7 @@
 package com.amdose.base.interceptors;
 
 import com.amdose.base.constants.AppConstants;
-import com.amdose.base.utils.JsonUtils;
+import com.amdose.utils.JsonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.MethodParameter;

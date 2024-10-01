@@ -1,4 +1,4 @@
-package com.amdose.pattern.detection.services.strategies;
+package com.amdose.pattern.detection.strategies;
 
 import com.amdose.database.entities.SignalEntity;
 import com.amdose.pattern.detection.dtos.CandleItemDTO;

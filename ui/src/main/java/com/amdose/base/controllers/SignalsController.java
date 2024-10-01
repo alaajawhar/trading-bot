@@ -6,11 +6,11 @@ import com.amdose.base.payloads.signals.GetSignalByIdResponse;
 import com.amdose.base.payloads.signals.GetSignalListRequest;
 import com.amdose.base.payloads.signals.GetSignalListResponse;
 import com.amdose.base.repository.signals.DetectedSignalsRepository;
-import com.amdose.base.utils.JsonUtils;
 import com.amdose.database.entities.ActionEntity;
 import com.amdose.database.entities.SignalEntity;
 import com.amdose.database.repositories.ISignalRepository;
 import com.amdose.utils.DateUtils;
+import com.amdose.utils.JsonUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,7 +40,7 @@ public class SignalsController implements ISignalsController {
         response.setDetectionId(detectionId);
         response.setBotId(signal.get(0).getBot().getId());
         response.setTimeframe(signal.get(0).getBot().getTimeFrame());
-        response.setMetaData(JsonUtils.parseJsonToObject(signal.get(0).getMetaData(), Object.class));
+        response.setMetaData(JsonUtils.convertToObject(signal.get(0).getMetaData(), Object.class));
 
         for (SignalEntity signalItem : signal) {
             TradeItem tradeItem = new TradeItem();

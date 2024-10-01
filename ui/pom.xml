@@ -163,6 +163,8 @@
                             <workingDirectory>src/main/ui</workingDirectory>
                             <arguments>
                                 <argument>build</argument>
+                                <argument>--configuration</argument>
+                                <argument>production</argument>
                             </arguments>
                         </configuration>
                     </execution>

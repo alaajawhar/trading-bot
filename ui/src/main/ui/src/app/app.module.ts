@@ -64,7 +64,7 @@ import {DialogService} from "./shared/services/dialogService/dialog.service";
     AngularMultiSelectModule,
     DragDropModule,
     HttpClientModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
   ],
   providers: [
     BsModalService,

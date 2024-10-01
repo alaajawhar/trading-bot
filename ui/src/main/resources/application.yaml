@@ -1,6 +1,4 @@
 server:
-  servlet:
-    context-path: /trading-bot-ui
   port: 8080
 
 client:
