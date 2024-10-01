@@ -6,16 +6,16 @@ MVNW_PATH="$(pwd)/.mvn/mvnw"
 # List of projects in the order you want to build
  projects=("parent" "utils-lib" "scheduler-lib" "database" "broker-engine" "pattern-detection-engine" "ui")
  
-# First loop: Run mvnw clean for each project
+# Loop to remove the target directory for each project
 for project in "${projects[@]}"; do
     if [ -d "$project" ]; then
-        echo "Running mvnw clean in $project"
-        (cd "$project" && "$MVNW_PATH" clean)
+        echo "Deleting target folder in $project"
+        (cd "$project" && rm -rf target)
         if [ $? -eq 0 ]; then
-            echo "Clean succeeded in $project"
+            echo "Target folder deleted in $project"
         else
-            echo "Clean failed in $project"
-            exit 1  # Exit if clean fails
+            echo "Failed to delete target folder in $project"
+            exit 1  # Exit if deletion fails
         fi
     else
         echo "Skipping $project (directory not found)"
