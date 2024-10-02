@@ -106,13 +106,13 @@ public class StrategyExecutorService {
                 .findFirst();
 
         if (strategyService.isEmpty()) {
-            log.info("No signals found for indicator: [{}]", strategyEntity.getName());
+            log.info("Strategy has not found: [{}]", strategyEntity.getName());
             return List.of();
         }
 
         List<SignalEntity> indicatorDetectedSignals = strategyService.get().executeStrategy(candleItemDTOS);
 
-        log.info("Indicator: [{}] has detected: [{}] signals", strategyEntity.getName(), indicatorDetectedSignals.size());
+        log.info("Strategy: [{}] has detected: [{}] signals", strategyEntity.getName(), indicatorDetectedSignals.size());
 
         return indicatorDetectedSignals;
     }
