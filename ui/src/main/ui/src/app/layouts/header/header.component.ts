@@ -62,7 +62,7 @@ export class HeaderComponent implements OnInit {
   /* PROFILE */
   isShowProfile: boolean = true;
   profileList: HeaderProfile = {
-    fullName: "Alaa Jawhar",
+    fullName: "Test Test",
     role: "Software Developer",
     items: [
       {

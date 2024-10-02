@@ -27,7 +27,9 @@ export class SignalDetailsComponent implements OnInit {
     botId: "", detectionId: "", metaData: {}, timeframe: "", tradeList: []
   };
 
-  dropdownTimeframes: DropdownResponse = undefined!;
+  dropdownTimeframes: DropdownResponse = {
+    list: []
+  };
 
 
   constructor(private backend: Backend, private route: ActivatedRoute) {
