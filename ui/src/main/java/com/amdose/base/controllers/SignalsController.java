@@ -1,10 +1,6 @@
 package com.amdose.base.controllers;
 
-import com.amdose.base.payloads.TradeItem;
-import com.amdose.base.payloads.TradeTransactionItem;
-import com.amdose.base.payloads.signals.GetSignalByIdResponse;
-import com.amdose.base.payloads.signals.GetSignalListRequest;
-import com.amdose.base.payloads.signals.GetSignalListResponse;
+import com.amdose.base.payloads.signals.*;
 import com.amdose.base.repository.signals.DetectedSignalsRepository;
 import com.amdose.database.entities.ActionEntity;
 import com.amdose.database.entities.SignalEntity;

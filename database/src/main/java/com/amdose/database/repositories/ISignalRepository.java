@@ -17,4 +17,6 @@ public interface ISignalRepository extends CrudRepository<SignalEntity, Long> {
     List<SignalEntity> findAllPendingActionsOfDate(Date scheduledAtDate);
 
     List<SignalEntity> findByDetectionId(String detectionId);
+
+    List<SignalEntity> findAllByAddedDateAfterOrderByAddedDateAsc(Date addedDate);
 }

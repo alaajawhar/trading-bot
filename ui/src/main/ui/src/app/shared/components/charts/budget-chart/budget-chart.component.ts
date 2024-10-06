@@ -19,16 +19,16 @@ export class BudgetChartComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     setTimeout(() => {
-      this.injectLineChartGraph();
+      this.injectRadarChartGraph();
     }, 1000);
   }
 
-  injectLineChartGraph() {
+  injectRadarChartGraph() {
     let echarts = (window as any).echarts;  // Access ECharts from the global window object
-    const chartDom = document.getElementById('budgetChart') as HTMLElement;
+    const chartDom = document.getElementById('radarChart') as HTMLElement;
 
     if (!echarts || !chartDom) {
-      console.error('ECharts or #budgetChart element not found!');
+      console.error('ECharts or #radarChart element not found!');
       return;
     }
 

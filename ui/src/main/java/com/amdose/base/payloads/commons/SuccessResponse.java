@@ -1,4 +1,4 @@
-package com.amdose.base.payloads;
+package com.amdose.base.payloads.commons;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

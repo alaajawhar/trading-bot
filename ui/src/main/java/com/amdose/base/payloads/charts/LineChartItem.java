@@ -1,4 +1,4 @@
-package com.amdose.base.payloads.dashboard;
+package com.amdose.base.payloads.charts;
 
 import lombok.Data;
 
@@ -9,7 +9,7 @@ import java.util.List;
  * @author Alaa Jawhar
  */
 @Data
-public class ChartItem {
+public class LineChartItem {
     private String chartName;
     private String chartColor;
     private List<Double> data = new ArrayList<>();

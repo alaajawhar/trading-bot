@@ -1,12 +1,10 @@
 package com.amdose.base.services.test;
 
 import com.amdose.base.exceptions.InvalidRequestException;
+import com.amdose.base.models.dtos.TradeDto;
 import com.amdose.base.models.enums.OutcomeResultEnum;
-import com.amdose.base.payloads.dashboard.*;
-import com.amdose.base.payloads.test.strategy.GetStrategyTestRequest;
-import com.amdose.base.payloads.test.strategy.GetStrategyTestResponse;
-import com.amdose.base.payloads.test.strategy.GetTestSignalsResponse;
-import com.amdose.base.payloads.test.strategy.TestSignalItem;
+import com.amdose.base.payloads.charts.*;
+import com.amdose.base.payloads.test.strategy.*;
 import com.amdose.base.utils.DisplayUtils;
 import com.amdose.database.entities.CandleEntity;
 import com.amdose.database.entities.SignalEntity;
@@ -19,7 +17,6 @@ import com.amdose.database.repositories.ISymbolRepository;
 import com.amdose.pattern.detection.services.StrategyExecutorService;
 import com.amdose.utils.DateUtils;
 import com.amdose.utils.JsonUtils;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -69,7 +66,7 @@ public class StrategyTestService {
         }
 
 
-        List<TestTradeDTO> allDetectedSignals = this.getProfitTestCandles(optionalStrategy.get(), optionalSymbol.get());
+        List<TradeDto> allDetectedSignals = this.getProfitTestCandles(optionalStrategy.get(), optionalSymbol.get());
 
         // SUMMARY RESPONSE
         response.setSummaryResponse(this.generateSummary(allDetectedSignals));
@@ -92,8 +89,8 @@ public class StrategyTestService {
         return response;
     }
 
-    private List<TestTradeDTO> getProfitTestCandles(StrategyEntity strategy, SymbolEntity symbol) {
-        List<TestTradeDTO> response = new ArrayList<>();
+    private List<TradeDto> getProfitTestCandles(StrategyEntity strategy, SymbolEntity symbol) {
+        List<TradeDto> response = new ArrayList<>();
         for (TimeFrameEnum timeframe : TimeFrameEnum.values()) {
 //            Date today = Date.from(LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
 //            List<CandleEntity> candleEntityList = candleRepository.findAllByDateAfterAndSymbolAndTimeFrameOrderByDateAsc(today, symbol, timeframe);
@@ -109,7 +106,7 @@ public class StrategyTestService {
 
 
             for (CandleEntity candleItem : dateCandleMap.values()) {
-                TestTradeDTO testTradeDTO = new TestTradeDTO();
+                TradeDto testTradeDTO = new TradeDto();
                 testTradeDTO.setTimeFrame(timeframe);
                 testTradeDTO.setDate(candleItem.getDate());
                 testTradeDTO.setProfit(0.0d);
@@ -137,41 +134,41 @@ public class StrategyTestService {
         return response;
     }
 
-    private GetDashboardSummaryResponse generateSummary(List<TestTradeDTO> detectedSignals) {
+    private GetTestSummaryResponse generateSummary(List<TradeDto> detectedSignals) {
         Long totalWins = detectedSignals.stream().filter(item -> item.getProfit() > 0).count();
         Long totalLoses = detectedSignals.stream().filter(item -> item.getProfit() < 0).count();
-        double totalProfit = detectedSignals.stream().mapToDouble(TestTradeDTO::getProfit).sum();
+        double totalProfit = detectedSignals.stream().mapToDouble(TradeDto::getProfit).sum();
 
-        GetDashboardSummaryResponse summaryResponse = new GetDashboardSummaryResponse();
+        GetTestSummaryResponse summaryResponse = new GetTestSummaryResponse();
         summaryResponse.setTotalWins(totalWins);
         summaryResponse.setTotalProfit((long) totalProfit);
         summaryResponse.setTotalLose(totalLoses);
         return summaryResponse;
     }
 
-    private GetLineChartResponse generateLineChartResponse(List<TestTradeDTO> detectedSignals) {
+    private GetLineChartResponse generateLineChartResponse(List<TradeDto> detectedSignals) {
         GetLineChartResponse response = new GetLineChartResponse();
         response.setLabels(List.of("0", "100", "200", "300", "400", "500", "600", "700", "800", "900", "1000"));
 
-        List<ChartItem> list = new ArrayList<>();
+        List<LineChartItem> list = new ArrayList<>();
         int i = 0;
         for (TimeFrameEnum timeFrame : TimeFrameEnum.values()) {
-            ChartItem chartItem = new ChartItem();
-            chartItem.setChartName(timeFrame.getLabel());
-            chartItem.setChartColor(COLORS.get(i++));
+            LineChartItem lineChartItem = new LineChartItem();
+            lineChartItem.setChartName(timeFrame.getLabel());
+            lineChartItem.setChartColor(COLORS.get(i++));
 
-            double sum0_100 = detectedSignals.stream().filter(signal -> signal.getTimeFrame() == timeFrame).limit(100).mapToDouble(TestTradeDTO::getProfit).sum();
-            double sum100_200 = detectedSignals.stream().filter(signal -> signal.getTimeFrame() == timeFrame).skip(100).limit(100).mapToDouble(TestTradeDTO::getProfit).sum();
-            double sum200_300 = detectedSignals.stream().filter(signal -> signal.getTimeFrame() == timeFrame).skip(200).limit(100).mapToDouble(TestTradeDTO::getProfit).sum();
-            double sum300_400 = detectedSignals.stream().filter(signal -> signal.getTimeFrame() == timeFrame).skip(300).limit(100).mapToDouble(TestTradeDTO::getProfit).sum();
-            double sum400_500 = detectedSignals.stream().filter(signal -> signal.getTimeFrame() == timeFrame).skip(400).limit(100).mapToDouble(TestTradeDTO::getProfit).sum();
-            double sum500_600 = detectedSignals.stream().filter(signal -> signal.getTimeFrame() == timeFrame).skip(500).limit(100).mapToDouble(TestTradeDTO::getProfit).sum();
-            double sum600_700 = detectedSignals.stream().filter(signal -> signal.getTimeFrame() == timeFrame).skip(600).limit(100).mapToDouble(TestTradeDTO::getProfit).sum();
-            double sum700_800 = detectedSignals.stream().filter(signal -> signal.getTimeFrame() == timeFrame).skip(700).limit(100).mapToDouble(TestTradeDTO::getProfit).sum();
-            double sum800_900 = detectedSignals.stream().filter(signal -> signal.getTimeFrame() == timeFrame).skip(800).limit(100).mapToDouble(TestTradeDTO::getProfit).sum();
-            double sum900_1000 = detectedSignals.stream().filter(signal -> signal.getTimeFrame() == timeFrame).skip(900).limit(100).mapToDouble(TestTradeDTO::getProfit).sum();
+            double sum0_100 = detectedSignals.stream().filter(signal -> signal.getTimeFrame() == timeFrame).limit(100).mapToDouble(TradeDto::getProfit).sum();
+            double sum100_200 = detectedSignals.stream().filter(signal -> signal.getTimeFrame() == timeFrame).skip(100).limit(100).mapToDouble(TradeDto::getProfit).sum();
+            double sum200_300 = detectedSignals.stream().filter(signal -> signal.getTimeFrame() == timeFrame).skip(200).limit(100).mapToDouble(TradeDto::getProfit).sum();
+            double sum300_400 = detectedSignals.stream().filter(signal -> signal.getTimeFrame() == timeFrame).skip(300).limit(100).mapToDouble(TradeDto::getProfit).sum();
+            double sum400_500 = detectedSignals.stream().filter(signal -> signal.getTimeFrame() == timeFrame).skip(400).limit(100).mapToDouble(TradeDto::getProfit).sum();
+            double sum500_600 = detectedSignals.stream().filter(signal -> signal.getTimeFrame() == timeFrame).skip(500).limit(100).mapToDouble(TradeDto::getProfit).sum();
+            double sum600_700 = detectedSignals.stream().filter(signal -> signal.getTimeFrame() == timeFrame).skip(600).limit(100).mapToDouble(TradeDto::getProfit).sum();
+            double sum700_800 = detectedSignals.stream().filter(signal -> signal.getTimeFrame() == timeFrame).skip(700).limit(100).mapToDouble(TradeDto::getProfit).sum();
+            double sum800_900 = detectedSignals.stream().filter(signal -> signal.getTimeFrame() == timeFrame).skip(800).limit(100).mapToDouble(TradeDto::getProfit).sum();
+            double sum900_1000 = detectedSignals.stream().filter(signal -> signal.getTimeFrame() == timeFrame).skip(900).limit(100).mapToDouble(TradeDto::getProfit).sum();
 
-            chartItem.setData(List.of(
+            lineChartItem.setData(List.of(
                     0.0d,
                     DisplayUtils.roundAmountToDouble(sum0_100),
                     DisplayUtils.roundAmountToDouble(sum100_200),
@@ -185,26 +182,26 @@ public class StrategyTestService {
                     DisplayUtils.roundAmountToDouble(sum900_1000)
             ));
 
-            list.add(chartItem);
+            list.add(lineChartItem);
         }
 
         response.setList(list);
         return response;
     }
 
-    private GetStrategiesPerformanceBaseOnTimeframesResponse generateRadarChartResponse(String strategyName, List<TestTradeDTO> detectedSignals) {
-        GetStrategiesPerformanceBaseOnTimeframesResponse response = new GetStrategiesPerformanceBaseOnTimeframesResponse();
+    private GetRadarChartResponse generateRadarChartResponse(String strategyName, List<TradeDto> detectedSignals) {
+        GetRadarChartResponse response = new GetRadarChartResponse();
         response.setLabels(Arrays.stream(TimeFrameEnum.values()).map(TimeFrameEnum::getLabel).collect(Collectors.toList()));
-        List<ChartItem> list = new ArrayList<>();
+        List<RadarChartItem> list = new ArrayList<>();
 
-        ChartItem chartItem = new ChartItem();
-        chartItem.setChartName(strategyName);
-        chartItem.setChartColor(COLORS.get(0));
+        RadarChartItem radarChartItem = new RadarChartItem();
+        radarChartItem.setChartName(strategyName);
+        radarChartItem.setChartColor(COLORS.get(0));
 
         for (TimeFrameEnum timeFrame : TimeFrameEnum.values()) {
-            double timeframeSum = detectedSignals.stream().filter(signal -> signal.getTimeFrame() == timeFrame).mapToDouble(TestTradeDTO::getProfit).sum();
-            chartItem.addData(DisplayUtils.roundAmountToDouble(timeframeSum));
-            list.add(chartItem);
+            double timeframeSum = detectedSignals.stream().filter(signal -> signal.getTimeFrame() == timeFrame).mapToDouble(TradeDto::getProfit).sum();
+            radarChartItem.addData(DisplayUtils.roundAmountToDouble(timeframeSum));
+            list.add(radarChartItem);
         }
 
 
@@ -212,13 +209,13 @@ public class StrategyTestService {
         return response;
     }
 
-    private GetPieChartResponse generatePieChartResponse(List<TestTradeDTO> detectedSignals) {
+    private GetPieChartResponse generatePieChartResponse(List<TradeDto> detectedSignals) {
         GetPieChartResponse response = new GetPieChartResponse();
         response.setLabels(Arrays.stream(TimeFrameEnum.values()).map(TimeFrameEnum::getLabel).collect(Collectors.toList()));
 
         List<PieChartItem> list = new ArrayList<>();
 
-        List<TestTradeDTO> signals = detectedSignals.stream()
+        List<TradeDto> signals = detectedSignals.stream()
                 .filter(signal -> signal.getProfit() != 0).toList();
 
         int i = 0;
@@ -240,7 +237,7 @@ public class StrategyTestService {
         return response;
     }
 
-    private GetMultiBarChartResponse generateMultiBarChart(List<TestTradeDTO> detectedSignals) {
+    private GetMultiBarChartResponse generateMultiBarChart(List<TradeDto> detectedSignals) {
         GetMultiBarChartResponse response = new GetMultiBarChartResponse();
         response.setLabels(Arrays.stream(TimeFrameEnum.values()).map(TimeFrameEnum::getLabel).collect(Collectors.toList()));
 
@@ -250,18 +247,18 @@ public class StrategyTestService {
 
         MultiBarChartItem winsChart = new MultiBarChartItem();
         winsChart.setChartColor("#2ecb18");
-        winsChart.setChartName("Wins");
+        winsChart.setChartName(OutcomeResultEnum.WIN.getLabel());
         winsChart.setData(winsData);
 
         MultiBarChartItem losesChart = new MultiBarChartItem();
         losesChart.setChartColor("#cb3818");
-        losesChart.setChartName("Loses");
+        losesChart.setChartName(OutcomeResultEnum.LOSE.getLabel());
         losesChart.setData(losesData);
 
 
         for (TimeFrameEnum timeFrame : TimeFrameEnum.values()) {
-            double winsSum = detectedSignals.stream().filter(signal -> signal.getTimeFrame() == timeFrame).mapToDouble(TestTradeDTO::getProfit).filter(profit -> profit > 0).sum();
-            double losesSum = detectedSignals.stream().filter(signal -> signal.getTimeFrame() == timeFrame).mapToDouble(TestTradeDTO::getProfit).filter(profit -> profit < 0).sum();
+            double winsSum = detectedSignals.stream().filter(signal -> signal.getTimeFrame() == timeFrame).mapToDouble(TradeDto::getProfit).filter(profit -> profit > 0).sum();
+            double losesSum = detectedSignals.stream().filter(signal -> signal.getTimeFrame() == timeFrame).mapToDouble(TradeDto::getProfit).filter(profit -> profit < 0).sum();
 
             winsData.add(DisplayUtils.roundAmountToDouble(winsSum));
             losesData.add(DisplayUtils.roundAmountToDouble(Math.abs(losesSum)));
@@ -274,14 +271,14 @@ public class StrategyTestService {
         return response;
     }
 
-    private GetTestSignalsResponse generateTestSignalsResponse(List<TestTradeDTO> allDetectedSignals) {
+    private GetTestSignalsResponse generateTestSignalsResponse(List<TradeDto> allDetectedSignals) {
         GetTestSignalsResponse response = new GetTestSignalsResponse();
         List<TestSignalItem> list = new ArrayList<>();
 
         // Sort descending
         allDetectedSignals.sort((c1, c2) -> c2.getDate().compareTo(c1.getDate()));
 
-        for (TestTradeDTO detectedSignal : allDetectedSignals) {
+        for (TradeDto detectedSignal : allDetectedSignals) {
 
             if (detectedSignal.getProfit() == 0) {
                 continue;
@@ -300,13 +297,5 @@ public class StrategyTestService {
         return response;
     }
 
-
-    @Data
-    private class TestTradeDTO {
-        private Double profit;
-        private TimeFrameEnum timeFrame;
-        private String metaData;
-        private Date date;
-    }
 
 }

@@ -1,12 +1,8 @@
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {
-  DashboardBotPerformanceRequest,
-  DashboardStrategiesPerformanceOverPeriodResponse,
-  DashboardStrategiesPerformanceOverTimeframeResponse,
-  DashboardSummaryRequest,
-  DashboardSummaryResponse,
   DropdownResponse,
+  GetDashboardOverviewResponse,
   GetSignalByIdResponse,
   GetSignalListRequest,
   GetSignalListResponse,
@@ -50,16 +46,8 @@ export class Backend {
     return this.http.get<DropdownResponse>(this.getBaseUrl() + "/dropdown/timeframes", {headers: this.headers});
   }
 
-  public getDashboardSummary(request: DashboardSummaryRequest) {
-    return this.http.post<DashboardSummaryResponse>(this.getBaseUrl() + "/dashboard/summary", request, {headers: this.headers});
-  }
-
-  public getDashboardStrategiesPerformanceOverTime(request: DashboardBotPerformanceRequest) {
-    return this.http.post<DashboardStrategiesPerformanceOverPeriodResponse>(this.getBaseUrl() + "/dashboard/strategies/performance/period", request, {headers: this.headers});
-  }
-
-  public getDashboardStrategiesPerformanceBaseOnTimeframe(request: DashboardBotPerformanceRequest) {
-    return this.http.post<DashboardStrategiesPerformanceOverTimeframeResponse>(this.getBaseUrl() + "/dashboard/strategies/performance/timeframes", request, {headers: this.headers});
+  public getDashboardOverview() {
+    return this.http.post<GetDashboardOverviewResponse>(this.getBaseUrl() + "/dashboard/overview", {headers: this.headers});
   }
 
   public getTestStrategy(request: StrategyTestRequest) {

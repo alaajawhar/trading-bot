@@ -21,7 +21,7 @@ import {PagesLoginComponent} from "./modules/pages-login/pages-login.component";
 import {PagesRegisterComponent} from "./modules/pages-register/pages-register.component";
 import {SignalsComponent} from './modules/signals/signals.component';
 import {Backend} from "./shared/services/backend";
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {SignalDetailsComponent} from './modules/signals/signal-details/signal-details.component';
 import {DisabledFieldCardComponent} from './shared/components/disabled-field-card/disabled-field-card.component';
 import {CustomDateFormatPipe} from './shared/pipes/custom-date-format.pipe';
@@ -32,6 +32,7 @@ import {StrategiesTestComponent} from "./modules/test/strategies-test/strategies
 import {PieChartComponent} from './shared/components/charts/pie-chart/pie-chart.component';
 import {MultiBarChartComponent} from './shared/components/charts/multi-bar-chart/multi-bar-chart.component';
 import {DialogService} from "./shared/services/dialogService/dialog.service";
+import {CustomInterceptor} from "./shared/interceptors/custom.interceptor";
 
 @NgModule({
   declarations: [
@@ -67,12 +68,17 @@ import {DialogService} from "./shared/services/dialogService/dialog.service";
     ModalModule.forRoot(),
   ],
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: CustomInterceptor,
+      multi: true
+    },
     BsModalService,
     ComponentLoaderFactory,
     PositioningService,
     HttpClientModule,
     Backend,
-    DialogService
+    DialogService,
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

@@ -2,7 +2,7 @@ package com.amdose.base.exceptions;
 
 import com.amdose.base.constants.AppConstants;
 import com.amdose.base.constants.ErrorConstants;
-import com.amdose.base.payloads.ErrorResponse;
+import com.amdose.base.payloads.commons.ErrorResponse;
 import com.amdose.base.utils.LanguageUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;

@@ -8,7 +8,7 @@ import lombok.Data;
  * @author Alaa Jawhar
  */
 @Data
-public class StrategyTestRequest {
+public class BaseTestRequest {
     @NotNull
     @NotBlank
     private String s;

@@ -1,4 +1,4 @@
-package com.amdose.base.payloads.dashboard;
+package com.amdose.base.payloads.charts;
 
 import lombok.Data;
 
@@ -8,7 +8,7 @@ import java.util.List;
  * @author Alaa Jawhar
  */
 @Data
-public class GetLineChartResponse {
+public class GetRadarChartResponse {
     private List<String> labels;
-    private List<ChartItem> list;
+    private List<RadarChartItem> list;
 }

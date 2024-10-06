@@ -1,8 +1,8 @@
 package com.amdose.base.controllers;
 
 import com.amdose.base.models.enums.OutcomeResultEnum;
-import com.amdose.base.payloads.DropDownResponse;
-import com.amdose.base.payloads.KeyValueItem;
+import com.amdose.base.payloads.commons.DropDownResponse;
+import com.amdose.base.payloads.commons.KeyValueItem;
 import com.amdose.database.entities.StrategyEntity;
 import com.amdose.database.entities.SymbolEntity;
 import com.amdose.database.enums.TimeFrameEnum;

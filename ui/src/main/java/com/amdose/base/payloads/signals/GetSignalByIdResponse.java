@@ -1,6 +1,5 @@
 package com.amdose.base.payloads.signals;
 
-import com.amdose.base.payloads.TradeItem;
 import com.amdose.database.enums.TimeFrameEnum;
 import lombok.Data;
 

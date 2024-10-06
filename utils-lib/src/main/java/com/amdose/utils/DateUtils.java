@@ -6,6 +6,10 @@ import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
 
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.temporal.TemporalAdjusters;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -92,6 +96,24 @@ public class DateUtils {
         calendar.add(Calendar.HOUR_OF_DAY, numberOfHours);
         return calendar.getTime();
     }
+
+    public static Date getFirstDayOfCurrentMonth() {
+        LocalDate currentDate = LocalDate.now();
+        LocalDate firstDayOfMonth = currentDate.withDayOfMonth(1);
+        return Date.from(firstDayOfMonth.atStartOfDay(ZoneId.systemDefault()).toInstant());
+    }
+
+    public static Date getFirstDayOfCurrentWeek() {
+        LocalDate today = LocalDate.now();
+        LocalDate firstDayOfWeek = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        return Date.from(firstDayOfWeek.atStartOfDay(ZoneId.systemDefault()).toInstant());
+    }
+
+    public static Date getTodayAtStartOfDay() {
+        LocalDate today = LocalDate.now();
+        return Date.from(today.atStartOfDay(ZoneId.systemDefault()).toInstant());
+    }
+
 
     @SneakyThrows
     public static Date dateOf(String dateAsStr) {

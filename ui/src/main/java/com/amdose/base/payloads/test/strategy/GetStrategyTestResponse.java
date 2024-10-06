@@ -1,6 +1,9 @@
 package com.amdose.base.payloads.test.strategy;
 
-import com.amdose.base.payloads.dashboard.*;
+import com.amdose.base.payloads.charts.GetLineChartResponse;
+import com.amdose.base.payloads.charts.GetMultiBarChartResponse;
+import com.amdose.base.payloads.charts.GetPieChartResponse;
+import com.amdose.base.payloads.charts.GetRadarChartResponse;
 import lombok.Data;
 
 /**
@@ -8,9 +11,9 @@ import lombok.Data;
  */
 @Data
 public class GetStrategyTestResponse {
-    private GetDashboardSummaryResponse summaryResponse;
-    private GetStrategiesPerformanceBaseOnTimeframesResponse performanceBaseOnTimeframesResponse;
-    private GetLineChartResponse performanceOverTimeResponse;
+    private GetTestSummaryResponse summaryResponse;
+    private GetRadarChartResponse performanceBaseOnTimeframesResponse; // TODO: rename frontend and backend
+    private GetLineChartResponse performanceOverTimeResponse; // TODO: rename frontend and backend
     private GetPieChartResponse pieChartResponse;
     private GetMultiBarChartResponse multiBarChartResponse;
     private GetTestSignalsResponse signals;

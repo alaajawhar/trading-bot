@@ -7,7 +7,7 @@ import lombok.Data;
  */
 @Data
 public class GetDashboardSummaryResponse {
-    private Long totalWins;
-    private Long totalProfit;
-    private Long totalLose;
+    private DashboardSummaryItem todaySummary;
+    private DashboardSummaryItem thisWeekSummary;
+    private DashboardSummaryItem thisMonthSummary;
 }

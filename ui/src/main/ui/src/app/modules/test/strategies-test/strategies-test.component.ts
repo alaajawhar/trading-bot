@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {
-  DashboardSummaryResponse,
+  DashboardSummaryItem,
   DropdownItem,
   DropdownResponse,
   GetSignalTestListResponse,
@@ -42,7 +42,7 @@ export class StrategiesTestComponent implements OnInit {
   timeFrameFilter: string;
   testSignalsResponse: GetSignalTestListResponse;
 
-  dashboardSummaryResponse: DashboardSummaryResponse = {
+  dashboardSummaryResponse: DashboardSummaryItem = {
     totalLose: 0, totalProfit: 0, totalWins: 0
   };
 
@@ -71,10 +71,7 @@ export class StrategiesTestComponent implements OnInit {
   * Pie Chart
   */
   pieChartData: PieChartModel = {
-    list: [
-      {value: 1048, name: 'Search Engine', color: "#ff7f50"},
-      {value: 735, name: 'Direct', color: "#87cefa"},
-    ]
+    list: []
   };
 
   /*

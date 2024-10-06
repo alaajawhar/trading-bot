@@ -1,4 +1,4 @@
-package com.amdose.base.payloads.dashboard;
+package com.amdose.base.payloads.charts;
 
 import lombok.Data;
 

@@ -1,7 +1,7 @@
 package com.amdose.base.controllers;
 
 import com.amdose.base.constants.UriConstants;
-import com.amdose.base.payloads.DropDownResponse;
+import com.amdose.base.payloads.commons.DropDownResponse;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.GetMapping;
 

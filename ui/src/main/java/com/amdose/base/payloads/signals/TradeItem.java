@@ -1,4 +1,4 @@
-package com.amdose.base.payloads;
+package com.amdose.base.payloads.signals;
 
 import com.amdose.database.enums.SignalActionEnum;
 import lombok.Data;

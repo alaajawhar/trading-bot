@@ -35,4 +35,6 @@ public interface ICandleRepository extends CrudRepository<CandleEntity, Long> {
 
     Optional<CandleEntity> findTopBySymbolAndTimeFrameOrderByDateDesc(SymbolEntity symbol, TimeFrameEnum timeFrame);
 
+    Optional<CandleEntity> findTopBySymbolAndTimeFrameAndDate(SymbolEntity symbol, TimeFrameEnum timeFrame, Date date);
+
 }

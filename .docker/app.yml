@@ -1,10 +1,6 @@
 # This configuration is intended for development purpose, it's **your** responsibility to harden it for production
 name: trading-bot
 services:
-  app-builder:
-    extends:
-      file: ./app-builder.yml
-      service: mvn
   mysql:
     extends:
       file: ./mysql.yml
@@ -16,8 +12,6 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
-      app-builder:
-        condition: service_healthy
   broker:
     extends:
       file: ./broker.yml
@@ -25,14 +19,10 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
-      app-builder:
-        condition: service_healthy
   pattern-detection:
     extends:
       file: ./pattern-detection-engine.yml
       service: engine
     depends_on:
       mysql:
-        condition: service_healthy
-      app-builder:
         condition: service_healthy

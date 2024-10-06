@@ -1,7 +1,7 @@
 package com.amdose.base.payloads.signals;
 
 import com.amdose.base.models.enums.OutcomeResultEnum;
-import com.amdose.base.payloads.PaginationRequest;
+import com.amdose.base.payloads.commons.PaginationRequest;
 import com.amdose.database.enums.TimeFrameEnum;
 import lombok.Data;
 

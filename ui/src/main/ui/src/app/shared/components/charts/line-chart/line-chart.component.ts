@@ -7,7 +7,7 @@ import {LineChartModel} from "./models";
   styleUrls: ['./line-chart.component.css']
 })
 export class LineChartComponent implements OnInit, OnChanges {
-  @Input() data: LineChartModel
+  @Input() data: LineChartModel;
 
   lineChart: any;
 
@@ -104,5 +104,4 @@ export class LineChartComponent implements OnInit, OnChanges {
     // Apply the options to the ECharts instance
     this.lineChart.setOption(options);
   }
-
 }

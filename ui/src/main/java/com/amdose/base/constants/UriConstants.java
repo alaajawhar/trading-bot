@@ -21,7 +21,5 @@ public class UriConstants {
     public static final String GET_SYMBOLS = "/dropdown/symbols";
 
     // DASHBOARD
-    public static final String GET_DASHBOARD_SUMMARY = "/dashboard/summary";
-    public static final String GET_DASHBOARD_STRATEGY_PERFORMANCE_OVER_PERIOD = "/dashboard/strategies/performance/period";
-    public static final String GET_DASHBOARD_BOTS_PERFORMANCE_BASE_ON_TIMEFRAME = "/dashboard/strategies/performance/timeframes";
+    public static final String GET_DASHBOARD_OVERVIEW = "/dashboard/overview";
 }
