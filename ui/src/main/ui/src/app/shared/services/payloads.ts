@@ -3,8 +3,8 @@ export interface GetSignalListRequest {
   timeFrame: string;
   strategyId: number;
   symbolId: number;
-  fromDate: Date;
-  toDate: Date;
+  fromDate: number;
+  toDate: number;
   outcomeResult: string;
   offset: number;
   limit: number;

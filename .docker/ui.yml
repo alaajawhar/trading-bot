@@ -5,7 +5,7 @@ services:
     image: openjdk:17-jdk-alpine
     container_name: ui-portal
     volumes:
-      - ~/volumes/trading-bot/ui/logs/:/tmp/trading-bot/logs/
+      - ~/volumes/trading-bot/ui/logs/:/tmp/trading-bot-ui/logs/
       - ../ui/target/build:/app
     working_dir: /app
     ports: 

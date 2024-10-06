@@ -9,6 +9,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -32,7 +33,7 @@ public class DetectedSignalsRepository {
         }
 
         if (filters.getStrategyId() != null) {
-            query += " and sell_ts.bot_id = ? ";
+            query += " and strategy.id = ? ";
             params = ArrayUtils.add(params, filters.getStrategyId());
         }
 
@@ -52,13 +53,13 @@ public class DetectedSignalsRepository {
         }
 
         if (filters.getFromDate() != null) {
-            query += " and DATE(sell_candle.candle_date) >= ? ";
-            params = ArrayUtils.add(params, filters.getFromDate());
+            query += " and sell_candle.candle_date >= ? ";
+            params = ArrayUtils.add(params, new Timestamp(filters.getFromDate().getTime()));
         }
 
         if (filters.getToDate() != null) {
-            query += " and DATE(sell_candle.candle_date) <= ? ";
-            params = ArrayUtils.add(params, filters.getToDate());
+            query += " and sell_candle.candle_date <= ? ";
+            params = ArrayUtils.add(params, new Timestamp(filters.getToDate().getTime()));
         }
 
         query += "order by sell_ts.id desc";

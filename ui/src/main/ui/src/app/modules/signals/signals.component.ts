@@ -77,8 +77,20 @@ export class SignalsComponent implements OnInit {
 
   fetchData() {
     this.getSignalListRequest.offset = this.selectedPageNumber * this.itemsPerPage;
-    this.getSignalListRequest.detectionId = this.getSignalListRequest.detectionId?.length == 0 ? undefined! : this.getSignalListRequest.detectionId;
-    this.backend.getSignalList(this.getSignalListRequest).subscribe(resp => {
+
+    const toSendRequest: GetSignalListRequest = {
+      strategyId: this.getSignalListRequest.strategyId,
+      symbolId: this.getSignalListRequest.symbolId,
+      detectionId: this.getSignalListRequest.detectionId?.length == 0 ? undefined! : this.getSignalListRequest.detectionId?.trim(),
+      fromDate: this.getSignalListRequest.fromDate == undefined ? undefined! : new Date(this.getSignalListRequest.fromDate).getTime(),
+      toDate: this.getSignalListRequest.toDate == undefined ? undefined! : new Date(this.getSignalListRequest.toDate).getTime(),
+      outcomeResult: this.getSignalListRequest.outcomeResult,
+      timeFrame: this.getSignalListRequest.timeFrame,
+      limit: this.itemsPerPage,
+      offset: this.selectedPageNumber * this.itemsPerPage
+    };
+
+    this.backend.getSignalList(toSendRequest).subscribe(resp => {
       this.signalListResponse = resp;
       this.isLoadingData = false;
     })
