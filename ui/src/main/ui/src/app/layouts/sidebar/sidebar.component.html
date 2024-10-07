@@ -7,7 +7,9 @@
         <span>{{ sideBarItem.title }}</span>
         <i class="bi bi-chevron-down ms-auto" *ngIf="hasChild(i)"></i>
       </a>
-      <ul [id]="'sidebar-nav-item' + i" class="nav-content collapse " data-bs-parent="#sidebar-nav" *ngIf="hasChild(i)">
+      <ul [id]="'sidebar-nav-item' + i"
+          [class]="isExpanded(i)?'nav-content': 'nav-content collapse'"
+          class="" data-bs-parent="#sidebar-nav" *ngIf="hasChild(i)">
         <li *ngFor="let childSideBar of sideBarItem.child; let j = index">
           <a (click)="onChildClick(i, j)">
             <i [class]="isChildSelected(i, j)?'bi bi-circle-fill': 'bi bi-circle'"></i>

@@ -1,3 +1,4 @@
+name: trading-bot-builder
 services:
   mvn:
     image: openjdk:17-alpine

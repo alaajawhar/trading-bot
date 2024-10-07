@@ -72,4 +72,11 @@ export class SidebarComponent implements OnInit {
     }
   }
 
+  isExpanded(index: number): boolean {
+    if (this.hasChild(index)) {
+      return this.sideBarList[index].child.some(child => this.router.url.includes(child.routing));
+    }
+    return false;
+  }
+
 }

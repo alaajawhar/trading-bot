@@ -113,8 +113,8 @@
               </tbody>
             </table>
               <div class="text-center"
-                   *ngIf="!isLoadingData && signalListResponse?.totalCount == undefined && signalListResponse?.totalCount! == 0">
-                  <p>No Signals have detected</p></div>
+                   *ngIf="!isLoadingData && (signalListResponse?.totalCount == undefined || signalListResponse?.totalCount! == 0)">
+                  <p>No signals have been detected</p></div>
             <div class="text-center" *ngIf="isLoadingData">
               <div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span>
               </div>
@@ -122,8 +122,7 @@
             <nav aria-label="Page navigation"
                  *ngIf="signalListResponse?.totalCount != undefined && signalListResponse?.totalCount! > itemsPerPage">
               <ul class="pagination justify-content-center">
-                <li class="page-item" [ngClass]="this.selectedPageNumber == 0? 'disabled': ''"><a class="page-link"
-                                                                                                  (click)="onPrevious()">Previous</a>
+                <li class="page-item" [ngClass]="this.selectedPageNumber == 0? 'disabled': ''"><a class="page-link" (click)="onPrevious()">Previous</a>
                 </li>
                 <li class="page-item"><a class="page-link" (click)="onNext()">Next</a></li>
               </ul>

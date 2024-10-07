@@ -161,8 +161,8 @@ export class StrategiesTestComponent implements OnInit {
 
   onFilterReset() {
     this.strategyTestRequest = {
-      strategyId: undefined!,
-      symbolId: undefined!,
+      strategyId: this.strategyTestRequest.strategyId,
+      symbolId: this.strategyTestRequest.strategyId,
     };
   }
 
