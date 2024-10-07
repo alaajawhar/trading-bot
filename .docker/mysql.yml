@@ -2,7 +2,7 @@
 name: database
 services:
   mysql:
-    image: mysql:9.0.1
+    image: mysql:8.0
     container_name: mysql
     volumes:
       - ~/volumes/trading-bot/mysql/:/var/lib/mysql
@@ -17,6 +17,7 @@ services:
     ports:
       - 127.0.0.1:3306:3306
     command: mysqld --lower_case_table_names=1 --skip-mysqlx --character_set_server=utf8mb4 --explicit_defaults_for_timestamp --skip-networking=0 --skip-bind-address
+    restart: always
     healthcheck:
       test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
       interval: 10s
