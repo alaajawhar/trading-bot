@@ -6,6 +6,9 @@ services:
     volumes:
       - ../:/app  # Mount the parent folder (which includes all your projects and the mvn-all script)
       - ~/volumes/trading-bot/app-build/maven-repo/:/root/.m2
+      - ~/volumes/trading-bot/app-build/node_modules:/usr/local/lib/node_modules  # Node.js and npm global modules cache
+      - ~/volumes/trading-bot/app-build/npm_cache:/root/.npm  # NPM cache
+      - ~/volumes/trading-bot/app-build/bash:/bin/bash  # Persist bash installation
     environment:
       - TZ=Asia/Riyadh  # Set timezone to Riyadh
     working_dir: /app  # The working directory inside the container

@@ -1,4 +1,4 @@
-name: broker
+name: trading-bot-broker
 services:
   binance:
     image: openjdk:17-jdk-alpine

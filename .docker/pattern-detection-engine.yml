@@ -1,4 +1,4 @@
-name: pattern-detection
+name: trading-bot-pattern-detection
 services:
   engine:
     image: openjdk:17-jdk-alpine
