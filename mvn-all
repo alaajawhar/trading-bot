@@ -53,3 +53,5 @@ for project in "${projects[@]}"; do
         echo "Skipping $project (directory not found)"
     fi
 done
+echo "All projects have been built successfully"
+exit 1

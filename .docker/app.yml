@@ -1,28 +1,15 @@
 # This configuration is intended for development purpose, it's **your** responsibility to harden it for production
 name: trading-bot
 services:
-  mysql:
-    extends:
-      file: ./mysql.yml
-      service: mysql
   ui:
     extends:
       file: ./ui.yml
       service: portal
-    depends_on:
-      mysql:
-        condition: service_healthy
   broker:
     extends:
       file: ./broker.yml
       service: binance
-    depends_on:
-      mysql:
-        condition: service_healthy
   pattern-detection:
     extends:
       file: ./pattern-detection-engine.yml
       service: engine
-    depends_on:
-      mysql:
-        condition: service_healthy
