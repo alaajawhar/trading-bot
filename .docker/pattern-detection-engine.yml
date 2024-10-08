@@ -3,13 +3,14 @@ services:
   engine:
     image: openjdk:17-jdk-alpine
     container_name: pattern-detection-engine
+    network_mode: host
     volumes:
       - ~/volumes/trading-bot/pattern-detection-engine/logs/:/tmp/trading-bot/logs/
       - ../pattern-detection-engine/target/build:/app
     environment:
       - TZ=Asia/Riyadh  # Set to Riyadh timezone
       - spring.profiles.active=prod
-      - DB_HOST=mysql
+      - DB_HOST=127.0.0.1
       - DB_PORT=3306
     working_dir: /app
     entrypoint: >
