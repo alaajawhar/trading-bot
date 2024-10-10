@@ -4,7 +4,7 @@ services:
   portal:
     image: openjdk:17-jdk-alpine
     container_name: ui-portal
-    network_mode: host
+    # network_mode: host
     volumes:
       - ~/volumes/trading-bot/ui/logs/:/tmp/trading-bot-ui/logs/
       - ../ui/target/build:/app
@@ -14,7 +14,8 @@ services:
     environment:
       - TZ=Asia/Riyadh  # Set to Riyadh timezone
       - spring.profiles.active=prod
-      - DB_HOST=127.0.0.1
+      - DB_HOST=host.docker.internal
+      # - DB_HOST=127.0.0.1
       - DB_PORT=3306
     entrypoint: >
       java -cp "./trading-bot-ui.jar:./config:./lib/*" com.amdose.base.App
