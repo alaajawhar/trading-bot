@@ -1,4 +1,4 @@
-package com.amdose.pattern.detection.strategies;
+package com.amdose.pattern.detection.strategies.wyse;
 
 import com.amdose.database.entities.CandleEntity;
 import com.amdose.database.entities.SignalEntity;
@@ -9,6 +9,7 @@ import com.amdose.pattern.detection.dtos.CandleItemDTO;
 import com.amdose.pattern.detection.helpers.HighDetectionHelper;
 import com.amdose.pattern.detection.helpers.LowDetectionHelper;
 import com.amdose.pattern.detection.helpers.TrendHelper;
+import com.amdose.pattern.detection.strategies.IStrategyService;
 import com.amdose.utils.DateUtils;
 import com.amdose.utils.JsonUtils;
 import lombok.extern.slf4j.Slf4j;

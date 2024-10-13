@@ -10,6 +10,7 @@
 //import com.amdose.pattern.detection.helpers.HighDetectionHelper;
 //import com.amdose.pattern.detection.helpers.LowDetectionHelper;
 //import com.amdose.pattern.detection.helpers.TrendHelper;
+//import com.amdose.pattern.detection.strategies.IStrategyService;
 //import com.amdose.utils.DateUtils;
 //import com.amdose.utils.JsonUtils;
 //import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@
 //@Slf4j
 //@Service
 //@RequiredArgsConstructor
-//public class WyseBullishIndicatorService implements IIndicatorService {
+//public class WyseBullishIndicatorService implements IStrategyService {
 //    private static final String NAME = "WyseBullishSignal";
 //    private static final int LOOK_BACK_PERIOD = 20;
 //    private StrategyEntity stategyEntity;
