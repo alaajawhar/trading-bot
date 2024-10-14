@@ -6,10 +6,6 @@ import com.amdose.database.enums.TimeFrameEnum;
 import com.amdose.database.repositories.IBotRepository;
 import com.amdose.database.repositories.ICandleRepository;
 import com.amdose.database.repositories.ISignalRepository;
-import com.amdose.pattern.detection.dtos.CandleItemDTO;
-import com.amdose.pattern.detection.mappers.CandleMapper;
-import com.amdose.pattern.detection.services.ta.Taj4JImpl;
-import com.amdose.pattern.detection.services.ta.TechnicalAnalysisBaseService;
 import com.amdose.pattern.detection.strategies.IStrategyService;
 import com.amdose.utils.DateUtils;
 import com.amdose.utils.JsonUtils;
@@ -62,7 +58,7 @@ public class StrategyExecutorService {
 
             allDetectedSignals.addAll(futureDetectedSignals);
 
-            log.info("Indicator: [{}] on Symbol: [{}] for timeFrame: [{}] has detected: [{}] signals"
+            log.info("Indicator: [{}] on Symbol: [{}] for timeFrame: [{}] has detected: [{}] future signals"
                     , bot.getStrategy().getName()
                     , bot.getSymbol().getName()
                     , bot.getTimeFrame()
@@ -91,15 +87,7 @@ public class StrategyExecutorService {
 
 
     public List<SignalEntity> executeStrategy(StrategyEntity strategyEntity, List<CandleEntity> candleEntityList) {
-        List<CandleItemDTO> candleItemDTOS = CandleMapper.INSTANCE.candleEntitiesToCandleItemDTOs(candleEntityList);
-        log.debug("[{}] candles has been found", candleEntityList.size());
-
-        log.debug("Applying Ta4j...");
-        TechnicalAnalysisBaseService ta = new Taj4JImpl(candleItemDTOS);
-        candleItemDTOS = ta.applyAll();
-        log.debug("Ta4j has been applied");
-
-        log.info("Running strategy: [{}]", strategyEntity.getName());
+        log.debug("Executing strategy: [{}] on [{}] candles has been found", strategyEntity.getName(), candleEntityList.size());
 
         Optional<IStrategyService> strategyService = strategyServiceList.stream()
                 .filter(signal -> signal.getName().equalsIgnoreCase(strategyEntity.getName()))
@@ -110,11 +98,11 @@ public class StrategyExecutorService {
             return List.of();
         }
 
-        List<SignalEntity> indicatorDetectedSignals = strategyService.get().executeStrategy(candleItemDTOS);
+        List<SignalEntity> detectedSignals = strategyService.get().executeStrategy(candleEntityList);
 
-        log.info("Strategy: [{}] has detected: [{}] signals", strategyEntity.getName(), indicatorDetectedSignals.size());
+        log.info("Strategy: [{}] has detected: [{}] signals", strategyEntity.getName(), detectedSignals.size());
 
-        return indicatorDetectedSignals;
+        return detectedSignals;
     }
 
     @SneakyThrows
