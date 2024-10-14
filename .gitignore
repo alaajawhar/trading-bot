@@ -1,22 +1,4 @@
 # Default ignored files
 /.idea/
-/broker-engine/target/
-/broker-engine/broker-engine.iml
-
-/database/target/
-/database/database.iml
-
-/parent/target/
-/parent/trading-bot-parent.iml
-
-
-pattern-detection-engine/target/
-pattern-detection-engine/pattern-detection-engine.iml
-
-scheduler-lib/target/
-scheduler-lib/scheduler-lib.iml
-
-utils-lib/target/
-utils-lib/utils.iml
-
-ui/target/
+**/target/
+**.iml
