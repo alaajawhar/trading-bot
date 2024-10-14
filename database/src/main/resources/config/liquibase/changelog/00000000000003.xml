@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="00000000000003" author="alaa.jawhar">
+        <insert tableName="strategy">
+            <column name="id" value="2"/>
+            <column name="name" value="FIBONACCI_RETRACEMENT"/>
+            <column name="description" value="Fibonacci Retracement"/>
+            <column name="added_by" value="0"/>
+            <column name="added_date" valueDate="2024-10-14"/>
+        </insert>
+
+        <loadData file="config/liquibase/data/bot-fibonacci-retracement.csv" tableName="bot">
+            <column name="id" header="id"/>
+            <column name="description" header="description"/>
+            <column name="bot_mode" header="bot_mode"/>
+            <column name="time_frame" header="time_frame"/>
+            <column name="strategy_id" header="strategy_id"/>
+            <column name="symbol_id" header="symbol_id"/>
+            <column name="added_by" header="added_by"/>
+            <column name="added_date" header="added_date"/>
+            <column name="modified_by" header="modified_by"/>
+            <column name="modified_date" header="modified_date"/>
+        </loadData>
+    </changeSet>
+
+</databaseChangeLog>
