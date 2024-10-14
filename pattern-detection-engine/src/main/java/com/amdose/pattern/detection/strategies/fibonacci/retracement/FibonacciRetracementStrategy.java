@@ -11,7 +11,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.ta4j.core.*;
-import org.ta4j.core.indicators.helpers.ClosePriceIndicator;
+import org.ta4j.core.indicators.helpers.*;
+import org.ta4j.core.num.Num;
 import org.ta4j.core.rules.CrossedDownIndicatorRule;
 import org.ta4j.core.rules.CrossedUpIndicatorRule;
 
@@ -25,6 +26,7 @@ import java.util.List;
 @Slf4j
 @Service
 public class FibonacciRetracementStrategy implements IStrategyService {
+    private static final int LOOK_BACK_PERIOD = 20;
 
     @Override
     public String getName() {
@@ -35,12 +37,17 @@ public class FibonacciRetracementStrategy implements IStrategyService {
     public List<SignalEntity> logic(List<CandleEntity> candleEntities) {
         BarSeries series = Ta4jUtils.convertToBarSeries(candleEntities);
 
-        // Identify high and low prices for the series
-        double high = findHighPrice(series);
-        double low = findLowPrice(series);
+        HighPriceIndicator highPrice = new HighPriceIndicator(series);
+        LowPriceIndicator lowPrice = new LowPriceIndicator(series);
 
+        HighestValueIndicator higherHighIndicator = new HighestValueIndicator(highPrice, LOOK_BACK_PERIOD);
+        LowestValueIndicator lowerLowIndicator = new LowestValueIndicator(lowPrice, LOOK_BACK_PERIOD);
+
+        // returns the highest high price from last bar index
+        Num highestHigh = higherHighIndicator.getValue(series.getEndIndex());
+        Num lowestLow = lowerLowIndicator.getValue(series.getEndIndex());
         // Calculate Fibonacci retracement levels
-        FibonacciRetracement fibRetracement = new FibonacciRetracement(high, low);
+        FibonacciRetracement fibRetracement = new FibonacciRetracement(highestHigh.doubleValue(), lowestLow.doubleValue());
 
         // Build the Fibonacci strategy
         Strategy strategy = this.buildFibonacciStrategy(series, fibRetracement);
@@ -66,29 +73,6 @@ public class FibonacciRetracementStrategy implements IStrategyService {
         }
 
         return signalEntities;
-    }
-
-
-    private double findHighPrice(BarSeries series) {
-        double high = series.getBar(0).getHighPrice().doubleValue();
-        for (int i = 1; i < series.getBarCount(); i++) {
-            double barHigh = series.getBar(i).getHighPrice().doubleValue();
-            if (barHigh > high) {
-                high = barHigh;
-            }
-        }
-        return high;
-    }
-
-    private double findLowPrice(BarSeries series) {
-        double low = series.getBar(0).getLowPrice().doubleValue();
-        for (int i = 1; i < series.getBarCount(); i++) {
-            double barLow = series.getBar(i).getLowPrice().doubleValue();
-            if (barLow < low) {
-                low = barLow;
-            }
-        }
-        return low;
     }
 
     private Strategy buildFibonacciStrategy(BarSeries series, FibonacciRetracement fibLevels) {
