@@ -31,7 +31,7 @@ public class DropdownController implements IDropdownController {
         for (StrategyEntity strategyItem : strategies) {
             KeyValueItem item = new KeyValueItem();
             item.setId(String.valueOf(strategyItem.getId()));
-            item.setValue(strategyItem.getName());
+            item.setValue(strategyItem.getDescription());
             response.addKeyValueItem(item);
         }
 
