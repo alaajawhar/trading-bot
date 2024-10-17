@@ -7,13 +7,13 @@ import com.amdose.base.payloads.charts.*;
 import com.amdose.base.payloads.test.strategy.*;
 import com.amdose.base.utils.DisplayUtils;
 import com.amdose.database.entities.CandleEntity;
-import com.amdose.database.entities.SignalEntity;
 import com.amdose.database.entities.StrategyEntity;
 import com.amdose.database.entities.SymbolEntity;
 import com.amdose.database.enums.TimeFrameEnum;
 import com.amdose.database.repositories.ICandleRepository;
 import com.amdose.database.repositories.IStrategyRepository;
 import com.amdose.database.repositories.ISymbolRepository;
+import com.amdose.pattern.detection.dtos.SignalItemDTO;
 import com.amdose.pattern.detection.services.StrategyExecutorService;
 import com.amdose.utils.DateUtils;
 import com.amdose.utils.JsonUtils;
@@ -95,14 +95,14 @@ public class StrategyTestService {
 //            Date today = Date.from(LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
 //            List<CandleEntity> candleEntityList = candleRepository.findAllByDateAfterAndSymbolAndTimeFrameOrderByDateAsc(today, symbol, timeframe);
             List<CandleEntity> candleEntityList = candleRepository.findLastBySymbolAndTimeFrameOrderByDateAsc(symbol, timeframe);
-            List<SignalEntity> signalEntityList = strategyExecutorService.executeStrategy(strategy, candleEntityList);
+            List<SignalItemDTO> signalEntityList = strategyExecutorService.executeStrategy(strategy, candleEntityList);
 
 
             Map<Date, CandleEntity> dateCandleMap = candleEntityList.stream()
                     .collect(Collectors.toMap(item -> DateUtils.roundSecondsAndMilliseconds(item.getDate()), Function.identity()));
 
-            Map<String, List<SignalEntity>> detectionIdSignalsMap = signalEntityList.stream()
-                    .collect(groupingBy(SignalEntity::getDetectionId));
+            Map<String, List<SignalItemDTO>> detectionIdSignalsMap = signalEntityList.stream()
+                    .collect(groupingBy(SignalItemDTO::getDetectionId));
 
 
             for (CandleEntity candleItem : dateCandleMap.values()) {
@@ -111,7 +111,7 @@ public class StrategyTestService {
                 testTradeDTO.setDate(candleItem.getDate());
                 testTradeDTO.setProfit(0.0d);
 
-                for (List<SignalEntity> groupedByDetectionIdSignals : detectionIdSignalsMap.values()) {
+                for (List<SignalItemDTO> groupedByDetectionIdSignals : detectionIdSignalsMap.values()) {
 
                     // Signal in the future, just detected
                     if (DateUtils.isFutureInHourMinuteSecond(groupedByDetectionIdSignals.get(1).getScheduledAt())) {

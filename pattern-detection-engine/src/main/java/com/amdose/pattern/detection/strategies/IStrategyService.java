@@ -1,7 +1,7 @@
 package com.amdose.pattern.detection.strategies;
 
-import com.amdose.database.entities.CandleEntity;
-import com.amdose.database.entities.SignalEntity;
+import com.amdose.pattern.detection.dtos.CandleItemDTO;
+import com.amdose.pattern.detection.dtos.SignalItemDTO;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.ArrayList;
@@ -14,12 +14,12 @@ public interface IStrategyService {
 
     String getName();
 
-    List<SignalEntity> logic(List<CandleEntity> candleEntities);
+    List<SignalItemDTO> logic(List<CandleItemDTO> candles);
 
-    default List<SignalEntity> executeStrategy(List<CandleEntity> candleEntities) {
-        if (CollectionUtils.isEmpty(candleEntities)) {
+    default List<SignalItemDTO> executeStrategy(List<CandleItemDTO> candles) {
+        if (CollectionUtils.isEmpty(candles)) {
             return new ArrayList<>();
         }
-        return this.logic(candleEntities);
+        return this.logic(candles);
     }
 }

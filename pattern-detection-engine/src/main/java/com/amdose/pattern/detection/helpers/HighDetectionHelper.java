@@ -23,7 +23,6 @@ public class HighDetectionHelper {
         this.higherLowList = this.detectHigherLows(candles, lookBackPeriod);
     }
 
-
     public boolean isHighAt(Integer index) {
         return highList.get(index);
     }
@@ -48,17 +47,6 @@ public class HighDetectionHelper {
         }
         log.debug("No last higher high found in: [{}]", lookBackPeriod);
         return Optional.empty();
-    }
-
-    public Integer getLastHigh(Integer startIndex) {
-        // Iterate from the startIndex to the end of the list
-        for (int i = startIndex; i < startIndex - lookBackPeriod; i--) {
-            // If a True value is found, return its index
-            if (highList.get(i)) {
-                return i;
-            }
-        }
-        return startIndex;
     }
 
     private List<Boolean> detectHighs(List<Double> candles) {

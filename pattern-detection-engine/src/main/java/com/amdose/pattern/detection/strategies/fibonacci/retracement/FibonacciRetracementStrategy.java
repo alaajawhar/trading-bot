@@ -1,7 +1,7 @@
 package com.amdose.pattern.detection.strategies.fibonacci.retracement;
 
-import com.amdose.database.entities.CandleEntity;
-import com.amdose.database.entities.SignalEntity;
+import com.amdose.pattern.detection.dtos.CandleItemDTO;
+import com.amdose.pattern.detection.dtos.SignalItemDTO;
 import com.amdose.pattern.detection.strategies.IStrategyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,8 +23,8 @@ public class FibonacciRetracementStrategy implements IStrategyService {
     }
 
     @Override
-    public List<SignalEntity> logic(List<CandleEntity> candleEntities) {
-        List<SignalEntity> signalEntities = new ArrayList<>();
-        return signalEntities;
+    public List<SignalItemDTO> logic(List<CandleItemDTO> candles) {
+        return new ArrayList<>();
     }
+
 }

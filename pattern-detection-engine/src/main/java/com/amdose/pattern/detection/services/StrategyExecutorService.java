@@ -6,7 +6,9 @@ import com.amdose.database.enums.TimeFrameEnum;
 import com.amdose.database.repositories.IBotRepository;
 import com.amdose.database.repositories.ICandleRepository;
 import com.amdose.database.repositories.ISignalRepository;
+import com.amdose.pattern.detection.dtos.SignalItemDTO;
 import com.amdose.pattern.detection.strategies.IStrategyService;
+import com.amdose.pattern.detection.utils.CandlesUtils;
 import com.amdose.utils.DateUtils;
 import com.amdose.utils.JsonUtils;
 import lombok.RequiredArgsConstructor;
@@ -45,18 +47,18 @@ public class StrategyExecutorService {
 
         for (BotEntity bot : enabledBots) {
 
-            List<SignalEntity> indicatorDetectedSignals = this.executeStrategy(bot.getStrategy(),
+            List<SignalItemDTO> indicatorDetectedSignals = this.executeStrategy(bot.getStrategy(),
                     bot.getSymbol(), bot.getTimeFrame());
 
-            List<SignalEntity> futureDetectedSignals = indicatorDetectedSignals.stream()
+            List<SignalItemDTO> futureDetectedSignals = indicatorDetectedSignals.stream()
                     .filter(item -> DateUtils.isPresentOrFutureInHourMinuteSecond(item.getScheduledAt()))
                     .toList();
 
-            for (SignalEntity signalEntity : futureDetectedSignals) {
+            for (SignalItemDTO strategySignal : futureDetectedSignals) {
+                SignalEntity signalEntity = strategySignal.toSignalEntity();
                 signalEntity.setBot(bot);
+                allDetectedSignals.add(signalEntity);
             }
-
-            allDetectedSignals.addAll(futureDetectedSignals);
 
             log.info("Indicator: [{}] on Symbol: [{}] for timeFrame: [{}] has detected: [{}] future signals"
                     , bot.getStrategy().getName()
@@ -76,7 +78,7 @@ public class StrategyExecutorService {
         signalRepository.saveAll(allDetectedSignals);
     }
 
-    public List<SignalEntity> executeStrategy(StrategyEntity strategyEntity, SymbolEntity symbolEntity, TimeFrameEnum timeFrame) {
+    public List<SignalItemDTO> executeStrategy(StrategyEntity strategyEntity, SymbolEntity symbolEntity, TimeFrameEnum timeFrame) {
 
         log.info("Running strategy: [{}] on Symbol: [{}] for timeFrame: [{}]", strategyEntity.getName(), symbolEntity.getName(), timeFrame);
 
@@ -86,7 +88,7 @@ public class StrategyExecutorService {
     }
 
 
-    public List<SignalEntity> executeStrategy(StrategyEntity strategyEntity, List<CandleEntity> candleEntityList) {
+    public List<SignalItemDTO> executeStrategy(StrategyEntity strategyEntity, List<CandleEntity> candleEntityList) {
         log.debug("Executing strategy: [{}] on [{}] candles has been found", strategyEntity.getName(), candleEntityList.size());
 
         Optional<IStrategyService> strategyService = strategyServiceList.stream()
@@ -98,7 +100,7 @@ public class StrategyExecutorService {
             return List.of();
         }
 
-        List<SignalEntity> detectedSignals = strategyService.get().executeStrategy(candleEntityList);
+        List<SignalItemDTO> detectedSignals = strategyService.get().executeStrategy(CandlesUtils.convertToCandlesDto(candleEntityList));
 
         log.info("Strategy: [{}] has detected: [{}] signals", strategyEntity.getName(), detectedSignals.size());
 
