@@ -37,7 +37,7 @@ import static java.util.stream.Collectors.groupingBy;
 @RequiredArgsConstructor
 public class DashboardService {
 
-    public static final List<String> COLORS = List.of(
+    private static final List<String> COLORS = List.of(
             "#012970",
             "#d51bb6",
             "#1bbfd5",
@@ -161,7 +161,7 @@ public class DashboardService {
                 continue;
             }
 
-            lineChartItem.setChartName(strategyRepository.findById(entry.getKey()).get().getName());
+            lineChartItem.setChartName(strategyRepository.findById(entry.getKey()).get().getDescription());
             lineChartItem.setChartColor(COLORS.get(i++));
             lineChartItem.setData(this.calculateHourlyProfit(entry.getValue()));
             todaysLineChartList.add(lineChartItem);
@@ -184,7 +184,7 @@ public class DashboardService {
                 continue;
             }
 
-            lineChartItem.setChartName(strategyRepository.findById(entry.getKey()).get().getName());
+            lineChartItem.setChartName(strategyRepository.findById(entry.getKey()).get().getDescription());
             lineChartItem.setChartColor(COLORS.get(j++));
             lineChartItem.setData(this.calculateDailyProfit(entry.getValue()));
             thisWeekLineChartList.add(lineChartItem);
@@ -206,7 +206,7 @@ public class DashboardService {
                 continue;
             }
 
-            lineChartItem.setChartName(strategyRepository.findById(entry.getKey()).get().getName());
+            lineChartItem.setChartName(strategyRepository.findById(entry.getKey()).get().getDescription());
             lineChartItem.setChartColor(COLORS.get(k++));
             lineChartItem.setData(this.calculateWeeklyProfit(entry.getValue()));
             thisMonthLineChartList.add(lineChartItem);
@@ -244,7 +244,7 @@ public class DashboardService {
                 continue;
             }
 
-            radarChartItem.setChartName(strategyRepository.findById(entry.getKey()).get().getName());
+            radarChartItem.setChartName(strategyRepository.findById(entry.getKey()).get().getDescription());
             radarChartItem.setChartColor(COLORS.get(i++));
 
             for (TimeFrameEnum timeframe : TimeFrameEnum.values()) {
@@ -273,7 +273,7 @@ public class DashboardService {
                 continue;
             }
 
-            radarChartItem.setChartName(strategyRepository.findById(entry.getKey()).get().getName());
+            radarChartItem.setChartName(strategyRepository.findById(entry.getKey()).get().getDescription());
             radarChartItem.setChartColor(COLORS.get(j++));
 
             for (TimeFrameEnum timeframe : TimeFrameEnum.values()) {
@@ -302,7 +302,7 @@ public class DashboardService {
                 continue;
             }
 
-            radarChartItem.setChartName(strategyRepository.findById(entry.getKey()).get().getName());
+            radarChartItem.setChartName(strategyRepository.findById(entry.getKey()).get().getDescription());
             radarChartItem.setChartColor(COLORS.get(k++));
 
             for (TimeFrameEnum timeframe : TimeFrameEnum.values()) {
@@ -328,7 +328,7 @@ public class DashboardService {
         GetDashboardMultiBarChartResponse response = new GetDashboardMultiBarChartResponse();
         List<StrategyEntity> strategyList = strategyRepository.findAll();
 
-        List<String> strategyNames = strategyList.stream().map(StrategyEntity::getName).toList();
+        List<String> strategyNames = strategyList.stream().map(StrategyEntity::getDescription).toList();
 
         /*
          * TODAY
@@ -414,7 +414,7 @@ public class DashboardService {
 
         List<StrategyEntity> strategyList = strategyRepository.findAll();
 
-        List<String> strategyNames = strategyList.stream().map(StrategyEntity::getName).toList();
+        List<String> strategyNames = strategyList.stream().map(StrategyEntity::getDescription).toList();
 
 
         /*
@@ -427,7 +427,7 @@ public class DashboardService {
         for (StrategyEntity strategyEntity : strategyList) {
             PieChartItem todayPieChartItem = new PieChartItem();
             todayPieChartItem.setChartColor(COLORS.get(i++));
-            todayPieChartItem.setChartName(strategyEntity.getName());
+            todayPieChartItem.setChartName(strategyEntity.getDescription());
             long count = todaysTrades.stream().filter(item -> item.getStrategyId() == strategyEntity.getId()).count();
             todayPieChartItem.setData((double) count);
             todayPieChart.addPieChart(todayPieChartItem);
@@ -443,7 +443,7 @@ public class DashboardService {
         for (StrategyEntity strategyEntity : strategyList) {
             PieChartItem thisWeekPieChartItem = new PieChartItem();
             thisWeekPieChartItem.setChartColor(COLORS.get(j++));
-            thisWeekPieChartItem.setChartName(strategyEntity.getName());
+            thisWeekPieChartItem.setChartName(strategyEntity.getDescription());
             long count = thisWeekTrades.stream().filter(item -> item.getStrategyId() == strategyEntity.getId()).count();
             thisWeekPieChartItem.setData((double) count);
             thisWeekPieChart.addPieChart(thisWeekPieChartItem);
@@ -459,7 +459,7 @@ public class DashboardService {
         for (StrategyEntity strategyEntity : strategyList) {
             PieChartItem thisMonthPieChartItem = new PieChartItem();
             thisMonthPieChartItem.setChartColor(COLORS.get(k++));
-            thisMonthPieChartItem.setChartName(strategyEntity.getName());
+            thisMonthPieChartItem.setChartName(strategyEntity.getDescription());
             long count = thisMonthTrades.stream().filter(item -> item.getStrategyId() == strategyEntity.getId()).count();
             thisMonthPieChartItem.setData((double) count);
             thisMonthPieChart.addPieChart(thisMonthPieChartItem);

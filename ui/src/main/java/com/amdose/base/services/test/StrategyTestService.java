@@ -34,7 +34,8 @@ import static java.util.stream.Collectors.groupingBy;
 @Service
 @RequiredArgsConstructor
 public class StrategyTestService {
-    public static final List<String> COLORS = List.of(
+    private static boolean IS_PROCESSING = Boolean.FALSE;
+    private static final List<String> COLORS = List.of(
             "#012970",
             "#d51bb6",
             "#1bbfd5",
@@ -51,6 +52,13 @@ public class StrategyTestService {
     private final ICandleRepository candleRepository;
 
     public GetStrategyTestResponse getStrategyTest(GetStrategyTestRequest request) {
+
+        if (IS_PROCESSING == Boolean.TRUE) {
+            throw new InvalidRequestException("Invalid Strategy Id");
+        }
+
+        IS_PROCESSING = Boolean.TRUE;
+
         GetStrategyTestResponse response = new GetStrategyTestResponse();
 
         Optional<StrategyEntity> optionalStrategy = strategyRepository.findById(request.getStrategyId());
@@ -75,7 +83,7 @@ public class StrategyTestService {
         response.setPerformanceOverTimeResponse(this.generateLineChartResponse(allDetectedSignals));
 
         // RADAR RESPONSE
-        response.setPerformanceBaseOnTimeframesResponse(this.generateRadarChartResponse(optionalStrategy.get().getName(), allDetectedSignals));
+        response.setPerformanceBaseOnTimeframesResponse(this.generateRadarChartResponse(optionalStrategy.get().getDescription(), allDetectedSignals));
 
         // PIE RESPONSE
         response.setPieChartResponse(this.generatePieChartResponse(allDetectedSignals));
@@ -86,6 +94,7 @@ public class StrategyTestService {
         // SIGNALS RESPONSE
         response.setSignals(this.generateTestSignalsResponse(allDetectedSignals));
 
+        IS_PROCESSING = Boolean.FALSE;
         return response;
     }
 
@@ -112,6 +121,12 @@ public class StrategyTestService {
                 testTradeDTO.setProfit(0.0d);
 
                 for (List<SignalItemDTO> groupedByDetectionIdSignals : detectionIdSignalsMap.values()) {
+
+                    // ADDED RECENTLY
+                    if (groupedByDetectionIdSignals.size() != 2) {
+//                        log.warn("Not enough signals to create a trade. Skipping...");
+                        continue;
+                    }
 
                     // Signal in the future, just detected
                     if (DateUtils.isFutureInHourMinuteSecond(groupedByDetectionIdSignals.get(1).getScheduledAt())) {
