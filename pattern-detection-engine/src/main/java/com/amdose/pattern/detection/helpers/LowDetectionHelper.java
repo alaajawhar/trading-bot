@@ -24,8 +24,12 @@ public class LowDetectionHelper {
         this.lowerLowList = this.detectLowerLows(candles, lookBackPeriod);
     }
 
-    public boolean isLowAt(Integer index) {
-        return lowList.get(index);
+    public Optional<Boolean> isLowAt(Integer index) {
+        if (lowList.size() >= index) {
+            Optional.empty();
+        }
+
+        return Optional.of(lowList.get(index));
     }
 
     public Boolean isLowerLowAt(Integer index) {
@@ -50,6 +54,9 @@ public class LowDetectionHelper {
         return Optional.empty();
     }
 
+    /*
+     * PRIVATE
+     */
     private List<Boolean> detectLows(List<Double> candles) {
         List<Boolean> lowList = new ArrayList<>();
 

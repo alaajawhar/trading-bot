@@ -158,6 +158,9 @@ export interface StrategyTestResponse {
 export interface StrategyTestRequest {
   strategyId: number;
   symbolId: number;
+  timeframes: string[];
+  fromDate: string;
+  toDate: string;
 }
 
 export interface GetSignalTestListResponse {

@@ -16,15 +16,18 @@ public class HighDetectionHelper {
     private final List<Boolean> higherHighList;
     private final List<Boolean> higherLowList;
 
-    public HighDetectionHelper(List<Double> candles, int lookBackPeriod) {
+    public HighDetectionHelper(List<Double> prices, int lookBackPeriod) {
         this.lookBackPeriod = lookBackPeriod;
-        this.highList = this.detectHighs(candles);
-        this.higherHighList = this.detectHigherHighs(candles, lookBackPeriod);
-        this.higherLowList = this.detectHigherLows(candles, lookBackPeriod);
+        this.highList = this.detectHighs(prices);
+        this.higherHighList = this.detectHigherHighs(prices, lookBackPeriod);
+        this.higherLowList = this.detectHigherLows(prices, lookBackPeriod);
     }
 
-    public boolean isHighAt(Integer index) {
-        return highList.get(index);
+    public Optional<Boolean> isHighAt(Integer index) {
+        if (highList.size() >= index) {
+            Optional.empty();
+        }
+        return Optional.of(highList.get(index));
     }
 
     public Boolean isHigherHighAt(Integer index) {
@@ -49,6 +52,9 @@ public class HighDetectionHelper {
         return Optional.empty();
     }
 
+    /*
+     * PRIVATE
+     */
     private List<Boolean> detectHighs(List<Double> candles) {
         List<Boolean> highList = new ArrayList<>();
 
@@ -127,6 +133,4 @@ public class HighDetectionHelper {
 
         return higherHighs;
     }
-
-
 }

@@ -14,6 +14,7 @@ import {PieChartModel} from "../../../shared/components/charts/pie-chart/pie-cha
 import {MultiBarModel} from "../../../shared/components/charts/multi-bar-chart/multi-bar-chart.models";
 import {convertResponseToDisabledFieldsCard, getDropdownValueFromKey} from "../../../shared/utils/function.utils";
 import {DisabledFieldsCard} from "../../../shared/components/disabled-field-card/models";
+import {getEndOfDay, getMidnight} from "../../../shared/utils/date.utils";
 
 @Component({
   selector: 'app-strategies-test',
@@ -39,6 +40,7 @@ export class StrategiesTestComponent implements OnInit {
     list: []
   };
 
+
   timeFrameFilter: string;
   testSignalsResponse: GetSignalTestListResponse;
 
@@ -49,6 +51,9 @@ export class StrategiesTestComponent implements OnInit {
   strategyTestRequest: StrategyTestRequest = {
     strategyId: undefined!,
     symbolId: undefined!,
+    timeframes: undefined!,
+    fromDate: undefined!,
+    toDate: undefined!,
   };
 
   /*
@@ -102,10 +107,20 @@ export class StrategiesTestComponent implements OnInit {
 
     this.backend.getDropdownTimeframes().subscribe(resp => {
       this.dropdownTimeframes = resp;
+      this.strategyTestRequest.timeframes = [resp.list[0].id];
     });
+
+    // Set fromDate to today's date with 00:00 hours and minutes
+    this.strategyTestRequest.fromDate = getMidnight(new Date());
+
+    // Set toDate to today's date with 23:59 hours and minutes
+    this.strategyTestRequest.toDate = getEndOfDay(new Date());
+
   }
 
   onGo() {
+    console.log(this.strategyTestRequest.fromDate)
+    console.log(this.strategyTestRequest.toDate);
     this.isLoadingData = true;
     this.backend.getTestStrategy(this.strategyTestRequest).subscribe(resp => {
       this.dashboardSummaryResponse = resp.summaryResponse;
@@ -163,6 +178,9 @@ export class StrategiesTestComponent implements OnInit {
     this.strategyTestRequest = {
       strategyId: this.strategyTestRequest.strategyId,
       symbolId: this.strategyTestRequest.strategyId,
+      timeframes: this.strategyTestRequest.timeframes,
+      fromDate: undefined!,
+      toDate: undefined!,
     };
   }
 

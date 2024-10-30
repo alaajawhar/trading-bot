@@ -8,7 +8,7 @@ import com.amdose.database.repositories.ICandleRepository;
 import com.amdose.database.repositories.ISignalRepository;
 import com.amdose.pattern.detection.dtos.SignalItemDTO;
 import com.amdose.pattern.detection.strategies.IStrategyService;
-import com.amdose.pattern.detection.utils.CandlesUtils;
+import com.amdose.pattern.detection.utils.CandlesConvertorUtils;
 import com.amdose.utils.DateUtils;
 import com.amdose.utils.JsonUtils;
 import lombok.RequiredArgsConstructor;
@@ -100,7 +100,7 @@ public class StrategyExecutorService {
             return List.of();
         }
 
-        List<SignalItemDTO> detectedSignals = strategyService.get().executeStrategy(CandlesUtils.convertToCandlesDto(candleEntityList));
+        List<SignalItemDTO> detectedSignals = strategyService.get().executeStrategy(CandlesConvertorUtils.convertToCandlesDto(candleEntityList));
 
         log.info("Strategy: [{}] has detected: [{}] signals", strategyEntity.getName(), detectedSignals.size());
 

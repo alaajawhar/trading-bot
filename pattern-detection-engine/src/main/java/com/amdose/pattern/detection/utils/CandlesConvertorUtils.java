@@ -15,7 +15,7 @@ import java.util.List;
  * @author Alaa Jawhar
  */
 @UtilityClass
-public class CandlesUtils {
+public class CandlesConvertorUtils {
 
     public static List<CandleItemDTO> convertToCandlesDto(List<CandleEntity> candles) {
         List<CandleItemDTO> response = new ArrayList<>();
@@ -32,10 +32,20 @@ public class CandlesUtils {
         return response;
     }
 
-    public static BarSeries convertToBarSeries(List<CandleItemDTO> candles) {
+    public static BarSeries candlesDtoToBarSeries(List<CandleItemDTO> candles) {
         BarSeries series = new BaseBarSeriesBuilder().withName("CandleSeries").build();
 
         for (CandleItemDTO candle : candles) {
+            ZonedDateTime time = ZonedDateTime.ofInstant(candle.getDate().toInstant(), ZoneId.systemDefault());
+            series.addBar(time, candle.getOpen(), candle.getHigh(), candle.getLow(), candle.getClose());
+        }
+        return series;
+    }
+
+    public static BarSeries candlesConvertToBarSeries(List<CandleEntity> candles) {
+        BarSeries series = new BaseBarSeriesBuilder().withName("CandleSeries").build();
+
+        for (CandleItemDTO candle : convertToCandlesDto(candles)) {
             ZonedDateTime time = ZonedDateTime.ofInstant(candle.getDate().toInstant(), ZoneId.systemDefault());
             series.addBar(time, candle.getOpen(), candle.getHigh(), candle.getLow(), candle.getClose());
         }

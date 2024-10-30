@@ -2,7 +2,9 @@ package com.amdose.pattern.detection.dtos;
 
 import com.amdose.database.entities.SignalEntity;
 import com.amdose.database.enums.SignalActionEnum;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
@@ -10,6 +12,8 @@ import java.util.Date;
  * @author Alaa Jawhar
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class SignalItemDTO {
     private String detectionId;
     private String metaData;

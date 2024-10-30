@@ -34,7 +34,6 @@ import static java.util.stream.Collectors.groupingBy;
 @Service
 @RequiredArgsConstructor
 public class StrategyTestService {
-    private static boolean IS_PROCESSING = Boolean.FALSE;
     private static final List<String> COLORS = List.of(
             "#012970",
             "#d51bb6",
@@ -45,19 +44,12 @@ public class StrategyTestService {
             "#d51b1b"
     );
 
-
     private final StrategyExecutorService strategyExecutorService;
     private final IStrategyRepository strategyRepository;
     private final ISymbolRepository symbolRepository;
     private final ICandleRepository candleRepository;
 
     public GetStrategyTestResponse getStrategyTest(GetStrategyTestRequest request) {
-
-        if (IS_PROCESSING == Boolean.TRUE) {
-            throw new InvalidRequestException("Invalid Strategy Id");
-        }
-
-        IS_PROCESSING = Boolean.TRUE;
 
         GetStrategyTestResponse response = new GetStrategyTestResponse();
 
@@ -73,20 +65,19 @@ public class StrategyTestService {
             throw new InvalidRequestException("Invalid Symbol Id");
         }
 
-
-        List<TradeDto> allDetectedSignals = this.getProfitTestCandles(optionalStrategy.get(), optionalSymbol.get());
+        List<TradeDto> allDetectedSignals = this.getProfitTestCandles(request.getFromDate(), request.getToDate(), optionalStrategy.get(), optionalSymbol.get(), request.getTimeframes());
 
         // SUMMARY RESPONSE
         response.setSummaryResponse(this.generateSummary(allDetectedSignals));
 
         // LINE CHART RESPONSE
-        response.setPerformanceOverTimeResponse(this.generateLineChartResponse(allDetectedSignals));
+        response.setPerformanceOverTimeResponse(this.generateLineChartResponse(allDetectedSignals, request.getTimeframes()));
 
         // RADAR RESPONSE
         response.setPerformanceBaseOnTimeframesResponse(this.generateRadarChartResponse(optionalStrategy.get().getDescription(), allDetectedSignals));
 
         // PIE RESPONSE
-        response.setPieChartResponse(this.generatePieChartResponse(allDetectedSignals));
+        response.setPieChartResponse(this.generatePieChartResponse(allDetectedSignals, request.getTimeframes()));
 
         // MULTI-BAR RESPONSE
         response.setMultiBarChartResponse(this.generateMultiBarChart(allDetectedSignals));
@@ -94,16 +85,13 @@ public class StrategyTestService {
         // SIGNALS RESPONSE
         response.setSignals(this.generateTestSignalsResponse(allDetectedSignals));
 
-        IS_PROCESSING = Boolean.FALSE;
         return response;
     }
 
-    private List<TradeDto> getProfitTestCandles(StrategyEntity strategy, SymbolEntity symbol) {
+    private List<TradeDto> getProfitTestCandles(Date fromDate, Date toDate, StrategyEntity strategy, SymbolEntity symbol, List<TimeFrameEnum> timeframes) {
         List<TradeDto> response = new ArrayList<>();
-        for (TimeFrameEnum timeframe : TimeFrameEnum.values()) {
-//            Date today = Date.from(LocalDate.now().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
-//            List<CandleEntity> candleEntityList = candleRepository.findAllByDateAfterAndSymbolAndTimeFrameOrderByDateAsc(today, symbol, timeframe);
-            List<CandleEntity> candleEntityList = candleRepository.findLastBySymbolAndTimeFrameOrderByDateAsc(symbol, timeframe);
+        for (TimeFrameEnum timeframe : timeframes) {
+            List<CandleEntity> candleEntityList = candleRepository.findAllByDateBetweenAndSymbolAndTimeFrameOrderByDateAsc(fromDate, toDate, symbol, timeframe);
             List<SignalItemDTO> signalEntityList = strategyExecutorService.executeStrategy(strategy, candleEntityList);
 
 
@@ -134,8 +122,8 @@ public class StrategyTestService {
                     }
 
                     if (DateUtils.areDatesEqualInHourMinuteSecond(candleItem.getDate(), groupedByDetectionIdSignals.get(0).getScheduledAt())) {
-                        Double profit = dateCandleMap.get(groupedByDetectionIdSignals.get(0).getScheduledAt()).getOpen()
-                                - dateCandleMap.get(groupedByDetectionIdSignals.get(1).getScheduledAt()).getOpen();
+                        Double profit = dateCandleMap.get(DateUtils.roundSecondsAndMilliseconds(groupedByDetectionIdSignals.get(0).getScheduledAt())).getOpen()
+                                - dateCandleMap.get(DateUtils.roundSecondsAndMilliseconds(groupedByDetectionIdSignals.get(1).getScheduledAt())).getOpen();
                         testTradeDTO.setProfit(profit);
                         testTradeDTO.setMetaData(groupedByDetectionIdSignals.get(0).getMetaData());
                     }
@@ -161,13 +149,13 @@ public class StrategyTestService {
         return summaryResponse;
     }
 
-    private GetLineChartResponse generateLineChartResponse(List<TradeDto> detectedSignals) {
+    private GetLineChartResponse generateLineChartResponse(List<TradeDto> detectedSignals, List<TimeFrameEnum> timeframes) {
         GetLineChartResponse response = new GetLineChartResponse();
         response.setLabels(List.of("0", "100", "200", "300", "400", "500", "600", "700", "800", "900", "1000"));
 
         List<LineChartItem> list = new ArrayList<>();
         int i = 0;
-        for (TimeFrameEnum timeFrame : TimeFrameEnum.values()) {
+        for (TimeFrameEnum timeFrame : timeframes) {
             LineChartItem lineChartItem = new LineChartItem();
             lineChartItem.setChartName(timeFrame.getLabel());
             lineChartItem.setChartColor(COLORS.get(i++));
@@ -224,9 +212,9 @@ public class StrategyTestService {
         return response;
     }
 
-    private GetPieChartResponse generatePieChartResponse(List<TradeDto> detectedSignals) {
+    private GetPieChartResponse generatePieChartResponse(List<TradeDto> detectedSignals, List<TimeFrameEnum> timeframes) {
         GetPieChartResponse response = new GetPieChartResponse();
-        response.setLabels(Arrays.stream(TimeFrameEnum.values()).map(TimeFrameEnum::getLabel).collect(Collectors.toList()));
+        response.setLabels(timeframes.stream().map(TimeFrameEnum::getLabel).collect(Collectors.toList()));
 
         List<PieChartItem> list = new ArrayList<>();
 
@@ -234,7 +222,7 @@ public class StrategyTestService {
                 .filter(signal -> signal.getProfit() != 0).toList();
 
         int i = 0;
-        for (TimeFrameEnum timeFrame : TimeFrameEnum.values()) {
+        for (TimeFrameEnum timeFrame : timeframes) {
             PieChartItem chartItem = new PieChartItem();
             chartItem.setChartColor(COLORS.get(i++));
             chartItem.setChartName(timeFrame.getLabel());
